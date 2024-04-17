@@ -5,9 +5,9 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Bonneteau : MonoBehaviour
+public class Cups : MonoBehaviour
 {
-    public static Bonneteau Instance;
+    public static Cups Instance;
     [System.NonSerialized] public UnityEvent OnWin = new();
     [System.NonSerialized] public UnityEvent OnLose = new();
     [System.NonSerialized] public UnityEvent OnCupChosen = new();
@@ -51,17 +51,17 @@ public class Bonneteau : MonoBehaviour
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
         if (!Directory.Exists("Game/Minigames")) Directory.CreateDirectory("Game/Minigames");
-        if (!Directory.Exists("Game/Minigames/Bonneteau")) Directory.CreateDirectory("Game/Minigames/Bonneteau");
-        _IsBugResolved = File.Exists("Game/Minigames/Bonneteau/Ball.txt");
+        if (!Directory.Exists("Game/Minigames/Cups")) Directory.CreateDirectory("Game/Minigames/Cups");
+        _IsBugResolved = File.Exists("Game/Minigames/Cups/Ball.txt");
         _CupPositions = new List<Vector3>();
         foreach (var cup in _Cups)
         {
             _CupPositions.Add((cup.transform as RectTransform).position);
         }
-        if(File.Exists(Application.persistentDataPath + "/BonneteauSaveFile.json"))
+        if(File.Exists(Application.persistentDataPath + "/CupsSaveFile.json"))
         {
             JsonDataService dataService = new JsonDataService();
-            _StandResults = dataService.LoadData<StandResults>("BonneteauSaveFile");
+            _StandResults = dataService.LoadData<StandResults>("CupsSaveFile");
         }
         StartCoroutine(ShuffleCupsRoutine());
     }
@@ -98,7 +98,7 @@ public class Bonneteau : MonoBehaviour
                 break;
         }
         _StandResults = new StandResults(Medal,_WinCount);
-        dataService.SaveData("BonneteauSaveFile", _StandResults);
+        dataService.SaveData("CupsSaveFile", _StandResults);
     }
     private IEnumerator ShuffleCupsRoutine()
     {

@@ -508,6 +508,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 932853454274711719, guid: 242ce7e651fc00043b6011bc44f4b542, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 55
+      objectReference: {fileID: 0}
     - target: {fileID: 7244817342274206096, guid: 242ce7e651fc00043b6011bc44f4b542, type: 3}
       propertyPath: m_Name
       value: BonneteauCanvas

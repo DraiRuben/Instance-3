@@ -389,13 +389,13 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 822204479}
+        m_TargetAssemblyTypeName: PlayerControls, Assembly-CSharp
+        m_MethodName: Movement
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -514,10 +514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a5b8cb0f73b8884b953a8738bfc837e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Speed: 5
+  _Speed: 50
   _RBody: {fileID: 822204478}
-  _MoveInput: {x: 0, y: 0}
-  _IsWalking: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

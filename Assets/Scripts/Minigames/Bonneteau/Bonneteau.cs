@@ -2,7 +2,6 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -42,6 +41,7 @@ public class Bonneteau : MonoBehaviour
     private bool _IsBugResolved;
     private int _BallCurrentIndex;
     private int _CurrentShuffleCount = 0;
+    private StandResults _StandResults;
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
@@ -54,9 +54,14 @@ public class Bonneteau : MonoBehaviour
         if (!Directory.Exists("Game/Minigames/Bonneteau")) Directory.CreateDirectory("Game/Minigames/Bonneteau");
         _IsBugResolved = File.Exists("Game/Minigames/Bonneteau/Ball.txt");
         _CupPositions = new List<Vector3>();
-        foreach(var cup in _Cups)
+        foreach (var cup in _Cups)
         {
             _CupPositions.Add((cup.transform as RectTransform).position);
+        }
+        if(File.Exists(Application.persistentDataPath + "/BonneteauSaveFile.json"))
+        {
+            JsonDataService dataService = new JsonDataService();
+            _StandResults = dataService.LoadData<StandResults>("BonneteauSaveFile");
         }
         StartCoroutine(ShuffleCupsRoutine());
     }
@@ -65,6 +70,35 @@ public class Bonneteau : MonoBehaviour
     void Update()
     {
 
+    }
+    private void OnApplicationQuit()
+    {
+        SaveStats();
+    }
+    private void SaveStats()
+    {
+        JsonDataService dataService = new JsonDataService();
+        MedalType Medal;
+        switch (_WinCount)
+        {
+            case 0:
+                Medal = MedalType.None;
+                break;
+            case 1:
+                Medal = MedalType.Bronze;
+                break;
+            case 2:
+                Medal = MedalType.Silver;
+                break;
+            case 3:
+                Medal = MedalType.Gold;
+                break;
+            default:
+                Medal = MedalType.None;
+                break;
+        }
+        _StandResults = new StandResults(Medal,_WinCount);
+        dataService.SaveData("BonneteauSaveFile", _StandResults);
     }
     private IEnumerator ShuffleCupsRoutine()
     {
@@ -76,7 +110,7 @@ public class Bonneteau : MonoBehaviour
             //Generate Random cup switch amount
             int chosenSwitchCount = Random.Range(_MinSwitchCount, _MaxSwitchCount + 1);
             int currentSwitchCount = 0;
-            while(currentSwitchCount < chosenSwitchCount)
+            while (currentSwitchCount < chosenSwitchCount)
             {
                 var cupSwitchTuple = GetRandomCupSwitchTuple();
                 //launches switch routine and only goes further in the execution when it's finished
@@ -95,15 +129,22 @@ public class Bonneteau : MonoBehaviour
             //Shuffles again after cup has been selected, this effectively works like a recursive function, but with async execution
             StartCoroutine(ShuffleCupsRoutine());
         }
+        else
+        {
+            //save and exit stand
+            SaveStats();
+        }
     }
     private IEnumerator CupSwitchRoutine(int cupIndex1, int cupIndex2)
     {
-        //fetches both cup refs
+        //fetches both cup refs and their original locations
         RectTransform cup1 = _Cups[cupIndex1].transform as RectTransform;
         RectTransform cup2 = _Cups[cupIndex2].transform as RectTransform;
         Vector3 cup1OriginPosition = cup1.position;
         Vector3 cup2OriginPosition = cup2.position;
-        Vector3 cupUpVector = Vector3.Cross((cup1OriginPosition - cup2OriginPosition).normalized,Vector3.forward).normalized;
+        //gets the vector that's perpendicular to the vector going from one location to the other
+        //this is to add to the lerp to make the curved trajectory instead of a straight one
+        Vector3 cupUpVector = Vector3.Cross((cup1OriginPosition - cup2OriginPosition).normalized, Vector3.forward).normalized;
         float lerpAlpha = 0.0f;
         float timeSinceSwitchStart = 0.0f;
         float switchDuration = _ShuffleDuration.Evaluate((float)_CurrentShuffleCount / _ShuffleCount);
@@ -111,9 +152,9 @@ public class Bonneteau : MonoBehaviour
         while (lerpAlpha < 1.0f)
         {
             displacementVector = cupUpVector * _DisplacementScalar * _CupDisplacementEvolution.Evaluate(lerpAlpha);
-            cup1.position = Vector3.Lerp(cup1OriginPosition, cup2OriginPosition,lerpAlpha)+displacementVector;
-            cup2.position = Vector3.Lerp(cup2OriginPosition, cup1OriginPosition,lerpAlpha)-displacementVector;
-            lerpAlpha += (1.0f/switchDuration) *_CupMovementEvolution.Evaluate(timeSinceSwitchStart/switchDuration)* Time.deltaTime;
+            cup1.position = Vector3.Lerp(cup1OriginPosition, cup2OriginPosition, lerpAlpha) + displacementVector;
+            cup2.position = Vector3.Lerp(cup2OriginPosition, cup1OriginPosition, lerpAlpha) - displacementVector;
+            lerpAlpha += (1.0f / switchDuration) * _CupMovementEvolution.Evaluate(timeSinceSwitchStart / switchDuration) * Time.deltaTime;
             timeSinceSwitchStart += Time.deltaTime;
             yield return null;
         }
@@ -125,11 +166,11 @@ public class Bonneteau : MonoBehaviour
     {
         List<int> IndexList = new();
         //Populates index list with 0,1,2,3, etc...
-        for(int i = 0; i < _CupPositions.Count; i++)
+        for (int i = 0; i < _CupPositions.Count; i++)
         {
             IndexList.Add(i);
         }
-        int index1 = IndexList[Random.Range(0,IndexList.Count)];
+        int index1 = IndexList[Random.Range(0, IndexList.Count)];
         IndexList.Remove(index1);
         int index2 = IndexList[Random.Range(0, IndexList.Count)];
         return (index1, index2);
@@ -138,7 +179,7 @@ public class Bonneteau : MonoBehaviour
     {
         if (_CanSelectCup)
         {
-            if(_IsBugResolved)
+            if (_IsBugResolved)
             {
                 int selectedIndex = _CupPositions.FindIndex(0, x => x == (_Cups[cupIndex].transform as RectTransform).position);
                 if (selectedIndex == _BallCurrentIndex)
@@ -169,14 +210,30 @@ public class Bonneteau : MonoBehaviour
                     writer.Write("CODE_401_AUTH_FAILED");
                     writer.Close();
                 }
-                this.Invoke(()=> _CrashWindow.SetActive(true), 1.0f);
-                this.Invoke(()=> Application.Quit(), 2.5f);
+                this.Invoke(() => _CrashWindow.SetActive(true), 1.0f);
+                this.Invoke(() => Application.Quit(), 2.5f);
             }
-            
+
         }
     }
 }
-
+public enum MedalType
+{
+    None,
+    Bronze,
+    Silver,
+    Gold
+}
+public struct StandResults
+{
+    public StandResults(MedalType medal, int points)
+    {
+        _Medal = medal;
+        _Points = points;
+    }
+    public MedalType _Medal;
+    public int _Points;
+}
 public static class Utility
 {
     public static void Invoke(this MonoBehaviour mb, System.Action f, float delay)

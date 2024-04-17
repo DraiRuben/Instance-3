@@ -3,7 +3,7 @@ using UnityEngine.Splines;
 
 public class FishBehavior : MonoBehaviour
 {
-    [SerializeField] private SplineContainer[] _Spline;
+    public SplineContainer[] _Spline;
     [SerializeField] private float _Speed;
     [SerializeField] private bool _IsBugged;
     private float _DistPercent = 0;

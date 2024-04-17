@@ -70,7 +70,8 @@ public class Bonneteau : MonoBehaviour
     {
         _CanSelectCup = false;
         if (_CurrentShuffleCount < _ShuffleCount)
-        { 
+        {
+            _BallCurrentIndex = Random.Range(0, _Cups.Count);
             _Ball.SetActive(false);
             //Generate Random cup switch amount
             int chosenSwitchCount = Random.Range(_MinSwitchCount, _MaxSwitchCount + 1);

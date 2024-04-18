@@ -16,10 +16,10 @@ public class FishingManager : MonoBehaviour
     {
         if (i < 6)
         {
-            GameObject Fish = Instantiate(_Fish, new Vector2(3, 0), Quaternion.identity);
+            GameObject Fish = Instantiate(_Fish,new Vector2(5000,5000), Quaternion.identity);
             Fish.GetComponent<FishBehavior>()._Spline = _Splines;
             i++;
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             StartCoroutine(FishSpawn());
         }
     }

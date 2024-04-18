@@ -46,6 +46,8 @@ public class Cups : MonoBehaviour
     {
         if (Instance) Destroy(gameObject);
         else Instance = this;
+
+        Random.InitState(System.DateTime.Now.Millisecond);
     }
     void Start()
     {
@@ -106,7 +108,11 @@ public class Cups : MonoBehaviour
         if (_CurrentShuffleCount < _ShuffleCount)
         {
             _BallCurrentIndex = Random.Range(0, _Cups.Count);
+            _Ball.GetComponent<RectTransform>().position = _CupPositions[_BallCurrentIndex];
             _Ball.SetActive(false);
+            //TODO: start a coroutine that shows the player where the ball is at the start
+
+
             //Generate Random cup switch amount
             int chosenSwitchCount = Random.Range(_MinSwitchCount, _MaxSwitchCount + 1);
             int currentSwitchCount = 0;

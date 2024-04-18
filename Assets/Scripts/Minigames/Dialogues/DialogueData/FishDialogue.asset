@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d10b8ad692b3a43af99157c41c836e, type: 3}
+  m_Name: FishDialogue
+  m_EditorClassIdentifier: 
+  _Texts:
+  - 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec porta augue,
+    tristique gravida metus. Donec vitae blandit nibh. Phasellus velit erat, euismod
+    ac nisi non, auctor facilisis risus. Etiam ante orci, bibendum a metus vel, elementum
+    commodo est. Nulla pharetra fermentum risus sed fringilla. Phasellus eleifend
+    purus aliquet pretium cursus. Ut magna eros, efficitur in massa congue, semper
+    luctus augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+    posuere cubilia curae; Etiam quis ante orci. Mauris at euismod turpis. Etiam
+    in libero vitae erat lobortis lacinia vel et diam. Nunc in purus tellus. '
+  - 'Pellentesque dictum eget erat et porttitor. Aenean molestie lectus at est faucibus,
+    vitae malesuada nisl eleifend. In et dui at nibh imperdiet iaculis vitae vitae
+    tellus. Suspendisse ut lorem sed nisi molestie convallis. Ut vitae quam consectetur
+    orci ornare egestas ut id enim. Phasellus accumsan scelerisque nisl sit amet
+    scelerisque. Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+    per inceptos himenaeos. Pellentesque dapibus, magna a imperdiet mattis, nisl
+    justo tincidunt neque, feugiat maximus leo erat sed felis. '
+  - 'Ut rutrum at purus a ultrices. Nam vehicula sit amet augue eget volutpat. Pellentesque
+    eu dui ex. Curabitur aliquam urna mi, fringilla mattis turpis fermentum et. Suspendisse
+    imperdiet augue enim, vitae pulvinar enim convallis id. Donec feugiat mi ac fermentum
+    sollicitudin. Proin fringilla dolor id enim molestie molestie. Sed auctor venenatis
+    commodo. Aliquam eget tincidunt nisi. Etiam ut urna vel justo laoreet ullamcorper.
+    Donec sit amet erat nisi. Nam varius sapien ut tempus fringilla. Etiam non rutrum
+    lacus. Sed aliquam eleifend mi id maximus. '
+  - 'Nullam purus enim, feugiat et turpis volutpat, pellentesque varius velit. Curabitur
+    malesuada odio diam, sit amet tincidunt elit blandit quis. Suspendisse bibendum
+    maximus velit nec pretium. Vestibulum at vulputate ipsum, sit amet dignissim
+    leo. Sed ultrices cursus orci. Phasellus ullamcorper commodo lobortis. Nullam
+    non neque eu orci vulputate malesuada. Suspendisse fermentum elit hendrerit nisl
+    vehicula, quis aliquet mauris venenatis. Donec malesuada pellentesque nulla quis
+    vestibulum. Aenean interdum hendrerit nibh, vitae laoreet nisl pulvinar non.
+    Integer at neque erat. Aliquam pellentesque libero elit, quis vulputate turpis
+    dapibus sit amet. Nam non posuere ligula, in mattis ante. Ut consectetur iaculis
+    dui, vel porta est sagittis a. Sed lacinia maximus mollis. Vestibulum at sapien
+    non tellus efficitur vestibulum sit amet sit amet elit. '
+  - 'Sed fermentum urna vel magna lacinia, ac sodales magna euismod. Donec id laoreet
+    nisi, ut posuere leo. Etiam et quam sagittis, posuere tortor a, laoreet eros.
+    Cras ultrices sit amet ante sed sagittis. Nunc ac tempor quam. Donec sapien turpis,
+    viverra vel imperdiet sed, hendrerit vel massa. Vestibulum ante ipsum primis
+    in faucibus orci luctus et ultrices posuere cubilia curae; In pretium pulvinar
+    nisi, vitae fermentum odio lacinia quis. Duis sed ante ornare, ultrices ex ac,
+    mollis eros. Nulla venenatis tempus lorem vel pulvinar. '

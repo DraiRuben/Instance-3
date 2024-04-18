@@ -19,7 +19,11 @@ public class Pole : MonoBehaviour
         if (context.started)
         {
             _fishing = true;
-            transform.position = new Vector2(transform.position.x, transform.position.y-5);
+            transform.position = new Vector2(transform.position.x, transform.position.y-0.5f);
+        }
+        if (context.canceled)
+        {
+            _fishing = false;
         }
     }
 }

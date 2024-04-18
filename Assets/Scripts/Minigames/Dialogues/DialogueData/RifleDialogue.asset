@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2d10b8ad692b3a43af99157c41c836e, type: 3}
-  m_Name: FishDialogue
+  m_Name: RifleDialogue
   m_EditorClassIdentifier: 
   _Texts:
-  - "Allez les jeunots ! P\xEAchez des poissons pour d\xE9bloquer un super prix !
-    Facile !"
+  - "Abattez toutes les cibles dans le temps imparti pour gagner une belle m\xE9daille
+    ! Attention o\xF9 vous visez par contre."

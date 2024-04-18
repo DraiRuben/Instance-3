@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2d10b8ad692b3a43af99157c41c836e, type: 3}
-  m_Name: FishDialogue
+  m_Name: MoleDialogue
   m_EditorClassIdentifier: 
   _Texts:
-  - "Allez les jeunots ! P\xEAchez des poissons pour d\xE9bloquer un super prix !
-    Facile !"
+  - "Frappez les taupes. Soyez vifs car elles sont rapides. Une m\xE9daille \xE0
+    la cl\xE9 !"

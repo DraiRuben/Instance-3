@@ -14,13 +14,16 @@ public class FishingManager : MonoBehaviour
 
     IEnumerator FishSpawn()
     {
-        if (i < 6)
+        while(true)
         {
-            GameObject Fish = Instantiate(_Fish,new Vector2(5000,5000), Quaternion.identity);
-            Fish.GetComponent<FishBehavior>()._Spline = _Splines;
-            i++;
-            yield return new WaitForSeconds(1);
-            StartCoroutine(FishSpawn());
+            if (i < 6)
+            {
+                GameObject Fish = Instantiate(_Fish, new Vector2(5000, 5000), Quaternion.identity);
+                Fish.GetComponent<FishBehavior>()._Spline = _Splines;
+                i++;
+                yield return new WaitForSeconds(1);
+            }
+            yield return null;
         }
     }
 }

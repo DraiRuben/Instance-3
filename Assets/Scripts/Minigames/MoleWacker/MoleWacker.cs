@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MoleWacker : MonoBehaviour
+public class MoleWacker : MonoBehaviour, IInteractable
 {
     public static MoleWacker Instance;
     [System.NonSerialized] public UnityEvent OnMoleWacked = new();
@@ -50,6 +50,42 @@ public class MoleWacker : MonoBehaviour
             _HolesTenants.Add(i);
         }
     }
+    public void Interact()
+    {
+        if(_StandResults._Medal == MedalType.None)
+        {
+            gameObject.SetActive(true);
+            if (_IsBugResolved)
+            {
+                var Holes = transform.GetChild(0);
+                foreach (Transform child in Holes)
+                {
+                    _HolesPositions.Add(child.position);
+                }
+                StartCoroutine(MoleSpawnRoutine());
+            }
+            else
+            {
+                //make dump and close game
+                if (File.Exists("crashdump.txt"))
+                {
+                    File.Delete("crashdump.txt");
+                }
+                var file = File.Create("crashdump.txt");
+                file.Close();
+                StreamWriter writer = new StreamWriter("crashdump.txt");
+                writer.Write("CODE_500_ERR");
+                writer.Close();
+
+                this.Invoke(() =>
+                {
+                    var _BugMsg = Instantiate(_BugMessagePrefab);
+                    _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la taupe est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
+                }, 1.0f);
+                this.Invoke(() => Application.Quit(), 2.5f);
+            }
+        }
+    }
     private void Start()
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
@@ -61,35 +97,7 @@ public class MoleWacker : MonoBehaviour
             JsonDataService dataService = new JsonDataService();
             _StandResults = dataService.LoadData<StandResults>("MoleSaveFile");
         }
-        if (_IsBugResolved)
-        {
-            var Holes = transform.GetChild(0);
-            foreach (Transform child in Holes)
-            {
-                _HolesPositions.Add(child.position);
-            }
-            StartCoroutine(MoleSpawnRoutine());
-        }
-        else
-        {
-            //make dump and close game
-            if (File.Exists("crashdump.txt"))
-            {
-                File.Delete("crashdump.txt");
-            }
-            var file = File.Create("crashdump.txt");
-            file.Close();
-            StreamWriter writer = new StreamWriter("crashdump.txt");
-            writer.Write("CODE_500_ERR");
-            writer.Close();
-
-            this.Invoke(() =>
-            {
-                var _BugMsg = Instantiate(_BugMessagePrefab);
-                _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la taupe est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
-            }, 1.0f);
-            this.Invoke(() => Application.Quit(), 2.5f);
-        }
+        gameObject.SetActive(false);
     }
     private void OnApplicationQuit()
     {
@@ -145,4 +153,6 @@ public class MoleWacker : MonoBehaviour
             yield return null;
         }
     }
+
+    
 }

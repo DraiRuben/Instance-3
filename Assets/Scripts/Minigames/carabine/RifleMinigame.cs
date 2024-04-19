@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System.IO;
 
 public class RifleMinigame : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class RifleMinigame : MonoBehaviour
     [SerializeField] private bool _IsBugged;
     private int _Points;
     private float _ReloadTime;
+    private float _MinigameTimer;
 
     private void Awake()
     {
@@ -17,8 +19,22 @@ public class RifleMinigame : MonoBehaviour
         else Instance = this;
     }
 
+    private void Start()
+    {
+        if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
+        if (!Directory.Exists("Game/Animations")) Directory.CreateDirectory("Game/Animations");
+        if (!Directory.Exists("Game/Animations/Rifle")) Directory.CreateDirectory("Game/Animations/Rifle");
+        _IsBugged = !File.Exists("Game/Animations/Rifle/Target.anim");
+    }
+
     private void Update()
     {
+        //_MinigameTimer = Time.deltaTime;
+        //if (_MinigameTimer >= 45.0f)
+        //{
+            
+        //}
+
         ReloadTimer();
         if (Input.GetMouseButtonDown(0) && _ReloadTime <= 0)
         {

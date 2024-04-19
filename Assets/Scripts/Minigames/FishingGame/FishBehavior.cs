@@ -8,20 +8,11 @@ public class FishBehavior : MonoBehaviour
     [SerializeField] private bool _IsBugged;
     private float _DistPercent = 0;
     private float _SplineLength;
-    private int _BugValue;
     
 
     private void Start()
     {
-        if (_IsBugged)
-        {
-            _BugValue = 1;
-        }
-        else
-        {
-            _BugValue = 0;
-        }
-        _SplineLength = _Spline[_BugValue].CalculateLength();
+        _SplineLength = _Spline[FishingManager._FishInstance._BugValue].CalculateLength();
     }
 
     private void Update()
@@ -29,7 +20,7 @@ public class FishBehavior : MonoBehaviour
 
         _DistPercent += _Speed * Time.deltaTime / _SplineLength;
 
-        Vector3 currentPosition = _Spline[_BugValue].EvaluatePosition(_DistPercent);
+        Vector3 currentPosition = _Spline[FishingManager._FishInstance._BugValue].EvaluatePosition(_DistPercent);
         transform.position = currentPosition;
 
         if (_DistPercent > 1f)

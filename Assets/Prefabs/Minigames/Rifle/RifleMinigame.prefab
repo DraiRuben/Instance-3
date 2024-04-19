@@ -753,10 +753,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effd59e6db59a2647a432192560c1f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _OffsetXBase: 1
-  _OffsetYBase: 1
-  _OffsetXDuration: 2
-  _OffsetYDuration: 2
+  _OffsetXBase: 0.3
+  _OffsetYBase: 0.3
+  _OffsetXDuration: 4
+  _OffsetYDuration: 4
   _OffsetXEvolution:
     serializedVersion: 2
     m_Curve:

@@ -1,29 +1,37 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Pole : MonoBehaviour
 {
-    private bool _fishing;
-    private void Update()
+    private bool _Fishing;
+    private int _FishingScore;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Vector2 MousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        MousePosition.y -= 1;
-        if (!_fishing)
+        if (_Fishing)
         {
-            transform.position = MousePosition;
+            if (other.CompareTag("Fish"))
+            {
+                FishingManager._FishInstance._FishList.Remove(other.gameObject);
+                _FishingScore++;
+                _Fishing = false;
+                Destroy(other.gameObject);
+            }
         }
     }
-
     public void Fishing(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            _fishing = true;
-            transform.position = new Vector2(transform.position.x, transform.position.y-0.5f);
+            StartCoroutine(Tofish());
         }
-        if (context.canceled)
-        {
-            _fishing = false;
-        }
+    }
+
+    IEnumerator Tofish()
+    {
+        _Fishing = true;
+        yield return new WaitForSeconds(0.5f);
+        _Fishing = false;
     }
 }

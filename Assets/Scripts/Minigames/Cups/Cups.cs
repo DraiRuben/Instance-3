@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Cups : MonoBehaviour
+public class Cups : MonoBehaviour, IInteractable
 {
     public static Cups Instance;
     [System.NonSerialized] public UnityEvent OnWin = new();
@@ -43,6 +43,14 @@ public class Cups : MonoBehaviour
     private int _BallCurrentIndex;
     private int _CurrentShuffleCount = 0;
     private StandResults _StandResults;
+    public void Interact()
+    {
+        if(_StandResults._Medal == MedalType.None)
+        {
+            gameObject.SetActive(true);
+            StartCoroutine(ShuffleCupsRoutine());
+        }
+    }
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
@@ -66,7 +74,7 @@ public class Cups : MonoBehaviour
             JsonDataService dataService = new JsonDataService();
             _StandResults = dataService.LoadData<StandResults>("CupsSaveFile");
         }
-        StartCoroutine(ShuffleCupsRoutine());
+        gameObject.SetActive(false);
     }
     private void OnApplicationQuit()
     {
@@ -222,35 +230,5 @@ public class Cups : MonoBehaviour
             }
 
         }
-    }
-}
-public enum MedalType
-{
-    None,
-    Bronze,
-    Silver,
-    Gold
-}
-public struct StandResults
-{
-    public StandResults(MedalType medal, int points)
-    {
-        _Medal = medal;
-        _Points = points;
-    }
-    public MedalType _Medal;
-    public int _Points;
-}
-public static class Utility
-{
-    public static void Invoke(this MonoBehaviour mb, System.Action f, float delay)
-    {
-        mb.StartCoroutine(InvokeRoutine(f, delay));
-    }
-
-    private static IEnumerator InvokeRoutine(System.Action f, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        f();
     }
 }

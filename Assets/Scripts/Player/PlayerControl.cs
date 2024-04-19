@@ -4,25 +4,24 @@ using UnityEngine.InputSystem;
 public class PlayerControls : MonoBehaviour
 {
     [SerializeField] private float _Speed;
-    [SerializeField] private Rigidbody2D _RBody;
+    private Rigidbody2D _RBody;
     private Vector2 _MoveInput;
 
+    private void Awake()
+    {
+        _RBody = GetComponent<Rigidbody2D>();
+    }
     public void Movement(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            _MoveInput = context.ReadValue<Vector2>();
-        }
-        if (context.canceled)
-        {
-            _MoveInput = Vector2.zero;
-        }
+
+        _MoveInput = context.ReadValue<Vector2>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
 
-            _RBody.velocity = _MoveInput * _Speed*Time.deltaTime;
+        _RBody.AddForce(_MoveInput * _Speed*Time.fixedDeltaTime);
+        _RBody.velocity = Vector2.ClampMagnitude(_RBody.velocity, 50);
 
     }
 }

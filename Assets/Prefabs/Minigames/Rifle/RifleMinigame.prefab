@@ -1093,6 +1093,7 @@ MonoBehaviour:
   _ReloadSound: {fileID: 8300000, guid: cf0add255ca4afd4b901391cd9b2d0f6, type: 3}
   _ShootSound: {fileID: 8300000, guid: a88f765007557b241bebecfe8e263615, type: 3}
   _IsBugged: 0
+  _MinigameDuration: 40
 --- !u!1 &8323809743929137760
 GameObject:
   m_ObjectHideFlags: 0

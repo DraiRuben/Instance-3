@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,7 +20,7 @@ public class Cups : MonoBehaviour
     [Header("Refs")]
     [SerializeField] private List<GameObject> _Cups;
     [SerializeField] private GameObject _Ball;
-    [SerializeField] private GameObject _CrashWindow;
+    [SerializeField] private GameObject _BugMessagePrefab;
 
     [Header("Curves")]
     [SerializeField] private AnimationCurve _CupMovementEvolution;
@@ -60,18 +61,12 @@ public class Cups : MonoBehaviour
         {
             _CupPositions.Add((cup.transform as RectTransform).position);
         }
-        if(File.Exists(Application.persistentDataPath + "/CupsSaveFile.json"))
+        if (File.Exists(Application.persistentDataPath + "/CupsSaveFile.json"))
         {
             JsonDataService dataService = new JsonDataService();
             _StandResults = dataService.LoadData<StandResults>("CupsSaveFile");
         }
         StartCoroutine(ShuffleCupsRoutine());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
     private void OnApplicationQuit()
     {
@@ -99,7 +94,7 @@ public class Cups : MonoBehaviour
                 Medal = MedalType.None;
                 break;
         }
-        _StandResults = new StandResults(Medal,_WinCount);
+        _StandResults = new StandResults(Medal, _WinCount);
         dataService.SaveData("CupsSaveFile", _StandResults);
     }
     private IEnumerator ShuffleCupsRoutine()
@@ -207,16 +202,22 @@ public class Cups : MonoBehaviour
             }
             else
             {
-                //make dump and close game
-                if (!File.Exists("crashdump.txt"))
+                if (File.Exists("crashdump.txt"))
                 {
-                    var file = File.Create("crashdump.txt");
-                    file.Close();
-                    StreamWriter writer = new StreamWriter("crashdump.txt");
-                    writer.Write("CODE_401_AUTH_FAILED");
-                    writer.Close();
+                    File.Delete("crashdump.txt");
                 }
-                this.Invoke(() => _CrashWindow.SetActive(true), 1.0f);
+                //make dump and close game
+                var file = File.Create("crashdump.txt");
+                file.Close();
+                StreamWriter writer = new StreamWriter("crashdump.txt");
+                writer.Write("CODE_401_AUTH_FAILED");
+                writer.Close();
+
+                this.Invoke(() => 
+                { 
+                   var _BugMsg = Instantiate(_BugMessagePrefab);
+                    _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la balle est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
+                }, 1.0f);
                 this.Invoke(() => Application.Quit(), 2.5f);
             }
 

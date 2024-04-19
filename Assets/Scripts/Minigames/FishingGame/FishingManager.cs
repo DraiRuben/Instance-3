@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.Splines;
+using UnityEngine.UIElements;
 
 public class FishingManager : MonoBehaviour
 {
@@ -10,8 +13,13 @@ public class FishingManager : MonoBehaviour
     [SerializeField] private GameObject _Fish;
     [SerializeField] private SplineContainer[] _Splines;
     [SerializeField] private TextAsset _BehaviorFile;
+    [SerializeField] private AnimationCurve _SpeedCurve;
+    [System.NonSerialized] public float _SpeedMult = 1;
     public List<GameObject> _FishList = new List<GameObject>();
     public int _BugValue;
+    private float _ElapsedTime;
+    [SerializeField] private float _MinigameDuration; 
+
     private void Start()
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
@@ -29,8 +37,13 @@ public class FishingManager : MonoBehaviour
         {
             _FishInstance = this; 
         }
-
         StartCoroutine(FishSpawn());
+    }
+
+    private void Update()
+    {
+        _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime/_MinigameDuration);
+        _ElapsedTime+= Time.deltaTime;
     }
 
     IEnumerator FishSpawn()

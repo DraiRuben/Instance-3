@@ -73,7 +73,7 @@ public class Pole : MonoBehaviour
     }
     public void Fishing(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && !_Fishing)
         {
             StartCoroutine(Tofish());
         }

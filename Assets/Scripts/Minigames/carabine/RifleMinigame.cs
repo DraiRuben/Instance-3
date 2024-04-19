@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using System.IO;
+using Sirenix.OdinInspector;
 
 public class RifleMinigame : MonoBehaviour, IInteractable
 {
@@ -9,15 +10,17 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     [SerializeField] private AudioClip _ReloadSound;
     [SerializeField] private AudioClip _ShootSound;
     [SerializeField] private bool _IsBugged;
+    [SerializeField] private float _MinigameDuration;
+
     private int _Points;
     private float _ReloadTime;
-    private float _MinigameDuration;
     private StandResults _StandResults;
     private void Awake()
     {
         if(Instance) Destroy(gameObject);
         else Instance = this;
     }
+    [Button]
     public void Interact()
     {
         gameObject.SetActive(true);

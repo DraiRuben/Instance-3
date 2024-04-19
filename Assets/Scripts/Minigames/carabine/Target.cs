@@ -5,7 +5,7 @@ public class Target : MonoBehaviour, IPointerDownHandler
 {
     public void OnPointerDown(PointerEventData eventData)
     {
-        RifleMinigame.Instance.Handletargethit(gameObject);
+        RifleMinigame.Instance.HandleTargetHit(gameObject);
     }
 
 

@@ -57,12 +57,10 @@ public class Gun : MonoBehaviour
         _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
         transform.position = new Vector3(_WorldMousePosition.x + _OffsetX, _ClampedYMovement + _OffsetY);
 
-
+        //constrains cursor in the Y axis to the shootable zone
         var screenPoint = Mathf.Clamp(_MousePosition.y,
             Camera.main.WorldToScreenPoint(new(0,transform.parent.position.y+ _GunYRange.x + transform.lossyScale.y / 2 + _YReach)).y , 
             Camera.main.WorldToScreenPoint(new(0, transform.parent.position.y + _GunYRange.y + transform.lossyScale.y / 2 + _YReach)).y);
-        
-        Debug.Log(screenPoint);
         if(screenPoint!= _MousePosition.y)
         Mouse.current.WarpCursorPosition(new(_MousePosition.x, screenPoint));
     }

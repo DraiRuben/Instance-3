@@ -4,9 +4,12 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
-
+    public static AudioManager Instance;
     void Awake()
     {
+        if (Instance) Destroy(gameObject);
+        else Instance = this;
+
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();

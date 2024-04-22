@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.IO;
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 public class RifleMinigame : MonoBehaviour, IInteractable
 {
@@ -102,11 +102,12 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     }
     private IEnumerator Shoot()
     {
-        FindObjectOfType<AudioManager>().PlaySound("shoot");
+        
+        AudioManager.Instance.PlaySound("shoot");
         yield return null;
         _ReloadTime = _ReloadSound.length + _ShootSound.length;
         yield return new WaitForSeconds(_ShootSound.length);
-        FindObjectOfType<AudioManager>().PlaySound("reload");
+        AudioManager.Instance.PlaySound("reload");
     }
 
     private void ReloadTimer()

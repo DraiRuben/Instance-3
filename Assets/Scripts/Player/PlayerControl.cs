@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,24 @@ public class PlayerControls : MonoBehaviour
     {
 
         _MoveInput = context.ReadValue<Vector2>();
+    }
+
+
+    public void Pause(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            if (Time.timeScale == 1  && !PauseMenu.instance.gameObject.activeSelf)
+            {
+                PauseMenu.instance.gameObject.SetActive(true);
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                PauseMenu.instance.gameObject.SetActive(false);
+            }
+        }
     }
 
     private void FixedUpdate()

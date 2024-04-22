@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour
+public class SettingsMenu : MonoBehaviour
 {
-    public static PauseMenu instance;
+    public static SettingsMenu instance;
 
     private void Awake()
     {

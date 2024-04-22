@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonsScript : MonoBehaviour
 {
+    [SerializeField] private GameObject _Settings;
     private string root;
 
     private void Start()
@@ -38,7 +39,7 @@ public class ButtonsScript : MonoBehaviour
     }
     public void Settings()
     {
-
+        SettingsMenu.instance.gameObject.SetActive(true);
     }
 
     public void Resume()

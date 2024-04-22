@@ -36,7 +36,7 @@ public class MoleWacker : MonoBehaviour
 
     [System.NonSerialized] public List<int> _HolesTenants;
     private List<Vector3> _HolesPositions;
-    private StandResults _StandResults;
+    public StandResults _StandResults;
     private bool _IsBugResolved;
 
     private void Awake()
@@ -63,7 +63,7 @@ public class MoleWacker : MonoBehaviour
         }
         if (_IsBugResolved)
         {
-            var Holes = transform.GetChild(0);
+            Transform Holes = transform.GetChild(0);
             foreach (Transform child in Holes)
             {
                 _HolesPositions.Add(child.position);
@@ -77,7 +77,7 @@ public class MoleWacker : MonoBehaviour
             {
                 File.Delete("crashdump.txt");
             }
-            var file = File.Create("crashdump.txt");
+            FileStream file = File.Create("crashdump.txt");
             file.Close();
             StreamWriter writer = new StreamWriter("crashdump.txt");
             writer.Write("CODE_500_ERR");
@@ -85,7 +85,7 @@ public class MoleWacker : MonoBehaviour
 
             this.Invoke(() =>
             {
-                var _BugMsg = Instantiate(_BugMessagePrefab);
+                GameObject _BugMsg = Instantiate(_BugMessagePrefab);
                 _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la taupe est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
             }, 1.0f);
             this.Invoke(() => Application.Quit(), 2.5f);
@@ -132,7 +132,7 @@ public class MoleWacker : MonoBehaviour
             {
                 int chosenHole = _HolesTenants[Random.Range(0, _HolesTenants.Count)];
                 _HolesTenants.Remove(chosenHole);
-                var mole = Instantiate(_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity);
+                GameObject mole = Instantiate(_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity);
                 mole.GetComponent<Mole>()._OccupiedHole = chosenHole;
                 mole.GetComponent<Mole>()._PersistenceTime = _MoleStayTimeEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleStayTimeBase;
                 mole.GetComponent<Mole>()._AppearanceDuration = _MoleMovementSpeedEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleMovementSpeedBase;

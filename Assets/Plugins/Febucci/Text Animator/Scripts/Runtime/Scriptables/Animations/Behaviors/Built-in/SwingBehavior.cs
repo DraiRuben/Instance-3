@@ -12,7 +12,7 @@ namespace Febucci.UI.Effects
     public sealed class SwingBehavior : BehaviorScriptableSine
     {
         public override void ApplyEffectTo(ref Core.CharacterData character, TAnimCore animator)
-        {           
+        {
             character.current.positions.RotateChar(Mathf.Cos(animator.time.timeSinceStart * frequency + character.index * waveSize) * amplitude);
         }
     }

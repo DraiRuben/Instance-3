@@ -23,7 +23,7 @@ namespace Febucci.UI.Core.Editors
 
         string[] propertiesToExclude = new string[0];
 
-        
+
         protected struct PropertyWithDifferentLabel
         {
             public SerializedProperty property;
@@ -41,7 +41,7 @@ namespace Febucci.UI.Core.Editors
             }
         }
 
-        
+
         protected virtual string[] GetPropertiesToExclude()
         {
             return new string[] {
@@ -136,7 +136,7 @@ namespace Febucci.UI.Core.Editors
 
                 EditorGUILayout.PropertyField(resetTypingSpeedAtStartup);
 
-                EditorGUILayout.BeginHorizontal(); 
+                EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Typewriter Skip", EditorStyles.boldLabel);
 
 
@@ -148,12 +148,12 @@ namespace Febucci.UI.Core.Editors
 
 
                 EditorGUILayout.LabelField("Appearing");
-                
+
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(hideAppearancesOnSkip);
                 EditorGUILayout.PropertyField(triggerEventsOnSkip);
                 EditorGUI.indentLevel--;
-                
+
                 EditorGUILayout.LabelField("Disappearing");
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(hideDisappearancesOnSkip);

@@ -16,10 +16,10 @@ namespace Febucci.UI.Effects
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            
+
             ValidateArray();
-            
-            foreach (var anim in animations)
+
+            foreach (AnimationScriptableBase anim in animations)
             {
                 anim.InitializeOnce();
             }
@@ -27,7 +27,7 @@ namespace Febucci.UI.Effects
 
         public override void ResetContext(TAnimCore animator)
         {
-            foreach (var anim in animations)
+            foreach (AnimationScriptableBase anim in animations)
             {
                 anim.ResetContext(animator);
             }
@@ -36,7 +36,7 @@ namespace Febucci.UI.Effects
         public override void SetModifier(ModifierInfo modifier)
         {
             base.SetModifier(modifier);
-            foreach (var anim in animations)
+            foreach (AnimationScriptableBase anim in animations)
             {
                 anim.SetModifier(modifier);
             }
@@ -44,21 +44,21 @@ namespace Febucci.UI.Effects
 
         public override void ApplyEffectTo(ref CharacterData character, TAnimCore animator)
         {
-            foreach (var anim in animations)
+            foreach (AnimationScriptableBase anim in animations)
             {
-                if(anim.CanApplyEffectTo(character, animator)) 
+                if (anim.CanApplyEffectTo(character, animator))
                     anim.ApplyEffectTo(ref character, animator);
             }
         }
 
         //Prevents double check
         public override bool CanApplyEffectTo(CharacterData character, TAnimCore animator) => true;
-        
+
         public override float GetMaxDuration()
         {
             //Calculates max duration between animations
             float maxDuration = -1;
-            foreach (var anim in animations)
+            foreach (AnimationScriptableBase anim in animations)
             {
                 maxDuration = Mathf.Max(maxDuration, anim.GetMaxDuration());
             }
@@ -67,18 +67,18 @@ namespace Febucci.UI.Effects
         }
 
         void ValidateArray()
-        { 
+        {
             //prevents recursion
-            var validated = new System.Collections.Generic.List<AnimationScriptableBase>();
-             
+            System.Collections.Generic.List<AnimationScriptableBase> validated = new System.Collections.Generic.List<AnimationScriptableBase>();
+
             for (int i = 0; i < animations.Length; i++)
             {
-                if(animations[i]!=this) validated.Add(animations[i]);
+                if (animations[i] != this) validated.Add(animations[i]);
             }
 
             animations = validated.ToArray();
         }
-        
+
         void OnValidate() => ValidateArray();
     }
 }

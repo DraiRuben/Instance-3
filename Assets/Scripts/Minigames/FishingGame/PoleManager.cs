@@ -4,11 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Pole : MonoBehaviour
+public class PoleManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _FishingScoreText;
     [SerializeField] private TextMeshProUGUI _FishingTimerText;
-    private StandResults _FishResults;
+
     private bool _Fishing;
     private int _FishingScore;
     private float _FishingTimer;
@@ -19,7 +19,7 @@ public class Pole : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + "/FishSaveFile.json"))
         {
             JsonDataService FishSaveData = new JsonDataService();
-            _FishResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
+            FishManager.Instance._FishResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -28,7 +28,7 @@ public class Pole : MonoBehaviour
         {
             if (other.CompareTag("Fish"))
             {
-                FishingManager._FishInstance._FishList.Remove(other.gameObject);
+                FishManager.Instance._FishList.Remove(other.gameObject);
                 _FishingScore++;
                 _Fishing = false;
                 Destroy(other.gameObject);
@@ -44,11 +44,11 @@ public class Pole : MonoBehaviour
         {
             FishMedal = MedalType.Gold;
         }
-        else if(_FishingScore>=8 && _FishingScore <12)
+        else if (_FishingScore >= 8)
         {
             FishMedal = MedalType.Silver;
         }
-        else if(_FishingScore>=4 && _FishingScore <8)
+        else if (_FishingScore >= 4)
         {
             FishMedal = MedalType.Bronze;
         }
@@ -56,15 +56,15 @@ public class Pole : MonoBehaviour
         {
             FishMedal = MedalType.None;
         }
-        _FishResults = new StandResults(FishMedal, _FishingScore);
-        FishSaveData.SaveData("FishSaveFile", _FishResults);
+        FishManager.Instance._FishResults = new StandResults(FishMedal, _FishingScore);
+        FishSaveData.SaveData("FishSaveFile", FishManager.Instance._FishResults);
     }
 
     private void Update()
     {
         _FishingTimer += Time.deltaTime;
         _FishingScoreText.text = "score : " + _FishingScore;
-        _FishingTimerText.text = "time : " + Mathf.RoundToInt(30-_FishingTimer);
+        _FishingTimerText.text = "time : " + Mathf.RoundToInt(30 - _FishingTimer);
         if (_FishingTimer > 30)
         {
             FishSaving();

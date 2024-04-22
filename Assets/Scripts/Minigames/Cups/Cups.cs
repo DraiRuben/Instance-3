@@ -42,7 +42,7 @@ public class Cups : MonoBehaviour
     private bool _IsBugResolved;
     private int _BallCurrentIndex;
     private int _CurrentShuffleCount = 0;
-    private StandResults _StandResults;
+    public StandResults _StandResults;
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
@@ -57,7 +57,7 @@ public class Cups : MonoBehaviour
         if (!Directory.Exists("Game/Minigames/Cups")) Directory.CreateDirectory("Game/Minigames/Cups");
         _IsBugResolved = File.Exists("Game/Minigames/Cups/Ball.txt");
         _CupPositions = new List<Vector3>();
-        foreach (var cup in _Cups)
+        foreach (GameObject cup in _Cups)
         {
             _CupPositions.Add((cup.transform as RectTransform).position);
         }
@@ -78,9 +78,6 @@ public class Cups : MonoBehaviour
         MedalType Medal;
         switch (_WinCount)
         {
-            case 0:
-                Medal = MedalType.None;
-                break;
             case 1:
                 Medal = MedalType.Bronze;
                 break;
@@ -113,7 +110,7 @@ public class Cups : MonoBehaviour
             int currentSwitchCount = 0;
             while (currentSwitchCount < chosenSwitchCount)
             {
-                var cupSwitchTuple = GetRandomCupSwitchTuple();
+                (int index1, int index2) cupSwitchTuple = GetRandomCupSwitchTuple();
                 //launches switch routine and only goes further in the execution when it's finished
                 yield return CupSwitchRoutine(cupSwitchTuple.index1, cupSwitchTuple.index2);
                 //switch ball location if it was under any of the cups
@@ -207,15 +204,15 @@ public class Cups : MonoBehaviour
                     File.Delete("crashdump.txt");
                 }
                 //make dump and close game
-                var file = File.Create("crashdump.txt");
+                FileStream file = File.Create("crashdump.txt");
                 file.Close();
                 StreamWriter writer = new StreamWriter("crashdump.txt");
                 writer.Write("CODE_401_AUTH_FAILED");
                 writer.Close();
 
-                this.Invoke(() => 
-                { 
-                   var _BugMsg = Instantiate(_BugMessagePrefab);
+                this.Invoke(() =>
+                {
+                    GameObject _BugMsg = Instantiate(_BugMessagePrefab);
                     _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la balle est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
                 }, 1.0f);
                 this.Invoke(() => Application.Quit(), 2.5f);

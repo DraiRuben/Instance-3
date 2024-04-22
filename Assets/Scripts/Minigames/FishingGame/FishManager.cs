@@ -14,8 +14,13 @@ public class FishManager : MonoBehaviour
     public List<GameObject> _FishList = new List<GameObject>();
     public int _BugValue;
     private float _ElapsedTime;
-    [SerializeField] private float _MinigameDuration;
+    public float _MinigameDuration;
     public StandResults _FishResults;
+    private void Awake()
+    {
+        if (Instance) Destroy(gameObject);
+        else Instance = this;
+    }
     private void Start()
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
@@ -30,10 +35,7 @@ public class FishManager : MonoBehaviour
         {
             _BugValue = 1;
         }
-        if (!Instance)
-        {
-            Instance = this;
-        }
+        
         StartCoroutine(FishSpawn());
     }
 

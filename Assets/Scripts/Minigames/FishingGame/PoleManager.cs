@@ -63,12 +63,11 @@ public class PoleManager : MonoBehaviour
     private void Update()
     {
         _FishingTimer += Time.deltaTime;
-        _FishingScoreText.text = "score : " + _FishingScore;
-        _FishingTimerText.text = "time : " + Mathf.RoundToInt(30 - _FishingTimer);
+        _FishingScoreText.text = "Score : " + _FishingScore;
+        _FishingTimerText.text = "Time : " + Mathf.RoundToInt(FishManager.Instance._MinigameDuration - _FishingTimer);
         if (_FishingTimer > 30)
         {
             SaveStats();
-            Debug.Log("game end");
         }
     }
     public void Fishing(InputAction.CallbackContext context)

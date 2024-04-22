@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,10 @@ public class MoleWacker : MonoBehaviour, IInteractable
     [SerializeField] private AnimationCurve _MoleMovementSpeedEvolution;
     [SerializeField] private float _MoleMovementSpeedBase;
 
+    [Header("Display")]
+    [SerializeField] private TextMeshProUGUI _TimerText;
+    public TextMeshProUGUI _ScoreText;
+
     [Header("Other")]
     [SerializeField] private float _MoleSpawnYOffset;
     [SerializeField] private float _MinigameDuration;
@@ -50,6 +55,7 @@ public class MoleWacker : MonoBehaviour, IInteractable
             _HolesTenants.Add(i);
         }
     }
+    [Button]
     public void Interact()
     {
         if (_StandResults._Medal == MedalType.None)
@@ -147,6 +153,7 @@ public class MoleWacker : MonoBehaviour, IInteractable
                 mole.GetComponent<Mole>().SetLayer(chosenHole / 3);
                 currentSpawnTimer = 0;
             }
+            _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration - currentTimer)}");
             currentSpawnCooldown = _SpawnCooldownEvolution.Evaluate(currentTimer / _MinigameDuration) * _SpawnBaseCooldown;
             currentSpawnTimer += Time.deltaTime;
             currentTimer += Time.deltaTime;

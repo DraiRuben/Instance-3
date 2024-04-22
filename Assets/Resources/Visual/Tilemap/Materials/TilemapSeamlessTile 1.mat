@@ -58,7 +58,7 @@ Material:
     - _QueueOffset: 0
     m_Colors:
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
-    - _TilingModifier: {r: 0.75, g: 0.75, b: 0, a: 0}
+    - _TilingModifier: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8225437446318600923
 MonoBehaviour:

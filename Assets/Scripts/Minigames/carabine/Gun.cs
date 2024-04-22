@@ -21,17 +21,9 @@ public class Gun : MonoBehaviour
     [SerializeField] private AnimationCurve _OffsetYEvolution;
     private float _OffsetXTimer;
     private float _OffsetYTimer;
-    private float _IntialY;
     [SerializeField] private float _YReach;
     [SerializeField, MinMaxSlider(-10,0)] private Vector2 _GunYRange;
-    [System.NonSerialized] private float _ClampedYMovement;
     [System.NonSerialized] private float _MouseYMovementDelta;
-
-
-    private void Start()
-    {
-        _IntialY = transform.position.y;
-    }
 
     private void Update()
     {
@@ -52,10 +44,9 @@ public class Gun : MonoBehaviour
         _MousePosition = Mouse.current.position.ReadValue();
         _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
         _MouseYMovementDelta = _WorldMousePosition.y - _PreviousMouseWorldPosition.y;
-        _ClampedYMovement = Mathf.Clamp(_MouseYMovementDelta+ transform.localPosition.y- _OffsetY, _GunYRange.x, _GunYRange.y);
         _OffsetX = _OffsetXBase * _OffsetXEvolution.Evaluate(_OffsetXTimer);
         _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
-        transform.position = new Vector3(_WorldMousePosition.x + _OffsetX, _ClampedYMovement + _OffsetY);
+        transform.position = new Vector3(_WorldMousePosition.x + _OffsetX, _WorldMousePosition.y - transform.lossyScale.y / 2 - _YReach + _OffsetY);
 
         //constrains cursor in the Y axis to the shootable zone
         var screenPoint = Mathf.Clamp(_MousePosition.y,

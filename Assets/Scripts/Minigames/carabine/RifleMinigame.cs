@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.IO;
+using TMPro;
 using UnityEngine;
 
 
@@ -12,7 +13,8 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     [SerializeField] private AudioClip _ShootSound;
     [SerializeField] private bool _IsBugged;
     [SerializeField] private float _MinigameDuration;
-
+    [SerializeField] private TextMeshProUGUI _TimerText;
+    [SerializeField] private TextMeshProUGUI _ScoreText;
     private int _Points;
     private float _ReloadTime;
     private StandResults _StandResults;
@@ -75,6 +77,14 @@ public class RifleMinigame : MonoBehaviour, IInteractable
             {
                 Destroy(target);
                 _Points++;
+                _ScoreText.SetText($"Score : {_Points}");
+                this.Invoke(() => {
+                    if (transform.GetChild(0).childCount <= 0) //targets child
+                    {
+                        TriggerMinigameEnd();
+                    }
+                },0.1f);
+                
             }
         }
     }
@@ -90,19 +100,24 @@ public class RifleMinigame : MonoBehaviour, IInteractable
                 StartCoroutine(Shoot());
             }
             _elapsedTime += Time.deltaTime;
+            _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration-_elapsedTime)}");
             if (_elapsedTime >= _MinigameDuration)
             {
                 //end minigame here
-                Cursor.visible = true;
+                TriggerMinigameEnd();
                 break;
             }
             yield return null;
         }
        
     }
+    private void TriggerMinigameEnd()
+    {
+        Cursor.visible = true;
+        StopAllCoroutines();
+    }
     private IEnumerator Shoot()
     {
-        
         AudioManager.Instance.PlaySound("shoot");
         yield return null;
         _ReloadTime = _ReloadSound.length + _ShootSound.length;

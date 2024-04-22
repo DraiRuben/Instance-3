@@ -45,7 +45,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
                 _IsDisappearing = true;
                 if (_IsWacked)
                 {
-                    MoleWacker.Instance._WinCount++;
+                    MoleWacker.Instance._ScoreText.SetText($"Score : {++MoleWacker.Instance._WinCount}");
                     MoleWacker.Instance.OnMoleWacked.Invoke();
                 }
                 else

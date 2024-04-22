@@ -43,7 +43,10 @@ public class ButtonsScript : MonoBehaviour
 
     public void Resume()
     {
-        Time.timeScale = 1;
+        if (transform.parent.name == "PauseMenu")
+        {
+            Time.timeScale = 1;
+        }
         transform.parent.gameObject.SetActive(false);
     }
 }

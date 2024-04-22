@@ -1,9 +1,15 @@
+using Sirenix.OdinInspector;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+
 
 public class Gun : MonoBehaviour
 {
     private Vector2 _MousePosition;
+    private Vector2 _PreviousMouseWorldPosition;
     private Vector3 _WorldMousePosition;
     [SerializeField] private float _OffsetXBase;
     [SerializeField] private float _OffsetYBase;
@@ -16,6 +22,11 @@ public class Gun : MonoBehaviour
     private float _OffsetXTimer;
     private float _OffsetYTimer;
     private float _IntialY;
+    [SerializeField] private float _YReach;
+    [SerializeField, MinMaxSlider(-10,0)] private Vector2 _GunYRange;
+    [System.NonSerialized] private float _ClampedYMovement;
+    [System.NonSerialized] private float _MouseYMovementDelta;
+
 
     private void Start()
     {
@@ -24,8 +35,8 @@ public class Gun : MonoBehaviour
 
     private void Update()
     {
-        _OffsetXTimer += Time.deltaTime/_OffsetXDuration;
-        _OffsetYTimer += Time.deltaTime/_OffsetYDuration;
+        _OffsetXTimer += Time.deltaTime / _OffsetXDuration;
+        _OffsetYTimer += Time.deltaTime / _OffsetYDuration;
 
         if (_OffsetXTimer > 1)
         {
@@ -35,13 +46,24 @@ public class Gun : MonoBehaviour
         {
             _OffsetYTimer = 0;
         }
-        _OffsetX = _OffsetXBase * _OffsetXEvolution.Evaluate(_OffsetXTimer);
-        _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
 
+
+        _PreviousMouseWorldPosition = _WorldMousePosition;
         _MousePosition = Mouse.current.position.ReadValue();
         _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
-        transform.position = new Vector3(_WorldMousePosition.x+_OffsetX, _IntialY+_OffsetY);
+        _MouseYMovementDelta = _WorldMousePosition.y - _PreviousMouseWorldPosition.y;
+        _ClampedYMovement = Mathf.Clamp(_MouseYMovementDelta+ transform.localPosition.y- _OffsetY, _GunYRange.x, _GunYRange.y);
+        _OffsetX = _OffsetXBase * _OffsetXEvolution.Evaluate(_OffsetXTimer);
+        _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
+        transform.position = new Vector3(_WorldMousePosition.x + _OffsetX, _ClampedYMovement + _OffsetY);
+
+
+        var screenPoint = Mathf.Clamp(_MousePosition.y,
+            Camera.main.WorldToScreenPoint(new(0,transform.parent.position.y+ _GunYRange.x + transform.lossyScale.y / 2 + _YReach)).y , 
+            Camera.main.WorldToScreenPoint(new(0, transform.parent.position.y + _GunYRange.y + transform.lossyScale.y / 2 + _YReach)).y);
+        
+        Debug.Log(screenPoint);
+        if(screenPoint!= _MousePosition.y)
+        Mouse.current.WarpCursorPosition(new(_MousePosition.x, screenPoint));
     }
-
-
 }

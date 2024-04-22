@@ -1,4 +1,3 @@
-using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,7 +27,7 @@ public class PlayerControls : MonoBehaviour
                 PauseMenu.instance.gameObject.SetActive(true);
                 Time.timeScale = 0;
             }
-            else
+            else if (!SettingsMenu.instance.gameObject.activeSelf)
             {
                 Time.timeScale = 1;
                 PauseMenu.instance.gameObject.SetActive(false);

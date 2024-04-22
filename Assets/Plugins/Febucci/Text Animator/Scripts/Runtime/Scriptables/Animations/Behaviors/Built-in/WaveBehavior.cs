@@ -14,7 +14,7 @@ namespace Febucci.UI.Effects
         public override void ApplyEffectTo(ref Core.CharacterData character, TAnimCore animator)
         {
             character.current.positions.MoveChar(
-                Vector3.up * Mathf.Sin(animator.time.timeSinceStart * frequency + character.index * waveSize) 
+                Vector3.up * Mathf.Sin(animator.time.timeSinceStart * frequency + character.index * waveSize)
                 * amplitude * character.uniformIntensity);
         }
     }

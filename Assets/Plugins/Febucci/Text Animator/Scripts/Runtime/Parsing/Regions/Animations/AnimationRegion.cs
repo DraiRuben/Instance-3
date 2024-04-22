@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System.Text;
+﻿using Febucci.UI.Effects;
 using System;
-using Febucci.UI.Effects;
+using System.Text;
+using UnityEngine;
 
 namespace Febucci.UI.Core.Parsing
 {
-    
+
     [Flags]
     public enum VisibilityMode
     {
@@ -13,7 +13,7 @@ namespace Febucci.UI.Core.Parsing
         OnHiding = 2,
         Persistent = OnVisible | OnHiding,
     }
-    
+
     /// <summary>
     /// Contains information of a region in the text
     /// </summary>
@@ -47,7 +47,7 @@ namespace Febucci.UI.Core.Parsing
                 int equalIndex = tag.IndexOf('=');
                 if (equalIndex <= 0) continue; //invalid modifier
 
-                if (FormatUtils.TryGetFloat(tag.Substring(equalIndex + 1), 0, out var result))
+                if (FormatUtils.TryGetFloat(tag.Substring(equalIndex + 1), 0, out float result))
                 {
                     Array.Resize(ref range.modifiers, range.modifiers.Length + 1);
                     range.modifiers[range.modifiers.Length - 1] = new ModifierInfo(tag.Substring(0, equalIndex), result);
@@ -66,7 +66,7 @@ namespace Febucci.UI.Core.Parsing
             {
                 if (ranges[i].indexes.y != int.MaxValue) continue; // otherTag was already closed
 
-                var range = ranges[i];
+                TagRange range = ranges[i];
                 range.indexes.y = endIndex;
                 ranges[i] = range;
                 break; //found a range to close
@@ -81,7 +81,7 @@ namespace Febucci.UI.Core.Parsing
             {
                 if (ranges[i].indexes.y != int.MaxValue) continue; // otherTag was already closed
 
-                var range = ranges[i];
+                TagRange range = ranges[i];
                 range.indexes.y = endIndex;
                 ranges[i] = range;
             }
@@ -89,12 +89,12 @@ namespace Febucci.UI.Core.Parsing
         #endregion
 
         #region Animation
-        
+
         public virtual void SetupContextFor(TAnimCore animator, ModifierInfo[] modifiers)
         {
             animation.ResetContext(animator);
 
-            foreach(var mod in modifiers)
+            foreach (ModifierInfo mod in modifiers)
                 animation.SetModifier(mod);
         }
         #endregion

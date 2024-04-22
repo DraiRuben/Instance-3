@@ -25,7 +25,7 @@ namespace Febucci.UI
                 return tmpComponent;
             }
         }
-        
+
         TMP_Text tmpComponent;
         TMP_TextInfo textInfo;
         TMP_InputField attachedInputField;
@@ -42,22 +42,22 @@ namespace Febucci.UI
         bool isUI;
         void CacheComponentsOnce()
         {
-            if(componentsCached) return;
-            
+            if (componentsCached) return;
+
             if (!gameObject.TryGetComponent(out tmpComponent))
             {
                 Debug.LogError($"TextAnimator_TMP {name} requires a TMP_Text component to work.", gameObject);
             }
-            
+
             gameObject.TryGetComponent(out attachedInputField);
             componentsCached = true;
             isUI = tmpComponent is TextMeshProUGUI;
         }
-        
+
         protected override void OnInitialized()
         {
             CacheComponentsOnce();
-            
+
             //prevents the text from being rendered at startup
             //e.g. in case user has stuff on the inspector
             tmpComponent.renderMode = TextRenderFlags.DontRender;
@@ -73,12 +73,12 @@ namespace Febucci.UI
 
         protected override TagParserBase[] GetExtraParsers()
         {
-            return new TagParserBase[1] {new TMPTagParser(tmpComponent.richText, '<', '/', '>')};
+            return new TagParserBase[1] { new TMPTagParser(tmpComponent.richText, '<', '/', '>') };
         }
 
         public override string GetOriginalTextFromSource() => TMProComponent.text;
         public override string GetStrippedTextFromSource() => tmpComponent.GetParsedText();
-        
+
         /// <summary>
         /// Equivalent to setting the text to the TMP component, without parsing it.
         /// Please use <see cref="TAnimCore.SetText(string)"/> or <see cref="TAnimCore.SetText(string, bool)"/> instead.
@@ -96,7 +96,7 @@ namespace Febucci.UI
             OnForceMeshUpdate();
 
             textInfo = tmpComponent.GetTextInfo(tmpComponent.text);
-            
+
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
@@ -131,12 +131,12 @@ namespace Febucci.UI
 
         protected override bool HasChangedText(string strippedText)
         {
-            if(string.IsNullOrEmpty(tmpComponent.text) && string.IsNullOrEmpty(strippedText))
+            if (string.IsNullOrEmpty(tmpComponent.text) && string.IsNullOrEmpty(strippedText))
                 return false;
-            
+
             if (string.IsNullOrEmpty(tmpComponent.text) != string.IsNullOrEmpty(strippedText))
                 return true;
-            
+
             return !tmpComponent.text.Equals(strippedText);
         }
 
@@ -165,7 +165,7 @@ namespace Febucci.UI
 
                 //Copies source data from the mesh info only if the character is valid, otherwise its vertices array will be null and tAnim will start throw errors
                 if (!currentCharInfo.isVisible) continue;
-                
+
                 characters[i].info.pointSize = currentCharInfo.pointSize;
 
                 //Updates vertices
@@ -218,13 +218,13 @@ namespace Febucci.UI
         #endregion
 
         #region Obsolete
-        
+
         [System.Obsolete("This method is Obsolete. Please check through the 'Characters' array instead.")]
         public bool TryGetNextCharacter(out TMP_CharacterInfo result)
         {
-            if(latestCharacterShown.index<CharactersCount-1)
+            if (latestCharacterShown.index < CharactersCount - 1)
             {
-                result = textInfo.characterInfo[latestCharacterShown.index+1];
+                result = textInfo.characterInfo[latestCharacterShown.index + 1];
                 return true;
             }
 

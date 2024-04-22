@@ -2,7 +2,7 @@
 
 namespace Febucci.UI
 {
-    public struct ModifierInfo: IEquatable<ModifierInfo>
+    public struct ModifierInfo : IEquatable<ModifierInfo>
     {
         public string name;
         public float value;

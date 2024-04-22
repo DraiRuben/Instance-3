@@ -34,7 +34,7 @@ namespace Febucci.UI.Effects
 
         public override void ApplyEffectTo(ref Core.CharacterData character, TAnimCore animator)
         {
-            character.current.positions.RotateChar(-animator.time.timeSinceStart * angleSpeed 
+            character.current.positions.RotateChar(-animator.time.timeSinceStart * angleSpeed
                 + angleDiffBetweenChars * character.index);
         }
     }

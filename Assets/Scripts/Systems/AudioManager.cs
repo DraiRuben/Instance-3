@@ -1,13 +1,15 @@
-using UnityEngine.Audio;
-using UnityEngine;
 using System;
+using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
-
+    public static AudioManager Instance;
     void Awake()
     {
+        if (Instance) Destroy(gameObject);
+        else Instance = this;
+
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
@@ -19,7 +21,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySound (string name)
+    public void PlaySound(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
         s.source.Play();

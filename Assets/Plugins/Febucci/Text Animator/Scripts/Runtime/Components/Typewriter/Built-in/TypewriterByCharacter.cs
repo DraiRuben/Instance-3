@@ -29,7 +29,7 @@ namespace Febucci.UI
         protected override float GetWaitAppearanceTimeOf(int charIndex)
         {
             char character = TextAnimator.Characters[charIndex].info.character;
-            
+
             //avoids waiting for the last character
             if (!waitForLastCharacter && TextAnimator.allLettersShown)
                 return 0;
@@ -79,8 +79,8 @@ namespace Febucci.UI
         }
 
         protected override float GetWaitDisappearanceTimeOf(int charIndex)
-        { 
-            return useTypewriterWaitForDisappearances ? GetWaitAppearanceTimeOf(charIndex) * (1/disappearanceSpeedMultiplier) : disappearanceWaitTime;
+        {
+            return useTypewriterWaitForDisappearances ? GetWaitAppearanceTimeOf(charIndex) * (1 / disappearanceSpeedMultiplier) : disappearanceWaitTime;
         }
     }
 }

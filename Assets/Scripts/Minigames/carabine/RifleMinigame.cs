@@ -1,7 +1,8 @@
-using System.Collections;
-using UnityEngine;
-using System.IO;
 using Sirenix.OdinInspector;
+using System.Collections;
+using System.IO;
+using UnityEngine;
+
 
 public class RifleMinigame : MonoBehaviour, IInteractable
 {
@@ -17,7 +18,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     private StandResults _StandResults;
     private void Awake()
     {
-        if(Instance) Destroy(gameObject);
+        if (Instance) Destroy(gameObject);
         else Instance = this;
     }
     [Button]
@@ -51,7 +52,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         {
             Medal = MedalType.Gold;
         }
-        else if (_Points >=4)
+        else if (_Points >= 4)
         {
             Medal = MedalType.Silver;
         }
@@ -80,6 +81,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     private IEnumerator RunMinigame()
     {
         float _elapsedTime = 0f;
+        Cursor.visible = false;
         while (true)
         {
             ReloadTimer();
@@ -91,18 +93,21 @@ public class RifleMinigame : MonoBehaviour, IInteractable
             if (_elapsedTime >= _MinigameDuration)
             {
                 //end minigame here
-               break;
+                Cursor.visible = true;
+                break;
             }
             yield return null;
         }
+       
     }
     private IEnumerator Shoot()
     {
-        FindObjectOfType<AudioManager>().PlaySound("shoot");
+        
+        AudioManager.Instance.PlaySound("shoot");
         yield return null;
         _ReloadTime = _ReloadSound.length + _ShootSound.length;
         yield return new WaitForSeconds(_ShootSound.length);
-        FindObjectOfType<AudioManager>().PlaySound("reload");
+        AudioManager.Instance.PlaySound("reload");
     }
 
     private void ReloadTimer()

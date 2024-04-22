@@ -1,7 +1,5 @@
 using Febucci.UI;
 using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -28,15 +26,15 @@ public class DialogueTrigger : MonoBehaviour
     public void TriggerDialogue()
     {
         //need to change input map to prevent player from moving
-        if(_CurrentTextIndex<_DialogueData._Texts.Count)
-        _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);
+        if (_CurrentTextIndex < _DialogueData._Texts.Count)
+            _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);
     }
     [Button]
     public void SkipDialogue()
     {
         if (_TextFullyDisplayed)
         {
-            if(_CurrentTextIndex< _DialogueData._Texts.Count)
+            if (_CurrentTextIndex < _DialogueData._Texts.Count)
             {
                 //show next text
                 _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);

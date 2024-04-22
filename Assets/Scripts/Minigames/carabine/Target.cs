@@ -7,6 +7,4 @@ public class Target : MonoBehaviour, IPointerDownHandler
     {
         RifleMinigame.Instance.HandleTargetHit(gameObject);
     }
-
-
 }

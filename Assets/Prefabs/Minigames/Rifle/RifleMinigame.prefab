@@ -895,6 +895,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _YReach: 2.3
+  _GunYRange: {x: -6.00418, y: -3.648109}
 --- !u!1 &6743804143953050584
 GameObject:
   m_ObjectHideFlags: 0

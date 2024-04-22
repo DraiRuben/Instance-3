@@ -20,7 +20,7 @@ public class PlayerControls : MonoBehaviour
     private void FixedUpdate()
     {
 
-        _RBody.AddForce(_MoveInput * _Speed*Time.fixedDeltaTime);
+        _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);
         _RBody.velocity = Vector2.ClampMagnitude(_RBody.velocity, 50);
 
     }

@@ -1,5 +1,4 @@
 ﻿using Febucci.UI.Core;
-using Febucci.UI.Effects;
 using UnityEngine;
 
 namespace Febucci.UI.Effects

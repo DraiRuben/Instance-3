@@ -27,7 +27,7 @@ namespace Febucci.UI.Effects
         {
             switch (modifier.name)
             {
-                case "f": 
+                case "f":
                     SetTimeToShow(baseSpeed * modifier.value);
                     break;
                 case "d": delay = baseDelay * modifier.value; break;
@@ -40,23 +40,23 @@ namespace Febucci.UI.Effects
                 return;
 
             float charPct = (character.passedTime - delay) / timeToShow;
-            
+
             if (charPct > 1) charPct = 1;
-            
+
             //Lerps
             if (charPct < 1 && charPct >= 0)
             {
-                for (var i = 0; i < TextUtilities.verticesPerChar; i++)
+                for (int i = 0; i < TextUtilities.verticesPerChar; i++)
                 {
                     temp = character.current.colors[i];
                     temp.a = 0;
-                    
+
                     character.current.colors[i] = Color32.LerpUnclamped(character.current.colors[i], temp, Tween.EaseInOut(charPct));
                 }
             }
             else //Keeps them hidden
             {
-                for (var i = 0; i < TextUtilities.verticesPerChar; i++)
+                for (int i = 0; i < TextUtilities.verticesPerChar; i++)
                 {
                     temp = character.current.colors[i];
                     temp.a = 0;

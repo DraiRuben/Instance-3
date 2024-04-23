@@ -233,6 +233,7 @@ public class Cups : MonoBehaviour, IInteractable
         gameObject.SetActive(false);
         StandInteractableTrigger.Map.SetActive(true);
         PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
 
         //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation
     }
@@ -242,7 +243,6 @@ public class Cups : MonoBehaviour, IInteractable
         if (CanInteract())
         {
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
-            StandInteractableTrigger.Map.SetActive(false);
             gameObject.SetActive(true);
             StartCoroutine(ShuffleCupsRoutine());
         }

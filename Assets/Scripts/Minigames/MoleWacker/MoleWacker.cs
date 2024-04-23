@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -30,13 +31,17 @@ public class MoleWacker : MonoBehaviour, IInteractable
     [SerializeField] private AnimationCurve _MoleMovementSpeedEvolution;
     [SerializeField] private float _MoleMovementSpeedBase;
 
+    [Header("Display")]
+    [SerializeField] private TextMeshProUGUI _TimerText;
+    public TextMeshProUGUI _ScoreText;
+
     [Header("Other")]
     [SerializeField] private float _MoleSpawnYOffset;
     [SerializeField] private float _MinigameDuration;
 
     [System.NonSerialized] public List<int> _HolesTenants;
     private List<Vector3> _HolesPositions;
-    private StandResults _StandResults;
+    public StandResults _StandResults;
     private bool _IsBugResolved;
 
     private void Awake()
@@ -50,14 +55,15 @@ public class MoleWacker : MonoBehaviour, IInteractable
             _HolesTenants.Add(i);
         }
     }
+    [Button]
     public void Interact()
     {
-        if(_StandResults._Medal == MedalType.None)
+        if (_StandResults._Medal == MedalType.None)
         {
             gameObject.SetActive(true);
             if (_IsBugResolved)
             {
-                var Holes = transform.GetChild(0);
+                Transform Holes = transform.GetChild(0);
                 foreach (Transform child in Holes)
                 {
                     _HolesPositions.Add(child.position);
@@ -71,7 +77,7 @@ public class MoleWacker : MonoBehaviour, IInteractable
                 {
                     File.Delete("crashdump.txt");
                 }
-                var file = File.Create("crashdump.txt");
+                FileStream file = File.Create("crashdump.txt");
                 file.Close();
                 StreamWriter writer = new StreamWriter("crashdump.txt");
                 writer.Write("CODE_500_ERR");
@@ -79,7 +85,7 @@ public class MoleWacker : MonoBehaviour, IInteractable
 
                 this.Invoke(() =>
                 {
-                    var _BugMsg = Instantiate(_BugMessagePrefab);
+                    GameObject _BugMsg = Instantiate(_BugMessagePrefab);
                     _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la taupe est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
                 }, 1.0f);
                 this.Invoke(() => Application.Quit(), 2.5f);
@@ -140,13 +146,14 @@ public class MoleWacker : MonoBehaviour, IInteractable
             {
                 int chosenHole = _HolesTenants[Random.Range(0, _HolesTenants.Count)];
                 _HolesTenants.Remove(chosenHole);
-                var mole = Instantiate(_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity);
+                GameObject mole = Instantiate(_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity);
                 mole.GetComponent<Mole>()._OccupiedHole = chosenHole;
                 mole.GetComponent<Mole>()._PersistenceTime = _MoleStayTimeEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleStayTimeBase;
                 mole.GetComponent<Mole>()._AppearanceDuration = _MoleMovementSpeedEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleMovementSpeedBase;
                 mole.GetComponent<Mole>().SetLayer(chosenHole / 3);
                 currentSpawnTimer = 0;
             }
+            _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration - currentTimer)}");
             currentSpawnCooldown = _SpawnCooldownEvolution.Evaluate(currentTimer / _MinigameDuration) * _SpawnBaseCooldown;
             currentSpawnTimer += Time.deltaTime;
             currentTimer += Time.deltaTime;
@@ -154,5 +161,5 @@ public class MoleWacker : MonoBehaviour, IInteractable
         }
     }
 
-    
+
 }

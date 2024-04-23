@@ -1,7 +1,5 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -29,7 +27,7 @@ public class JsonDataService : IDataService
 
     public bool SaveData<T>(string RelativePath, T Data)
     {
-        string path = Application.persistentDataPath +"/"+ RelativePath + ".json";
+        string path = Application.persistentDataPath + "/" + RelativePath + ".json";
 
         try
         {
@@ -44,7 +42,7 @@ public class JsonDataService : IDataService
             }
             using FileStream stream = File.Create(path);
             stream.Close();
-            File.WriteAllText(path, JsonConvert.SerializeObject(Data,Formatting.Indented));
+            File.WriteAllText(path, JsonConvert.SerializeObject(Data, Formatting.Indented));
             return true;
         }
         catch (Exception e)

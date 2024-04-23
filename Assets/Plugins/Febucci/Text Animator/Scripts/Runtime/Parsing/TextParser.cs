@@ -9,7 +9,7 @@ namespace Febucci.UI.Core.Parsing
     {
         public static string ParseText(string text, params TagParserBase[] rules)
         {
-            if(rules == null || rules.Length == 0)
+            if (rules == null || rules.Length == 0)
             {
                 UnityEngine.Debug.LogWarning("No rules were provided to parse the text. Skipping");
                 return text;
@@ -17,11 +17,11 @@ namespace Febucci.UI.Core.Parsing
 
             //PS At the moment, only for avoiding fails on domain reload
             //and multiple tags on different text sets
-            foreach (var rule in rules)
+            foreach (TagParserBase rule in rules)
             {
                 rule.Initialize();
             }
-            
+
             /*
             P.S. Calculating tags etc. is done inside this single method (and not split for each rule etc.)
             so that the text is only parsed once, and not multiple times for each rule - improving performance
@@ -29,14 +29,14 @@ namespace Febucci.UI.Core.Parsing
             StringBuilder result = new StringBuilder();
 
             // create an array of character from text
-            var characters = text.ToCharArray();
+            char[] characters = text.ToCharArray();
             int len = characters.Length;
             bool foundTag;
             string fullTag;
             bool allowParsing = true;
 
             //For every character in text
-            for(int textIndex = 0, realTextIndex = 0; textIndex < len; textIndex++)
+            for (int textIndex = 0, realTextIndex = 0; textIndex < len; textIndex++)
             {
                 foundTag = false;
 
@@ -44,7 +44,7 @@ namespace Febucci.UI.Core.Parsing
                 if (characters[textIndex] == '<')
                 {
                     int closeIndex = text.IndexOf('>', textIndex + 1);
-                    if(closeIndex>0)
+                    if (closeIndex > 0)
                     {
                         int tagLength = closeIndex - textIndex + 1;
                         void PasteTagToText()
@@ -53,7 +53,7 @@ namespace Febucci.UI.Core.Parsing
                             result.Append(fullTag);
                             textIndex = closeIndex;
                         }
-                        
+
                         fullTag = text.Substring(textIndex, tagLength);
                         switch (fullTag.ToLower())
                         {
@@ -71,7 +71,7 @@ namespace Febucci.UI.Core.Parsing
 
                 if (allowParsing && !foundTag)
                 {
-                    foreach (var rule in rules) //tries rich tags
+                    foreach (TagParserBase rule in rules) //tries rich tags
                     {
                         if (characters[textIndex] == rule.startSymbol)
                         {
@@ -112,7 +112,7 @@ namespace Febucci.UI.Core.Parsing
                     realTextIndex++;
                 }
             }
-            
+
             return result.ToString();
         }
     }

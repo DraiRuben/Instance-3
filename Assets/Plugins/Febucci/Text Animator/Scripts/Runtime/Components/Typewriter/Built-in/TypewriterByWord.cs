@@ -11,12 +11,12 @@ namespace Febucci.UI
     /// </summary>
     [HelpURL("https://www.febucci.com/text-animator-unity/docs/typewriters/")]
     [AddComponentMenu("Febucci/TextAnimator/Typewriter - By Word")]
-    public class TypewriterByWord: Core.TypewriterCore
+    public class TypewriterByWord : Core.TypewriterCore
     {
         [SerializeField, Attributes.CharsDisplayTime] public float waitForNormalWord = 0.3f;
-        [FormerlySerializedAs("waitForWordWithPuntuaction")] [SerializeField, Attributes.CharsDisplayTime] public float waitForWordWithPunctuation = 0.5f;
+        [FormerlySerializedAs("waitForWordWithPuntuaction")][SerializeField, Attributes.CharsDisplayTime] public float waitForWordWithPunctuation = 0.5f;
         [SerializeField, Attributes.CharsDisplayTime] public float disappearanceDelay = 0.5f;
-        
+
         bool IsCharInsideAnyWord(int charIndex)
         {
             return TextAnimator.Characters[charIndex].wordIndex >= 0;
@@ -24,12 +24,12 @@ namespace Febucci.UI
 
         protected override float GetWaitAppearanceTimeOf(int charIndex)
         {
-            if (!IsCharInsideAnyWord(charIndex) && TextAnimator.latestCharacterShown.index>0)
+            if (!IsCharInsideAnyWord(charIndex) && TextAnimator.latestCharacterShown.index > 0)
             {
-                int latestWordShownIndex = TextAnimator.Characters[TextAnimator.latestCharacterShown.index-1].wordIndex;
+                int latestWordShownIndex = TextAnimator.Characters[TextAnimator.latestCharacterShown.index - 1].wordIndex;
                 if (latestWordShownIndex >= 0 && latestWordShownIndex < TextAnimator.WordsCount)
                 {
-                    var word = TextAnimator.Words[latestWordShownIndex];
+                    Core.WordInfo word = TextAnimator.Words[latestWordShownIndex];
                     return char.IsPunctuation(TextAnimator.Characters[word.lastCharacterIndex].info.character)
                         ? waitForWordWithPunctuation
                         : waitForNormalWord;

@@ -1,14 +1,13 @@
-using UnityEditor;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 public class PrizeStall : MonoBehaviour
 {
     private int _FinalScore;
 
-    private void CalculateScore()
+    private void CalculateScore(MedalType medal)
     {
-        switch(MoleWacker.Instance._StandResults._Medal)
+        switch(medal)
         {
             case MedalType.Gold:
                 {
@@ -34,8 +33,11 @@ public class PrizeStall : MonoBehaviour
 
     public void getReward()
     {
-        CalculateScore();
-        if(_FinalScore >= 160)
+        CalculateScore(MoleWacker.Instance._StandResults._Medal);
+        CalculateScore(Cups.Instance._StandResults._Medal);
+        CalculateScore(RifleMinigame.Instance._StandResults._Medal);
+        CalculateScore(FishManager.Instance._StandResults._Medal);
+        if (_FinalScore >= 160)
         {
             Debug.Log("you got the bear");
         }
@@ -51,5 +53,14 @@ public class PrizeStall : MonoBehaviour
         {
             Debug.Log("not enough points");
         }
+    }
+
+    [Button]
+    public void Interact()
+    {
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            gameObject.SetActive(true);
+            StandInteractableTrigger.Map.SetActive(false);
+            getReward();
     }
 }

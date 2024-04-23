@@ -17,18 +17,13 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     [SerializeField] private TextMeshProUGUI _ScoreText;
     private int _Points;
     private float _ReloadTime;
-    private StandResults _StandResults;
+    public StandResults _StandResults;
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
         else Instance = this;
     }
-    [Button]
-    public void Interact()
-    {
-        gameObject.SetActive(true);
-        StartCoroutine(RunMinigame());
-    }
+
     private void Start()
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
@@ -111,11 +106,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         }
        
     }
-    private void TriggerMinigameEnd()
-    {
-        Cursor.visible = true;
-        StopAllCoroutines();
-    }
+
     private IEnumerator Shoot()
     {
         AudioManager.Instance.PlaySound("shoot");
@@ -130,6 +121,30 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         if (_ReloadTime > 0)
         {
             _ReloadTime -= Time.deltaTime;
+        }
+    }
+    private void TriggerMinigameEnd()
+    {
+        Cursor.visible = true;
+        StopAllCoroutines();
+        gameObject.SetActive(false);
+        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+
+    }
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
+    }
+    [Button]
+    public void Interact()
+    {
+        if (CanInteract())
+        {
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            StandInteractableTrigger.Map.SetActive(false);
+            gameObject.SetActive(true);
+            StartCoroutine(RunMinigame());
         }
     }
 

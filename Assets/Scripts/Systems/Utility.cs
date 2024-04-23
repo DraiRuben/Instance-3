@@ -20,6 +20,7 @@ public struct StandResults
 public interface IInteractable
 {
     public void Interact();
+    public bool CanInteract();
 }
 public static class Utility
 {

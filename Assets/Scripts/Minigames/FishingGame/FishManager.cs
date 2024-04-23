@@ -15,7 +15,7 @@ public class FishManager : MonoBehaviour
     public int _BugValue;
     private float _ElapsedTime;
     public float _MinigameDuration;
-    public StandResults _FishResults;
+    public StandResults _StandResults;
     private void Awake()
     {
         if (Instance) Destroy(gameObject);

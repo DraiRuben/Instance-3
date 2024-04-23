@@ -17,7 +17,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     [SerializeField] private TextMeshProUGUI _ScoreText;
     private int _Points;
     private float _ReloadTime;
-    private StandResults _StandResults;
+    public StandResults _StandResults;
     private void Awake()
     {
         if (Instance) Destroy(gameObject);

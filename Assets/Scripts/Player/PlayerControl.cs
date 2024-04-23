@@ -7,6 +7,8 @@ public class PlayerControls : MonoBehaviour
     public static PlayerControls Instance;
     [SerializeField] private float _Speed;
     private Rigidbody2D _RBody;
+    private Animator _Animator;
+    private SpriteRenderer _SpriteRenderer;
     private Vector2 _MoveInput;
     private DialogueTrigger _CurrentDialogue;
     private StandInteractableTrigger _CurrentInteractable;
@@ -18,15 +20,34 @@ public class PlayerControls : MonoBehaviour
 
         _RBody = GetComponent<Rigidbody2D>();
         _PlayerInput = GetComponent<PlayerInput>();
+        _Animator = GetComponent<Animator>();
+        _SpriteRenderer = GetComponent<SpriteRenderer>();
     }
     public void Movement(InputAction.CallbackContext context)
     {
         _MoveInput = context.ReadValue<Vector2>();
+        if (_MoveInput.x <= -1){
+            _SpriteRenderer.flipX = true;
+        }
+        else if(_MoveInput.x >= 1)
+        {
+            _SpriteRenderer.flipX = false;
+        }
+
+        if(_MoveInput.x != 0.0f || _MoveInput.y != 0.0f)
+        {
+            _Animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            _Animator.SetBool("isWalking", false);
+        }
     }
     private void FixedUpdate()
     {
         _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);
         _RBody.velocity = Vector2.ClampMagnitude(_RBody.velocity, 50);
+        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

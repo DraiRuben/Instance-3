@@ -8496,7 +8496,6 @@ GameObject:
   - component: {fileID: 487088927}
   - component: {fileID: 487088926}
   - component: {fileID: 487088925}
-  - component: {fileID: 487088924}
   m_Layer: 5
   m_Name: Dialogues
   m_TagString: Untagged
@@ -8504,23 +8503,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &487088924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487088923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 55
 --- !u!114 &487088925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9351,6 +9333,63 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3965793729404933933, guid: 1db03a239bbcb5246ad04163a65a7693, type: 3}
   m_PrefabInstance: {fileID: 596617448}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &604271764
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5833018664786916529, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_Name
+      value: SoundManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.11624491
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.2077911
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.059478987
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740688727602369849, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0606ef8edc5135b4f9f66744fcaf5fa6, type: 3}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -11115,6 +11154,18 @@ PrefabInstance:
     - target: {fileID: 521479170556951021, guid: 242ce7e651fc00043b6011bc44f4b542, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6522169250797744939, guid: 242ce7e651fc00043b6011bc44f4b542, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6522169250797744939, guid: 242ce7e651fc00043b6011bc44f4b542, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6522169250797744939, guid: 242ce7e651fc00043b6011bc44f4b542, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7244817342274206096, guid: 242ce7e651fc00043b6011bc44f4b542, type: 3}
       propertyPath: m_Name
@@ -15963,6 +16014,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 604271764}
   - {fileID: 1899848934}
   - {fileID: 328942313}
   - {fileID: 1042405312}

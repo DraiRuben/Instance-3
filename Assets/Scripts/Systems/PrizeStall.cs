@@ -7,6 +7,10 @@ public class PrizeStall : MonoBehaviour,IInteractable
     private int _FinalScore;
     private TypewriterByCharacter _TypeWriter;
 
+    private void Start()
+    {
+        _TypeWriter = GetComponent<TypewriterByCharacter>();
+    }
     private void CalculateScore(MedalType medal)
     {
         switch(medal)

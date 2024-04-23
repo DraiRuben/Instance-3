@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class PrizeStall : MonoBehaviour
+public class PrizeStall : MonoBehaviour,IInteractable
 {
     private int _FinalScore;
 
@@ -53,6 +53,11 @@ public class PrizeStall : MonoBehaviour
         {
             Debug.Log("you can't get anything");
         }
+    }
+
+    public bool CanInteract()
+    {
+        return true;
     }
 
     [Button]

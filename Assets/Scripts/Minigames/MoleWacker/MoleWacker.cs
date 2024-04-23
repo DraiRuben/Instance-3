@@ -55,43 +55,6 @@ public class MoleWacker : MonoBehaviour, IInteractable
             _HolesTenants.Add(i);
         }
     }
-    [Button]
-    public void Interact()
-    {
-        if (_StandResults._Medal == MedalType.None)
-        {
-            gameObject.SetActive(true);
-            if (_IsBugResolved)
-            {
-                Transform Holes = transform.GetChild(0);
-                foreach (Transform child in Holes)
-                {
-                    _HolesPositions.Add(child.position);
-                }
-                StartCoroutine(MoleSpawnRoutine());
-            }
-            else
-            {
-                //make dump and close game
-                if (File.Exists("crashdump.txt"))
-                {
-                    File.Delete("crashdump.txt");
-                }
-                FileStream file = File.Create("crashdump.txt");
-                file.Close();
-                StreamWriter writer = new StreamWriter("crashdump.txt");
-                writer.Write("CODE_500_ERR");
-                writer.Close();
-
-                this.Invoke(() =>
-                {
-                    GameObject _BugMsg = Instantiate(_BugMessagePrefab);
-                    _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la taupe est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
-                }, 1.0f);
-                this.Invoke(() => Application.Quit(), 2.5f);
-            }
-        }
-    }
     private void Start()
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
@@ -159,7 +122,60 @@ public class MoleWacker : MonoBehaviour, IInteractable
             currentTimer += Time.deltaTime;
             yield return null;
         }
+        TriggerMinigameEnd();
     }
+    private void TriggerMinigameEnd()
+    {
+        Cursor.visible = true;
+        StopAllCoroutines();
+        SaveStats();
+        gameObject.SetActive(false);
+        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
 
+        //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation
+    }
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
+    }
+    [Button]
+    public void Interact()
+    {
+        if (CanInteract())
+        {
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            StandInteractableTrigger.Map.SetActive(false);
+            gameObject.SetActive(true);
+            if (_IsBugResolved)
+            {
+                Transform Holes = transform.GetChild(0);
+                foreach (Transform child in Holes)
+                {
+                    _HolesPositions.Add(child.position);
+                }
+                StartCoroutine(MoleSpawnRoutine());
+            }
+            else
+            {
+                //make dump and close game
+                if (File.Exists("crashdump.txt"))
+                {
+                    File.Delete("crashdump.txt");
+                }
+                FileStream file = File.Create("crashdump.txt");
+                file.Close();
+                StreamWriter writer = new StreamWriter("crashdump.txt");
+                writer.Write("CODE_500_ERR");
+                writer.Close();
 
+                this.Invoke(() =>
+                {
+                    GameObject _BugMsg = Instantiate(_BugMessagePrefab);
+                    _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la taupe est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
+                }, 1.0f);
+                this.Invoke(() => Application.Quit(), 2.5f);
+            }
+        }
+    }
 }

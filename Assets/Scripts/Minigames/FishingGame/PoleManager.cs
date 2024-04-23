@@ -36,7 +36,7 @@ public class PoleManager : MonoBehaviour
         }
     }
 
-    private void SaveStats()
+    public void SaveStats()
     {
         JsonDataService FishSaveData = new JsonDataService();
         MedalType FishMedal;
@@ -65,10 +65,8 @@ public class PoleManager : MonoBehaviour
         _FishingTimer += Time.deltaTime;
         _FishingScoreText.text = "Score : " + _FishingScore;
         _FishingTimerText.text = "Time : " + Mathf.RoundToInt(FishManager.Instance._MinigameDuration - _FishingTimer);
-        if (_FishingTimer > 30)
-        {
-            SaveStats();
-        }
+
+        
     }
     public void Fishing(InputAction.CallbackContext context)
     {

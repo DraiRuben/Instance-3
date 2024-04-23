@@ -1,7 +1,9 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
+using UnityEngine.Splines;
 
 public class Mole : MonoBehaviour, IPointerClickHandler
 {
@@ -16,7 +18,8 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float _DisappearanceDuration;
     [SerializeField] private float _ShowLocationYOffset = 1.5f;
 
-
+    private static Texture2D _MoleEasterEggTexture;
+    private static Sprite _MoleEasterEggSprite;
     private Vector3 _MoleHiddenLocation;
     private Vector3 _MoleShownLocation;
     private void Start()
@@ -24,6 +27,16 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         _MoleHiddenLocation = transform.position;
         _MoleShownLocation = transform.position + new Vector3(0.0f, _ShowLocationYOffset, 0.0f);
         StartCoroutine(MoleSpawnMovementRoutine());
+        //easter egg that loads image from folder
+        /*if (!_MoleEasterEggSprite)
+        {
+            byte[] fileData = File.ReadAllBytes("Game/Minigames/MoleWacker/Mole.png");
+            _MoleEasterEggTexture = new Texture2D(2, 2);
+            _MoleEasterEggTexture.LoadImage(fileData);
+            _MoleEasterEggSprite = Sprite.Create(_MoleEasterEggTexture, new Rect(0, 0, _MoleEasterEggTexture.width, _MoleEasterEggTexture.height), new Vector2(0, 0), 100, 0, SpriteMeshType.Tight);
+        }
+        GetComponent<SpriteRenderer>().sprite = _MoleEasterEggSprite;*/
+        
     }
     public void OnPointerClick(PointerEventData eventData)
     {

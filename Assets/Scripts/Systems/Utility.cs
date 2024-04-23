@@ -22,8 +22,16 @@ public interface IInteractable
     public void Interact();
     public bool CanInteract();
 }
+
 public static class Utility
 {
+    public static Vector3 GetWorldScreenCenterPos()
+    {
+        Vector2 screenCenterPos = new Vector2(Screen.width/2, Screen.height/2);
+        Vector3 worldScreenCenterPos = Camera.main.ScreenToWorldPoint(screenCenterPos);
+        worldScreenCenterPos.z = 0;
+        return worldScreenCenterPos;
+    }
     public static void Invoke(this MonoBehaviour mb, System.Action f, float delay)
     {
         mb.StartCoroutine(InvokeRoutine(f, delay));

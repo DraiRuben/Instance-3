@@ -63,6 +63,7 @@ public class FishManager : MonoBehaviour, IInteractable
         gameObject.SetActive(false);
         StandInteractableTrigger.Map.SetActive(true);
         PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
 
 
     }
@@ -77,7 +78,6 @@ public class FishManager : MonoBehaviour, IInteractable
         {
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.SetActive(true);
-            StandInteractableTrigger.Map.SetActive(false);
             StartCoroutine(FishSpawn());
         }
     }

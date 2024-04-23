@@ -130,6 +130,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         gameObject.SetActive(false);
         StandInteractableTrigger.Map.SetActive(true);
         PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
 
     }
     public bool CanInteract()
@@ -142,7 +143,6 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         if (CanInteract())
         {
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
-            StandInteractableTrigger.Map.SetActive(false);
             gameObject.SetActive(true);
             StartCoroutine(RunMinigame());
         }

@@ -65,7 +65,8 @@ public class DialogueTrigger : MonoBehaviour
     private IEnumerator CloseRoutine()
     {
         //fade text out, then fade screen out, then start minigame
-        _TypeWriter.StartDisappearingText();
+        _TypeWriter.StartDisappearingText(); 
+        StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
         transform.parent.GetComponent<Image>().enabled = false;
         yield return FadeInOut.Instance.FadeToBlack();

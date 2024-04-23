@@ -51,7 +51,7 @@ public class PrizeStall : MonoBehaviour
         }
         else
         {
-            Debug.Log("not enough points");
+            Debug.Log("you can't get anything");
         }
     }
 

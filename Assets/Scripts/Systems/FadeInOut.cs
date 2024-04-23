@@ -15,27 +15,6 @@ public class FadeInOut : MonoBehaviour
 
     public void FadeInComplete()
     {
-        switch (_Collider.gameObject.tag)
-        {
-            case "FishMinigame":
         
-                break;
-        
-            case "MoleMinigame":
-        
-               break;
-        
-            case "GunMinigame":
-        
-                break;
-        
-            case "BonneteauMinigame":
-        
-                break;
-        
-            case "RewardStand":
-        
-                break;
-        }
     }
 }

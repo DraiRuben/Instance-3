@@ -19,10 +19,15 @@ public class FishManager : MonoBehaviour, IInteractable
     private float _ElapsedTime;
     public float _MinigameDuration;
     public StandResults _StandResults;
+
+    private Vector3 _InitialOffset;
+
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
         else Instance = this;
+        _InitialOffset = transform.position - Camera.main.transform.position;
+        _InitialOffset.z = 0;
     }
     private void Start()
     {
@@ -76,6 +81,8 @@ public class FishManager : MonoBehaviour, IInteractable
     {
         if (CanInteract())
         {
+            transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
+
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.SetActive(true);
             StartCoroutine(FishSpawn());

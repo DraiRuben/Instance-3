@@ -14,19 +14,25 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     private float _MovementLerpAlpha;
     private bool _IsDisappearing;
     private bool _IsWacked;
-
+    private Animator _Animator;
     [SerializeField] private float _DisappearanceDuration;
+    [SerializeField] private float _DeathStunTime;
     [SerializeField] private float _ShowLocationYOffset = 1.5f;
 
     private static Texture2D _MoleEasterEggTexture;
     private static Sprite _MoleEasterEggSprite;
     private Vector3 _MoleHiddenLocation;
     private Vector3 _MoleShownLocation;
+    private void Awake()
+    {
+        _Animator = GetComponent<Animator>();
+    }
     private void Start()
     {
         _MoleHiddenLocation = transform.position;
         _MoleShownLocation = transform.position + new Vector3(0.0f, _ShowLocationYOffset, 0.0f);
         StartCoroutine(MoleSpawnMovementRoutine());
+
         //easter egg that loads image from folder
         /*if (!_MoleEasterEggSprite)
         {
@@ -49,25 +55,27 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     }
     private void MakeMoleDisappear(bool _KillMole = false)
     {
-        if (_MovementLerpAlpha > 0.5f)
+        if (true/*_MovementLerpAlpha > 0.5f*/)
         {
-            if (!_IsDisappearing)
+            if (!_IsDisappearing ||(_KillMole && !_IsWacked))
             {
-                StartCoroutine(MoleDisappearanceRoutine());
+                StopAllCoroutines();
                 _IsWacked = _KillMole;
                 _IsDisappearing = true;
                 if (_IsWacked)
                 {
+                    _Animator.SetTrigger("Dead");
                     MoleWacker.Instance._ScoreText.SetText($"Score : {++MoleWacker.Instance._WinCount}");
                     MoleWacker.Instance.OnMoleWacked.Invoke();
+                    this.Invoke(() => StartCoroutine(MoleDisappearanceRoutine()), _DeathStunTime);
                 }
                 else
                 {
+                    _Animator.SetTrigger("Gone");
                     MoleWacker.Instance._LoseCount++;
                     MoleWacker.Instance.OnMoleLost.Invoke();
+                    StartCoroutine(MoleDisappearanceRoutine());
                 }
-
-                //TODO: play either wacked anim or fuck you anim
             }
         }
     }

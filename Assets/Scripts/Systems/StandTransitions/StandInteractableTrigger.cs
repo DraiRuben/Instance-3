@@ -32,9 +32,7 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
     }
     private IEnumerator StandInteract()
     {
-        Debug.Log("started transition");
         yield return FadeInOut.Instance.FadeToBlack();
-        Debug.Log("ended transition");
         if (_Dialogue)
         {
             _Dialogue.TriggerDialogue();

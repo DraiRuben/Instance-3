@@ -18,6 +18,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private GameObject _Minigame;
     private bool _TextFullyDisplayed;
     private int _CurrentTextIndex;
+    private bool _IsClosing;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class DialogueTrigger : MonoBehaviour
         //need to change input map to prevent player from moving
         if (_CurrentTextIndex < _DialogueData._Texts.Count)
         {
+            _IsClosing = false;
             transform.parent.GetComponent<Image>().enabled = true;
             _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);
         }
@@ -40,7 +42,7 @@ public class DialogueTrigger : MonoBehaviour
     [Button]
     public void SkipDialogue()
     {
-        if (transform.parent.gameObject.activeSelf)
+        if (!_IsClosing)
         {
             if (_TextFullyDisplayed)
             {
@@ -65,9 +67,11 @@ public class DialogueTrigger : MonoBehaviour
     private IEnumerator CloseRoutine()
     {
         //fade text out, then fade screen out, then start minigame
-        _TypeWriter.StartDisappearingText(); 
+        _IsClosing = true;
+        _TypeWriter.StartDisappearingText();
         StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
+        yield return new WaitForSeconds(0.5f);
         transform.parent.GetComponent<Image>().enabled = false;
         yield return FadeInOut.Instance.FadeToBlack();
         _Minigame.GetComponent<IInteractable>().Interact();

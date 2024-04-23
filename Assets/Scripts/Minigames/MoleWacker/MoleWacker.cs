@@ -44,6 +44,8 @@ public class MoleWacker : MonoBehaviour, IInteractable
     public StandResults _StandResults;
     private bool _IsBugResolved;
 
+    private Vector3 _InitialOffset;
+
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
@@ -54,6 +56,9 @@ public class MoleWacker : MonoBehaviour, IInteractable
         {
             _HolesTenants.Add(i);
         }
+        _InitialOffset = transform.position- Camera.main.transform.position;
+        _InitialOffset.z = 0;
+
     }
     private void Start()
     {
@@ -145,6 +150,7 @@ public class MoleWacker : MonoBehaviour, IInteractable
     {
         if (CanInteract())
         {
+            transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.SetActive(true);
             if (_IsBugResolved)

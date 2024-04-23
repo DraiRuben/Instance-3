@@ -23,16 +23,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         if (Instance) Destroy(gameObject);
         else Instance = this;
     }
-    [Button]
-    public void Interact()
-    {
-        if(CanInteract())
-        {
-            gameObject.SetActive(true);
-            StartCoroutine(RunMinigame());
-        }
-    }
-    
+
     private void Start()
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
@@ -115,11 +106,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         }
        
     }
-    private void TriggerMinigameEnd()
-    {
-        Cursor.visible = true;
-        StopAllCoroutines();
-    }
+
     private IEnumerator Shoot()
     {
         AudioManager.Instance.PlaySound("shoot");
@@ -136,9 +123,29 @@ public class RifleMinigame : MonoBehaviour, IInteractable
             _ReloadTime -= Time.deltaTime;
         }
     }
+    private void TriggerMinigameEnd()
+    {
+        Cursor.visible = true;
+        StopAllCoroutines();
+        gameObject.SetActive(false);
+        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
 
+    }
     public bool CanInteract()
     {
         return _StandResults._Medal == MedalType.None;
     }
+    [Button]
+    public void Interact()
+    {
+        if (CanInteract())
+        {
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            StandInteractableTrigger.Map.SetActive(false);
+            gameObject.SetActive(true);
+            StartCoroutine(RunMinigame());
+        }
+    }
+
 }

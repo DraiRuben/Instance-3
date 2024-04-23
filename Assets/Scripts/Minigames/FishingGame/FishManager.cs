@@ -1,6 +1,8 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -8,6 +10,7 @@ public class FishManager : MonoBehaviour, IInteractable
 {
     public static FishManager Instance;
     [SerializeField] private GameObject _Fish;
+    [SerializeField] private PoleManager _PoleManager;
     [SerializeField] private SplineContainer[] _Splines;
     [SerializeField] private AnimationCurve _SpeedCurve;
     [System.NonSerialized] public float _SpeedMult = 1;
@@ -29,36 +32,52 @@ public class FishManager : MonoBehaviour, IInteractable
         StreamReader reader = new StreamReader("Game/Minigames/FishingGame/FishBehavior.txt");
 
         _BugValue = reader.ReadLine() == "Enabled = true;" ? 0 : 1;
-    }
+        gameObject.SetActive(false);
 
-    private void Update()
-    {
-        _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime / _MinigameDuration);
-        _ElapsedTime += Time.deltaTime;
     }
-
-    IEnumerator FishSpawn()
+    private IEnumerator FishSpawn()
     {
-        while (true)
+        float spawnTimer = 0f;
+        while (_ElapsedTime < _MinigameDuration)
         {
-            if (_FishList.Count < 6)
+            if (_FishList.Count < 6 && spawnTimer>=2)
             {
-                _FishList.Add(Instantiate(_Fish, new Vector2(0, 1), Quaternion.identity));
+                _FishList.Add(Instantiate(_Fish, new Vector2(0, 1), Quaternion.identity,transform));
                 _FishList[_FishList.Count - 1].GetComponent<Fish>()._Spline = _Splines;
-                yield return new WaitForSeconds(2);
+                spawnTimer = 0f;
             }
+            _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime / _MinigameDuration);
+            spawnTimer += Time.deltaTime;
+            _ElapsedTime += Time.deltaTime;
             yield return null;
         }
+        TriggerMinigameEnd();
+
+    }
+    private void TriggerMinigameEnd()
+    {
+        Cursor.visible = true;
+        StopAllCoroutines();
+        _PoleManager.StopAllCoroutines();
+        _PoleManager.SaveStats();
+        gameObject.SetActive(false);
+        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+
+
     }
     public bool CanInteract()
     {
         return _StandResults._Medal == MedalType.None;
     }
-
+    [Button]
     public void Interact()
     {
         if (CanInteract())
         {
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            gameObject.SetActive(true);
+            StandInteractableTrigger.Map.SetActive(false);
             StartCoroutine(FishSpawn());
         }
     }

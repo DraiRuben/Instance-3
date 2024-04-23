@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class StandInteractableTrigger : MonoBehaviour, IInteractable
 {
-    [SerializeField] private DialogueTrigger _Dialogue;
-    [SerializeField] private GameObject _Minigame;
+    public static GameObject Map;
+    public DialogueTrigger _Dialogue;
+    public GameObject _Minigame;
+    private void Start()
+    {
+        if (!Map) Map = transform.parent.parent.gameObject;
+    }
     public void Interact()
     {
         if (CanInteract())

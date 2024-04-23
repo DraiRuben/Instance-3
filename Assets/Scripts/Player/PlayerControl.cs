@@ -4,13 +4,18 @@ using UnityEngine.InputSystem;
 public class PlayerControls : MonoBehaviour
 {
     FadeInOut _FadeInOut;
+    public static PlayerControls Instance;
     [SerializeField] private float _Speed;
     private Rigidbody2D _RBody;
     private Vector2 _MoveInput;
+    private DialogueTrigger _CurrentDialogue;
     private StandInteractableTrigger _CurrentInteractable;
-    private PlayerInput _PlayerInput;
+    [System.NonSerialized] public PlayerInput _PlayerInput;
     private void Awake()
     {
+        if (Instance) Destroy(gameObject);
+        else Instance = this;
+
         _RBody = GetComponent<Rigidbody2D>();
         _PlayerInput = GetComponent<PlayerInput>();
     }
@@ -45,9 +50,20 @@ public class PlayerControls : MonoBehaviour
         {
             if (_CurrentInteractable)
             {
+                if (_CurrentInteractable.CanInteract())
+                {
+                    _PlayerInput.SwitchCurrentActionMap("Menus");
+                    if (_CurrentInteractable._Dialogue) _CurrentDialogue = _CurrentInteractable._Dialogue;
+                }
                 _CurrentInteractable.Interact();
-                _PlayerInput.SwitchCurrentActionMap("Menus");
             }
         }
     }
-}
+    public void SkipDialogue(InputAction.CallbackContext context)
+    {
+        if (_CurrentDialogue && context.started)
+        {
+            _CurrentDialogue.SkipDialogue();
+        }
+    }
+ }

@@ -43,18 +43,7 @@ public class Cups : MonoBehaviour, IInteractable
     private int _BallCurrentIndex;
     private int _CurrentShuffleCount = 0;
     public StandResults _StandResults;
-    public void Interact()
-    {
-        if (CanInteract())
-        {
-            gameObject.SetActive(true);
-            StartCoroutine(ShuffleCupsRoutine());
-        }
-    }
-    public bool CanInteract()
-    {
-        return _StandResults._Medal == MedalType.None;
-    }
+
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
@@ -145,9 +134,10 @@ public class Cups : MonoBehaviour, IInteractable
         else
         {
             //save and exit stand
-            SaveStats();
+            TriggerMinigameEnd();
         }
     }
+
     private IEnumerator CupSwitchRoutine(int cupIndex1, int cupIndex2)
     {
         //fetches both cup refs and their original locations
@@ -234,5 +224,31 @@ public class Cups : MonoBehaviour, IInteractable
             }
 
         }
+    }
+    private void TriggerMinigameEnd()
+    {
+        Cursor.visible = true;
+        StopAllCoroutines();
+        SaveStats();
+        gameObject.SetActive(false);
+        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+
+        //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation
+    }
+    [Button]
+    public void Interact()
+    {
+        if (CanInteract())
+        {
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            StandInteractableTrigger.Map.SetActive(false);
+            gameObject.SetActive(true);
+            StartCoroutine(ShuffleCupsRoutine());
+        }
+    }
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
     }
 }

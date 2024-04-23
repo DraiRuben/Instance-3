@@ -40,24 +40,27 @@ public class DialogueTrigger : MonoBehaviour
     [Button]
     public void SkipDialogue()
     {
-        if (_TextFullyDisplayed)
+        if (transform.parent.gameObject.activeSelf)
         {
-            if (_CurrentTextIndex < _DialogueData._Texts.Count)
+            if (_TextFullyDisplayed)
             {
-                //show next text
-                _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);
-                _TextFullyDisplayed = false;
+                if (_CurrentTextIndex < _DialogueData._Texts.Count)
+                {
+                    //show next text
+                    _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);
+                    _TextFullyDisplayed = false;
+                }
+                else
+                {
+                    //close dialogue
+                    StartCoroutine(CloseRoutine());
+                }
             }
             else
             {
-                //close dialogue
-                StartCoroutine(CloseRoutine());
+                _TypeWriter.SkipTypewriter();
             }
-        }
-        else
-        {
-            _TypeWriter.SkipTypewriter();
-        }
+        } 
     }
     private IEnumerator CloseRoutine()
     {

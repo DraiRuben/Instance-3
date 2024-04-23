@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class FishManager : MonoBehaviour
+public class FishManager : MonoBehaviour, IInteractable
 {
     public static FishManager Instance;
     [SerializeField] private GameObject _Fish;
@@ -15,7 +15,7 @@ public class FishManager : MonoBehaviour
     public int _BugValue;
     private float _ElapsedTime;
     public float _MinigameDuration;
-    public StandResults _FishResults;
+    public StandResults _StandResults;
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
@@ -27,16 +27,8 @@ public class FishManager : MonoBehaviour
         if (!Directory.Exists("Game/Minigames")) Directory.CreateDirectory("Game/Minigames");
         if (!Directory.Exists("Game/Minigames/FishingGame")) Directory.CreateDirectory("Game/Minigames/FishingGame");
         StreamReader reader = new StreamReader("Game/Minigames/FishingGame/FishBehavior.txt");
-        if (reader.ReadLine() == "Enabled = true;")
-        {
-            _BugValue = 0;
-        }
-        else
-        {
-            _BugValue = 1;
-        }
-        
-        StartCoroutine(FishSpawn());
+
+        _BugValue = reader.ReadLine() == "Enabled = true;" ? 0 : 1;
     }
 
     private void Update()
@@ -56,6 +48,18 @@ public class FishManager : MonoBehaviour
                 yield return new WaitForSeconds(2);
             }
             yield return null;
+        }
+    }
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
+    }
+
+    public void Interact()
+    {
+        if (CanInteract())
+        {
+            StartCoroutine(FishSpawn());
         }
     }
 }

@@ -7,10 +7,12 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float _Speed;
     private Rigidbody2D _RBody;
     private Vector2 _MoveInput;
-
+    private StandInteractableTrigger _CurrentInteractable;
+    private PlayerInput _PlayerInput;
     private void Awake()
     {
         _RBody = GetComponent<Rigidbody2D>();
+        _PlayerInput = GetComponent<PlayerInput>();
     }
     public void Movement(InputAction.CallbackContext context)
     {
@@ -21,11 +23,31 @@ public class PlayerControls : MonoBehaviour
         _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);
         _RBody.velocity = Vector2.ClampMagnitude(_RBody.velocity, 50);
     }
-    private void OnTriggerStay2D(Collider2D collision)
-{
-        if (Input.GetKeyDown(KeyCode.E))
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
+        if (interactable)
         {
-            _FadeInOut.FadeToBlack(collision);
+            _CurrentInteractable = interactable;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        var interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
+        if(_CurrentInteractable == interactable)
+        {
+            _CurrentInteractable = null;
+        }
+    }
+    public void Interact(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (_CurrentInteractable)
+            {
+                _CurrentInteractable.Interact();
+                _PlayerInput.SwitchCurrentActionMap("Menus");
+            }
         }
     }
 }

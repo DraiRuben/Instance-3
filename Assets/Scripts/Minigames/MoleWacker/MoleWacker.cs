@@ -58,7 +58,7 @@ public class MoleWacker : MonoBehaviour, IInteractable
     [Button]
     public void Interact()
     {
-        if (_StandResults._Medal == MedalType.None)
+        if (CanInteract())
         {
             gameObject.SetActive(true);
             if (_IsBugResolved)
@@ -161,5 +161,8 @@ public class MoleWacker : MonoBehaviour, IInteractable
         }
     }
 
-
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
+    }
 }

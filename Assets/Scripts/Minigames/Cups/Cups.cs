@@ -45,11 +45,15 @@ public class Cups : MonoBehaviour, IInteractable
     public StandResults _StandResults;
     public void Interact()
     {
-        if (_StandResults._Medal == MedalType.None)
+        if (CanInteract())
         {
             gameObject.SetActive(true);
             StartCoroutine(ShuffleCupsRoutine());
         }
+    }
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
     }
     private void Awake()
     {

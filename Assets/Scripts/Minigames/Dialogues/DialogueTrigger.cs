@@ -1,7 +1,11 @@
 using Febucci.UI;
 using Sirenix.OdinInspector;
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 [RequireComponent(typeof(TextAnimator_TMP))]
@@ -11,7 +15,7 @@ public class DialogueTrigger : MonoBehaviour
     private TypewriterByCharacter _TypeWriter;
     private TextMeshProUGUI _TMP;
     [SerializeField] private DialogueSO _DialogueData;
-
+    [SerializeField] private GameObject _Minigame;
     private bool _TextFullyDisplayed;
     private int _CurrentTextIndex;
     // Start is called before the first frame update
@@ -20,6 +24,7 @@ public class DialogueTrigger : MonoBehaviour
         _TypeWriter = GetComponent<TypewriterByCharacter>();
         _TMP = GetComponent<TextMeshProUGUI>();
         _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
+        transform.parent.GetComponent<Image>().enabled = false;
     }
 
     [Button]
@@ -27,7 +32,10 @@ public class DialogueTrigger : MonoBehaviour
     {
         //need to change input map to prevent player from moving
         if (_CurrentTextIndex < _DialogueData._Texts.Count)
+        {
+            transform.parent.GetComponent<Image>().enabled = true;
             _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);
+        }
     }
     [Button]
     public void SkipDialogue()
@@ -43,12 +51,33 @@ public class DialogueTrigger : MonoBehaviour
             else
             {
                 //close dialogue
-                _TypeWriter.StartDisappearingText();
+                StartCoroutine(CloseRoutine());
             }
         }
         else
         {
             _TypeWriter.SkipTypewriter();
         }
+    }
+    private IEnumerator CloseRoutine()
+    {
+        //fade text out, then fade screen out, then start minigame
+        _TypeWriter.StartDisappearingText();
+        yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
+        transform.parent.GetComponent<Image>().enabled = false;
+        yield return FadeInOut.Instance.FadeToBlack();
+        _Minigame.GetComponent<IInteractable>().Interact();
+    }
+    public bool CanInteract()
+    {
+        return _Minigame.GetComponent<IInteractable>().CanInteract();
+    }
+    private IEnumerator WaitUntilEvent(UnityEvent unityEvent)
+    {
+        var trigger = false;
+        Action action = () => trigger = true;
+        unityEvent.AddListener(action.Invoke);
+        yield return new WaitUntil(() => trigger);
+        unityEvent.RemoveListener(action.Invoke);
     }
 }

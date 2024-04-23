@@ -17,7 +17,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     [SerializeField] private TextMeshProUGUI _ScoreText;
     private int _Points;
     private float _ReloadTime;
-    private StandResults _StandResults;
+    public StandResults _StandResults;
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
@@ -26,9 +26,13 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     [Button]
     public void Interact()
     {
-        gameObject.SetActive(true);
-        StartCoroutine(RunMinigame());
+        if(CanInteract())
+        {
+            gameObject.SetActive(true);
+            StartCoroutine(RunMinigame());
+        }
     }
+    
     private void Start()
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
@@ -133,4 +137,8 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         }
     }
 
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
+    }
 }

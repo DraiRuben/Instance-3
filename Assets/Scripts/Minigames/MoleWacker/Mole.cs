@@ -23,6 +23,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     private static Sprite _MoleEasterEggSprite;
     private Vector3 _MoleHiddenLocation;
     private Vector3 _MoleShownLocation;
+    private bool _IsDisappearancePaused;
     private void Awake()
     {
         _Animator = GetComponent<Animator>();
@@ -59,22 +60,23 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         {
             if (!_IsDisappearing ||(_KillMole && !_IsWacked))
             {
-                StopAllCoroutines();
                 _IsWacked = _KillMole;
                 if (_IsWacked)
                 {
                     _Animator.SetTrigger("Dead");
                     MoleWacker.Instance._ScoreText.SetText($"Score : {++MoleWacker.Instance._WinCount}");
                     MoleWacker.Instance.OnMoleWacked.Invoke();
-                    this.Invoke(() => StartCoroutine(MoleDisappearanceRoutine()), _DeathStunTime);
+                    _IsDisappearancePaused = true;
+                    this.Invoke(() => _IsDisappearancePaused = false, _DeathStunTime);
                 }
                 else
                 {
                     _Animator.SetTrigger("Gone");
                     MoleWacker.Instance._LoseCount++;
                     MoleWacker.Instance.OnMoleLost.Invoke();
-                    StartCoroutine(MoleDisappearanceRoutine());
+                    
                 }
+                StartCoroutine(MoleDisappearanceRoutine());
                 _IsDisappearing = true;
             }
         }
@@ -84,6 +86,11 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         float currentDisappearanceLerpAlpha = 0.0f;
         while (currentDisappearanceLerpAlpha < 1)
         {
+            if (_IsDisappearancePaused)
+            {
+                yield return null;
+                continue;
+            }
             transform.position = Vector3.Lerp(_MoleShownLocation, _MoleHiddenLocation, currentDisappearanceLerpAlpha);
             currentDisappearanceLerpAlpha += Time.deltaTime / _DisappearanceDuration;
             yield return null;
@@ -97,6 +104,10 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         //TODO: play mole appearance anim
         while (_MovementLerpAlpha < 1)
         {
+            if (_IsWacked)
+            {
+                yield break;
+            }
             transform.position = Vector3.Lerp(_MoleHiddenLocation, _MoleShownLocation, _MovementLerpAlpha);
             _MovementLerpAlpha += Time.deltaTime / _AppearanceDuration;
             yield return null;

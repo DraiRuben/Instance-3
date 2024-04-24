@@ -93,7 +93,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     {
         float _elapsedTime = 0f;
         
-        PlayerControls.Instance.OnSelect.AddListener(() =>
+        PlayerControls.Instance?.OnSelect.AddListener(() =>
         {
             if (_ReloadTime <= 0 && Time.timeScale==1)
             {
@@ -115,7 +115,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
             }
             yield return null;
         }
-        PlayerControls.Instance.OnSelect.RemoveAllListeners();
+        PlayerControls.Instance?.OnSelect.RemoveAllListeners();
     }
 
     private IEnumerator Shoot()

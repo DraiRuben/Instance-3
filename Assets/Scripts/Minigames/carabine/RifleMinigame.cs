@@ -17,18 +17,19 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     [SerializeField] private TextMeshProUGUI _ScoreText;
     private int _Points;
     private float _ReloadTime;
-    private StandResults _StandResults;
+    public StandResults _StandResults;
+
+    private Vector3 _InitialOffset;
+
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
         else Instance = this;
+        _InitialOffset = transform.position - Camera.main.transform.position;
+        _InitialOffset.z = 0;
+
     }
-    [Button]
-    public void Interact()
-    {
-        gameObject.SetActive(true);
-        StartCoroutine(RunMinigame());
-    }
+
     private void Start()
     {
         if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
@@ -91,14 +92,19 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     private IEnumerator RunMinigame()
     {
         float _elapsedTime = 0f;
-        Cursor.visible = false;
-        while (true)
+        
+        PlayerControls.Instance?.OnSelect.AddListener(() =>
         {
-            ReloadTimer();
-            if (Input.GetMouseButtonDown(0) && _ReloadTime <= 0)
+            if (_ReloadTime <= 0 && Time.timeScale==1)
             {
                 StartCoroutine(Shoot());
             }
+        });
+
+        while (true)
+        {
+            ReloadTimer();
+            Cursor.visible = false;
             _elapsedTime += Time.deltaTime;
             _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration-_elapsedTime)}");
             if (_elapsedTime >= _MinigameDuration)
@@ -109,13 +115,9 @@ public class RifleMinigame : MonoBehaviour, IInteractable
             }
             yield return null;
         }
-       
+        PlayerControls.Instance?.OnSelect.RemoveAllListeners();
     }
-    private void TriggerMinigameEnd()
-    {
-        Cursor.visible = true;
-        StopAllCoroutines();
-    }
+
     private IEnumerator Shoot()
     {
         AudioManager.Instance.PlaySound("shoot");
@@ -130,6 +132,33 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         if (_ReloadTime > 0)
         {
             _ReloadTime -= Time.deltaTime;
+        }
+    }
+    private void TriggerMinigameEnd()
+    {
+        Cursor.visible = true;
+        StopAllCoroutines();
+        SaveStats();
+        gameObject.SetActive(false);
+        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+
+    }
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
+    }
+    [Button]
+    public void Interact()
+    {
+        if (CanInteract())
+        {
+            transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
+
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            gameObject.SetActive(true);
+            StartCoroutine(RunMinigame());
         }
     }
 

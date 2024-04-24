@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &185178642990245285
+--- !u!1 &2163291251118074958
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2222774843336969365}
-  - component: {fileID: 8452648890339857760}
+  - component: {fileID: 3644885962123424269}
+  - component: {fileID: 1829699033057713166}
   m_Layer: 0
-  m_Name: FishingManager
+  m_Name: FishingGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &2222774843336969365
-RectTransform:
+--- !u!4 &3644885962123424269
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185178642990245285}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90.023605}
+  m_GameObject: {fileID: 2163291251118074958}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.013912827, y: -0.13237189, z: -0.023605406}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3644885962123424269}
+  m_Children:
+  - {fileID: 673938805918017593}
+  - {fileID: 4595179685954170014}
+  - {fileID: 8323389099296097871}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.013912827, y: 0.13237189}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8452648890339857760
+--- !u!114 &1829699033057713166
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185178642990245285}
+  m_GameObject: {fileID: 2163291251118074958}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f89c073c3397bb94c87cfa31275920ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _Fish: {fileID: 1220467676874949222, guid: be1e48aa67110b84eaa3664d77839e0e, type: 3}
+  _PoleManager: {fileID: 7048928462529402095}
   _Splines:
   - {fileID: 848605136884047465}
   - {fileID: 9046267847227746633}
@@ -79,41 +79,6 @@ MonoBehaviour:
   _FishList: []
   _BugValue: 0
   _MinigameDuration: 30
---- !u!1 &2163291251118074958
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3644885962123424269}
-  m_Layer: 0
-  m_Name: FishingGame
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3644885962123424269
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2163291251118074958}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.013912827, y: -0.13237189, z: -0.023605406}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 673938805918017593}
-  - {fileID: 2222774843336969365}
-  - {fileID: 4595179685954170014}
-  - {fileID: 8323389099296097871}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2803379313504288083
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,7 +673,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &4741315096372788221
 MonoBehaviour:
@@ -805,7 +770,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -920,9 +885,17 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 582276ed-28e0-4791-a199-34b6ad775963
     m_ActionName: Moles/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d61302b5-674b-4287-bf7f-3c4c336e4fc1
+    m_ActionName: Player/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 41a75e59-cde3-4e65-8679-b6c09afd3e8b
+    m_ActionName: Menus/SkipDialogue[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: Fishing
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!61 &5012200215864249912
@@ -954,8 +927,8 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:

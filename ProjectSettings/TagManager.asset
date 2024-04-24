@@ -52,3 +52,6 @@ TagManager:
   - name: Layer3Moles
     uniqueID: 1544222813
     locked: 0
+  - name: MoleHammer
+    uniqueID: 737435647
+    locked: 0

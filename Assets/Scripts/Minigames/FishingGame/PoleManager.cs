@@ -19,7 +19,7 @@ public class PoleManager : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + "/FishSaveFile.json"))
         {
             JsonDataService FishSaveData = new JsonDataService();
-            FishManager.Instance._FishResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
+            FishManager.Instance._StandResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -36,7 +36,7 @@ public class PoleManager : MonoBehaviour
         }
     }
 
-    private void SaveStats()
+    public void SaveStats()
     {
         JsonDataService FishSaveData = new JsonDataService();
         MedalType FishMedal;
@@ -56,8 +56,8 @@ public class PoleManager : MonoBehaviour
         {
             FishMedal = MedalType.None;
         }
-        FishManager.Instance._FishResults = new StandResults(FishMedal, _FishingScore);
-        FishSaveData.SaveData("FishSaveFile", FishManager.Instance._FishResults);
+        FishManager.Instance._StandResults = new StandResults(FishMedal, _FishingScore);
+        FishSaveData.SaveData("FishSaveFile", FishManager.Instance._StandResults);
     }
 
     private void Update()
@@ -65,10 +65,8 @@ public class PoleManager : MonoBehaviour
         _FishingTimer += Time.deltaTime;
         _FishingScoreText.text = "Score : " + _FishingScore;
         _FishingTimerText.text = "Time : " + Mathf.RoundToInt(FishManager.Instance._MinigameDuration - _FishingTimer);
-        if (_FishingTimer > 30)
-        {
-            SaveStats();
-        }
+
+        
     }
     public void Fishing(InputAction.CallbackContext context)
     {

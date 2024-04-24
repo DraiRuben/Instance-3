@@ -1,13 +1,16 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class FishManager : MonoBehaviour
+public class FishManager : MonoBehaviour, IInteractable
 {
     public static FishManager Instance;
     [SerializeField] private GameObject _Fish;
+    [SerializeField] private PoleManager _PoleManager;
     [SerializeField] private SplineContainer[] _Splines;
     [SerializeField] private AnimationCurve _SpeedCurve;
     [System.NonSerialized] public float _SpeedMult = 1;
@@ -15,11 +18,16 @@ public class FishManager : MonoBehaviour
     public int _BugValue;
     private float _ElapsedTime;
     public float _MinigameDuration;
-    public StandResults _FishResults;
+    public StandResults _StandResults;
+
+    private Vector3 _InitialOffset;
+
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
         else Instance = this;
+        _InitialOffset = transform.position - Camera.main.transform.position;
+        _InitialOffset.z = 0;
     }
     private void Start()
     {
@@ -27,35 +35,57 @@ public class FishManager : MonoBehaviour
         if (!Directory.Exists("Game/Minigames")) Directory.CreateDirectory("Game/Minigames");
         if (!Directory.Exists("Game/Minigames/FishingGame")) Directory.CreateDirectory("Game/Minigames/FishingGame");
         StreamReader reader = new StreamReader("Game/Minigames/FishingGame/FishBehavior.txt");
-        if (reader.ReadLine() == "Enabled = true;")
-        {
-            _BugValue = 0;
-        }
-        else
-        {
-            _BugValue = 1;
-        }
-        
-        StartCoroutine(FishSpawn());
-    }
 
-    private void Update()
-    {
-        _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime / _MinigameDuration);
-        _ElapsedTime += Time.deltaTime;
-    }
+        _BugValue = reader.ReadLine() == "Enabled = true;" ? 0 : 1;
+        gameObject.SetActive(false);
 
-    IEnumerator FishSpawn()
+    }
+    private IEnumerator FishSpawn()
     {
-        while (true)
+        float spawnTimer = 0f;
+        while (_ElapsedTime < _MinigameDuration)
         {
-            if (_FishList.Count < 6)
+            if (_FishList.Count < 6 && spawnTimer>=2)
             {
-                _FishList.Add(Instantiate(_Fish, new Vector2(0, 1), Quaternion.identity));
+                _FishList.Add(Instantiate(_Fish, new Vector2(0, 1), Quaternion.identity,transform));
                 _FishList[_FishList.Count - 1].GetComponent<Fish>()._Spline = _Splines;
-                yield return new WaitForSeconds(2);
+                spawnTimer = 0f;
             }
+            _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime / _MinigameDuration);
+            spawnTimer += Time.deltaTime;
+            _ElapsedTime += Time.deltaTime;
             yield return null;
+        }
+        TriggerMinigameEnd();
+
+    }
+    private void TriggerMinigameEnd()
+    {
+        Cursor.visible = true;
+        StopAllCoroutines();
+        _PoleManager.StopAllCoroutines();
+        _PoleManager.SaveStats();
+        gameObject.SetActive(false);
+        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+
+
+    }
+    public bool CanInteract()
+    {
+        return _StandResults._Medal == MedalType.None;
+    }
+    [Button]
+    public void Interact()
+    {
+        if (CanInteract())
+        {
+            transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
+
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            gameObject.SetActive(true);
+            StartCoroutine(FishSpawn());
         }
     }
 }

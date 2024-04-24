@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 public enum MedalType
 {
@@ -20,9 +21,25 @@ public struct StandResults
 public interface IInteractable
 {
     public void Interact();
+    public bool CanInteract();
 }
+
 public static class Utility
 {
+    public static IList<T> Swap<T>(this IList<T> list, int indexA, int indexB)
+    {
+        T tmp = list[indexA];
+        list[indexA] = list[indexB];
+        list[indexB] = tmp;
+        return list;
+    }
+    public static Vector3 GetWorldScreenCenterPos()
+    {
+        Vector2 screenCenterPos = new Vector2(Screen.width/2, Screen.height/2);
+        Vector3 worldScreenCenterPos = Camera.main.ScreenToWorldPoint(screenCenterPos);
+        worldScreenCenterPos.z = 0;
+        return worldScreenCenterPos;
+    }
     public static void Invoke(this MonoBehaviour mb, System.Action f, float delay)
     {
         mb.StartCoroutine(InvokeRoutine(f, delay));

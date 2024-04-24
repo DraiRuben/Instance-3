@@ -63,6 +63,7 @@ public class PrizeStall : MonoBehaviour,IInteractable
             _TypeWriter.ShowText("je suis désolé mais tu n'as passez de ticket pour avoir quoi ce soit");
             Debug.Log("you can't get anything");
         }
+        _FinalScore = 0;
     }
 
     public bool CanInteract()

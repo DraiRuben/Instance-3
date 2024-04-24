@@ -35,8 +35,11 @@ public class Cups : MonoBehaviour, IInteractable
 
     [Header("Other")]
     [SerializeField, MinValue(0.0f)] private float _DisplacementScalar;
+    [SerializeField] private float _BallLeftCupOffsetX;
+    [SerializeField] private float _BallRightCupOffsetX;
+    [SerializeField] private float _BallCupOffsetY;
 
-    private List<Vector3> _CupPositions;
+    private List<Vector2> _CupPositions;
     private bool _HasSelectedCup;
     private bool _CanSelectCup;
     private bool _IsBugResolved;
@@ -48,7 +51,6 @@ public class Cups : MonoBehaviour, IInteractable
     {
         if (Instance) Destroy(gameObject);
         else Instance = this;
-
         Random.InitState(System.DateTime.Now.Millisecond);
     }
     void Start()
@@ -57,10 +59,10 @@ public class Cups : MonoBehaviour, IInteractable
         if (!Directory.Exists("Game/Minigames")) Directory.CreateDirectory("Game/Minigames");
         if (!Directory.Exists("Game/Minigames/Cups")) Directory.CreateDirectory("Game/Minigames/Cups");
         _IsBugResolved = File.Exists("Game/Minigames/Cups/Ball.txt");
-        _CupPositions = new List<Vector3>();
+        _CupPositions = new List<Vector2>();
         foreach (GameObject cup in _Cups)
         {
-            _CupPositions.Add((cup.transform as RectTransform).position);
+            _CupPositions.Add((cup.transform as RectTransform).anchoredPosition);
         }
         if (File.Exists(Application.persistentDataPath + "/CupsSaveFile.json"))
         {
@@ -98,16 +100,22 @@ public class Cups : MonoBehaviour, IInteractable
         _StandResults = new StandResults(Medal, _WinCount);
         dataService.SaveData("CupsSaveFile", _StandResults);
     }
+    private Vector2 GetBallOffset(int cupIndex)
+    {
+        Vector2 returnValue = new Vector2(0,_BallCupOffsetY);
+        if (cupIndex == 0) returnValue.x = _BallLeftCupOffsetX;
+        else if (cupIndex == _Cups.Count - 1) returnValue.x = _BallRightCupOffsetX;
+        return returnValue;
+    }
     private IEnumerator ShuffleCupsRoutine()
     {
         _CanSelectCup = false;
         if (_CurrentShuffleCount < _ShuffleCount)
         {
             _BallCurrentIndex = Random.Range(0, _Cups.Count);
-            _Ball.GetComponent<RectTransform>().position = _CupPositions[_BallCurrentIndex];
-            _Ball.SetActive(false);
+            _Ball.GetComponent<RectTransform>().anchoredPosition = _CupPositions[_BallCurrentIndex] + GetBallOffset(_BallCurrentIndex);
             //TODO: start a coroutine that shows the player where the ball is at the start
-
+            yield return ShowBallRoutine();
 
             //Generate Random cup switch amount
             int chosenSwitchCount = Random.Range(_MinSwitchCount, _MaxSwitchCount + 1);
@@ -120,13 +128,13 @@ public class Cups : MonoBehaviour, IInteractable
                 //switch ball location if it was under any of the cups
                 if (_BallCurrentIndex == cupSwitchTuple.index1) _BallCurrentIndex = cupSwitchTuple.index2;
                 else if (_BallCurrentIndex == cupSwitchTuple.index2) _BallCurrentIndex = cupSwitchTuple.index1;
+                _Cups.Swap(cupSwitchTuple.index1, cupSwitchTuple.index2);
                 currentSwitchCount++;
             }
             _HasSelectedCup = false;
             _CanSelectCup = true;
             _CurrentShuffleCount++;
-            _Ball.GetComponent<RectTransform>().position = _CupPositions[_BallCurrentIndex];
-            _Ball.SetActive(true);
+            _Ball.GetComponent<RectTransform>().anchoredPosition = _CupPositions[_BallCurrentIndex] + GetBallOffset(_BallCurrentIndex);
             yield return new WaitUntil(() => _HasSelectedCup);
             //Shuffles again after cup has been selected, this effectively works like a recursive function, but with async execution
             StartCoroutine(ShuffleCupsRoutine());
@@ -137,7 +145,48 @@ public class Cups : MonoBehaviour, IInteractable
             TriggerMinigameEnd();
         }
     }
+    private IEnumerator ShowBallRoutine()
+    {
+        //index not good
+        _Cups[_BallCurrentIndex].GetComponent<Animator>().SetTrigger($"ShowBall{_BallCurrentIndex + 1}");
+        yield return new WaitForSeconds(0.3f);
+        _Ball.SetActive(true);
+        yield return new WaitForSeconds(2.7f);
+        _Ball.SetActive(false);
+    }
+    private IEnumerator ShowCupRoutine(int cupIndex)
+    {
+        //index not good
+        _Cups[cupIndex].GetComponent<Animator>().SetTrigger($"ShowBall{cupIndex + 1}");
+        yield return new WaitForSeconds(3f);
+    }
+    private IEnumerator ChooseCupAnimation(bool win, int chosenCupIndex)
+    {
+        //shows ball if win, shows chosen cup if not, then the other 2
+        if (win)
+        {
+            yield return ShowBallRoutine();
+        }
+        else
+        {
+            //shows chosen cup first, then the remaining ones
+            yield return ShowCupRoutine(chosenCupIndex);
 
+            List<int> cups = new List<int>();
+            for(int i = 0; i < _Cups.Count; i++)
+            {
+                cups.Add(i);
+            }
+            cups.Remove(chosenCupIndex);
+            cups.Remove(_BallCurrentIndex);
+            foreach(var cup in cups)
+            {
+                StartCoroutine(ShowCupRoutine(cup));
+            }
+            yield return ShowBallRoutine();
+        }
+    }
+    
     private IEnumerator CupSwitchRoutine(int cupIndex1, int cupIndex2)
     {
         //fetches both cup refs and their original locations
@@ -178,18 +227,20 @@ public class Cups : MonoBehaviour, IInteractable
         int index2 = IndexList[Random.Range(0, IndexList.Count)];
         return (index1, index2);
     }
-    public void SelectCup(int cupIndex)
+    public void SelectCup(GameObject SelectedCup)
     {
         if (_CanSelectCup)
         {
             if (_IsBugResolved)
             {
-                int selectedIndex = _CupPositions.FindIndex(0, x => x == (_Cups[cupIndex].transform as RectTransform).position);
+                int selectedIndex = _CupPositions.FindIndex(0,x =>(int) x.x == (int)(SelectedCup.transform as RectTransform).anchoredPosition.x);
                 if (selectedIndex == _BallCurrentIndex)
                 {
                     //win feedback
                     _WinCount++;
                     OnWin.Invoke();
+                    StartCoroutine(ChooseCupAnimation(true,selectedIndex));
+                    this.Invoke(() => _HasSelectedCup = true, 3f);
                     Debug.Log("Win");
                 }
                 else
@@ -197,10 +248,11 @@ public class Cups : MonoBehaviour, IInteractable
                     //lose feedback
                     _LoseCount++;
                     OnLose.Invoke();
+                    StartCoroutine(ChooseCupAnimation(false, selectedIndex));
+                    this.Invoke(() => _HasSelectedCup = true, 7f);
+
                     Debug.Log("Lose");
                 }
-                OnCupChosen.Invoke();
-                _HasSelectedCup = true;
             }
             else
             {

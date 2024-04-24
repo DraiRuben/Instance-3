@@ -110,7 +110,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
             }
             yield return null;
         }
-       
+
     }
 
     private IEnumerator Shoot()
@@ -133,6 +133,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     {
         Cursor.visible = true;
         StopAllCoroutines();
+        SaveStats();
         gameObject.SetActive(false);
         StandInteractableTrigger.Map.SetActive(true);
         PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;

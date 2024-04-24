@@ -61,7 +61,6 @@ public class Mole : MonoBehaviour, IPointerClickHandler
             {
                 StopAllCoroutines();
                 _IsWacked = _KillMole;
-                _IsDisappearing = true;
                 if (_IsWacked)
                 {
                     _Animator.SetTrigger("Dead");
@@ -76,6 +75,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
                     MoleWacker.Instance.OnMoleLost.Invoke();
                     StartCoroutine(MoleDisappearanceRoutine());
                 }
+                _IsDisappearing = true;
             }
         }
     }

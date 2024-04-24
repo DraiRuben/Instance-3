@@ -23,6 +23,17 @@ public class PlayerControls : MonoBehaviour
     {
         _MoveInput = context.ReadValue<Vector2>();
     }
+
+
+    public void Pause(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+            PauseMenu.instance.gameObject.SetActive(Time.timeScale==0);
+        }
+    }
+
     private void FixedUpdate()
     {
         _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);

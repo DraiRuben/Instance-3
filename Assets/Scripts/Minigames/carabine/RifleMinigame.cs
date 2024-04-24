@@ -92,14 +92,19 @@ public class RifleMinigame : MonoBehaviour, IInteractable
     private IEnumerator RunMinigame()
     {
         float _elapsedTime = 0f;
-        Cursor.visible = false;
-        while (true)
+        
+        PlayerControls.Instance.OnSelect.AddListener(() =>
         {
-            ReloadTimer();
-            if (Input.GetMouseButtonDown(0) && _ReloadTime <= 0)
+            if (_ReloadTime <= 0 && Time.timeScale==1)
             {
                 StartCoroutine(Shoot());
             }
+        });
+
+        while (true)
+        {
+            ReloadTimer();
+            Cursor.visible = false;
             _elapsedTime += Time.deltaTime;
             _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration-_elapsedTime)}");
             if (_elapsedTime >= _MinigameDuration)
@@ -110,7 +115,7 @@ public class RifleMinigame : MonoBehaviour, IInteractable
             }
             yield return null;
         }
-
+        PlayerControls.Instance.OnSelect.RemoveAllListeners();
     }
 
     private IEnumerator Shoot()

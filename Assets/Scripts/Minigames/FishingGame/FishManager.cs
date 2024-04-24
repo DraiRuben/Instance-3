@@ -2,7 +2,6 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -47,7 +46,7 @@ public class FishManager : MonoBehaviour, IInteractable
         {
             if (_FishList.Count < 6 && spawnTimer>=2)
             {
-                _FishList.Add(Instantiate(_Fish, new Vector2(0, 1), Quaternion.identity,transform));
+                _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity,transform));
                 _FishList[_FishList.Count - 1].GetComponent<Fish>()._Spline = _Splines;
                 spawnTimer = 0f;
             }

@@ -30,7 +30,7 @@ RectTransform:
   m_GameObject: {fileID: 3409398907558091795}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 139.17526, y: 139.17526, z: 139.17526}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -157,13 +157,13 @@ MonoBehaviour:
   referenceFontSize: 10
   isResettingTimeOnNewText: 1
   useDefaultDatabases: 1
-  databaseBehaviors: {fileID: 0}
-  databaseAppearances: {fileID: 0}
+  databaseBehaviors: {fileID: 11400000, guid: 5c7c88e0a752c4f43b10cebd2302580e, type: 2}
+  databaseAppearances: {fileID: 11400000, guid: a4bd731a140e4d2479c2ee8f52ec6f58, type: 2}
   useDefaultStyleSheet: 1
   styleSheet: {fileID: 0}
-  databaseActions: {fileID: 0}
+  databaseActions: {fileID: 11400000, guid: 0cd2836047e126941b7af1964b7e7751, type: 2}
   defaultAppearancesTags:
-  - size
+  - fade
   defaultDisappearancesTags:
   - fade
   defaultBehaviorsTags: []

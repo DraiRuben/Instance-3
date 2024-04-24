@@ -29,16 +29,8 @@ public class PlayerControls : MonoBehaviour
     {
         if(context.started)
         {
-            if (Time.timeScale == 1  && !PauseMenu.instance.gameObject.activeSelf)
-            {
-                PauseMenu.instance.gameObject.SetActive(true);
-                Time.timeScale = 0;
-            }
-            else if (!SettingsMenu.instance.gameObject.activeSelf)
-            {
-                Time.timeScale = 1;
-                PauseMenu.instance.gameObject.SetActive(false);
-            }
+            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+            PauseMenu.instance.gameObject.SetActive(Time.timeScale==0);
         }
     }
 

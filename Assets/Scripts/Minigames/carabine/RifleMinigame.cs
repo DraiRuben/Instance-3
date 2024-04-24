@@ -115,11 +115,11 @@ public class RifleMinigame : MonoBehaviour, IInteractable
 
     private IEnumerator Shoot()
     {
-        AudioManager.Instance.PlaySound("shoot");
+        AudioManager._Instance.PlaySFX("shoot");
         yield return null;
         _ReloadTime = _ReloadSound.length + _ShootSound.length;
         yield return new WaitForSeconds(_ShootSound.length);
-        AudioManager.Instance.PlaySound("reload");
+        AudioManager._Instance.PlaySFX("reload");
     }
 
     private void ReloadTimer()

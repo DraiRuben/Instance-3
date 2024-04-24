@@ -1,15 +1,22 @@
 using Febucci.UI;
+using Febucci.UI.Actions;
 using Sirenix.OdinInspector;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PrizeStall : MonoBehaviour,IInteractable
 {
     private int _FinalScore;
     private TypewriterByCharacter _TypeWriter;
+    private bool _TextFullyDisplayed;
+
 
     private void Start()
     {
         _TypeWriter = GetComponent<TypewriterByCharacter>();
+        _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
+
     }
     private void CalculateScore(MedalType medal)
     {
@@ -35,6 +42,20 @@ public class PrizeStall : MonoBehaviour,IInteractable
                     break;
                 }
         }
+    }
+
+    private void Update()
+    {
+        if (_TextFullyDisplayed)
+        {
+            StartCoroutine(Delay());
+        }
+    }
+
+    private IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadSceneAsync(0);
     }
 
     public void getReward()

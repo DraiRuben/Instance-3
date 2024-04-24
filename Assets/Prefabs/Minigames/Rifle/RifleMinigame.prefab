@@ -1266,9 +1266,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _YReach: 2.3
-  _GunYRange: {x: -6.3081894, y: -2.8880863}
-  _GunXRange: {x: 0, y: 0}
+  _YReach: 1.5
+  _GunYRange: {x: -4.598138, y: -2.01406}
+  _GunXRange: {x: -3.5284061, y: 1.1077356}
 --- !u!1 &6575110042467889101
 GameObject:
   m_ObjectHideFlags: 0

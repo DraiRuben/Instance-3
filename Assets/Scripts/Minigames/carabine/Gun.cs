@@ -55,17 +55,17 @@ public class Gun : MonoBehaviour
         _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
         transform.position = new Vector3(_WorldMousePosition.x + _OffsetX, _WorldMousePosition.y - _GunSprite.bounds.size.y / 2 - _YReach + _OffsetY);
 
+        var screenPoint = new Vector2();
+
         //constrains cursor in the Y axis to the shootable zone
-        var screenPointy = Mathf.Clamp(_MousePosition.y,
+        screenPoint.y = Mathf.Clamp(_MousePosition.y,
             Camera.main.WorldToScreenPoint(new(0,transform.parent.position.y+ _GunYRange.x + _GunSprite.bounds.size.y / 2 + _YReach)).y , 
             Camera.main.WorldToScreenPoint(new(0, transform.parent.position.y + _GunYRange.y + _GunSprite.bounds.size.y / 2 + _YReach)).y);
-        if(screenPointy != _MousePosition.y) Mouse.current.WarpCursorPosition(new(_MousePosition.x, screenPointy));
 
         //constrains cursor in the X axis to the shootable zone
-        var screenPointx = Mathf.Clamp(_MousePosition.x,
+        screenPoint.x = Mathf.Clamp(_MousePosition.x,
             Camera.main.WorldToScreenPoint(new(transform.parent.position.x + _GunXRange.x + _GunSprite.bounds.size.x / 2, 0)).x,
             Camera.main.WorldToScreenPoint(new(transform.parent.position.x + _GunXRange.y + _GunSprite.bounds.size.x / 2, 0)).x);
-        Debug.Log(screenPointx);
-        if (screenPointx != _MousePosition.x) Mouse.current.WarpCursorPosition(new(screenPointx, _MousePosition.y));
+        if (screenPoint != _MousePosition) Mouse.current.WarpCursorPosition(screenPoint);
     }
 }

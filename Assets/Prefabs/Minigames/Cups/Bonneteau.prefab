@@ -591,6 +591,9 @@ MonoBehaviour:
   _MaxSwitchCount: 8
   _ShuffleCount: 3
   _DisplacementScalar: 4
+  _BallLeftCupOffsetX: 70
+  _BallRightCupOffsetX: -70
+  _BallCupOffsetY: -48
 --- !u!223 &8483271080191671762
 Canvas:
   m_ObjectHideFlags: 0

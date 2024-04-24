@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,10 +9,12 @@ public class PoleManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _FishingScoreText;
     [SerializeField] private TextMeshProUGUI _FishingTimerText;
+    [SerializeField] private AnimationCurve _FishingAnim;
 
     private bool _Fishing;
     private int _FishingScore;
     private float _FishingTimer;
+    private Vector3 HookStartPos;
 
 
     private void Start()
@@ -20,6 +23,7 @@ public class PoleManager : MonoBehaviour
         {
             JsonDataService FishSaveData = new JsonDataService();
             FishManager.Instance._StandResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
+            HookStartPos = transform.position;
         }
     }
     private void OnTriggerEnter2D(Collider2D other)

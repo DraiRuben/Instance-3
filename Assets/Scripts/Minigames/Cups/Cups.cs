@@ -35,6 +35,9 @@ public class Cups : MonoBehaviour, IInteractable
 
     [Header("Other")]
     [SerializeField, MinValue(0.0f)] private float _DisplacementScalar;
+    [SerializeField] private float _BallLeftCupOffsetX;
+    [SerializeField] private float _BallRightCupOffsetX;
+    [SerializeField] private float _BallCupOffsetY;
 
     private List<Vector2> _CupPositions;
     private bool _HasSelectedCup;
@@ -97,13 +100,20 @@ public class Cups : MonoBehaviour, IInteractable
         _StandResults = new StandResults(Medal, _WinCount);
         dataService.SaveData("CupsSaveFile", _StandResults);
     }
+    private Vector2 GetBallOffset(int cupIndex)
+    {
+        Vector2 returnValue = new Vector2(0,_BallCupOffsetY);
+        if (cupIndex == 0) returnValue.x = _BallLeftCupOffsetX;
+        else if (cupIndex == _Cups.Count - 1) returnValue.x = _BallRightCupOffsetX;
+        return returnValue;
+    }
     private IEnumerator ShuffleCupsRoutine()
     {
         _CanSelectCup = false;
         if (_CurrentShuffleCount < _ShuffleCount)
         {
             _BallCurrentIndex = Random.Range(0, _Cups.Count);
-            _Ball.GetComponent<RectTransform>().anchoredPosition = _CupPositions[_BallCurrentIndex];
+            _Ball.GetComponent<RectTransform>().anchoredPosition = _CupPositions[_BallCurrentIndex] + GetBallOffset(_BallCurrentIndex);
             //TODO: start a coroutine that shows the player where the ball is at the start
             yield return ShowBallRoutine();
 
@@ -124,7 +134,7 @@ public class Cups : MonoBehaviour, IInteractable
             _HasSelectedCup = false;
             _CanSelectCup = true;
             _CurrentShuffleCount++;
-            _Ball.GetComponent<RectTransform>().anchoredPosition = _CupPositions[_BallCurrentIndex];
+            _Ball.GetComponent<RectTransform>().anchoredPosition = _CupPositions[_BallCurrentIndex] + GetBallOffset(_BallCurrentIndex);
             yield return new WaitUntil(() => _HasSelectedCup);
             //Shuffles again after cup has been selected, this effectively works like a recursive function, but with async execution
             StartCoroutine(ShuffleCupsRoutine());
@@ -139,8 +149,9 @@ public class Cups : MonoBehaviour, IInteractable
     {
         //index not good
         _Cups[_BallCurrentIndex].GetComponent<Animator>().SetTrigger($"ShowBall{_BallCurrentIndex + 1}");
+        yield return new WaitForSeconds(0.3f);
         _Ball.SetActive(true);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.7f);
         _Ball.SetActive(false);
     }
     private IEnumerator ShowCupRoutine(int cupIndex)

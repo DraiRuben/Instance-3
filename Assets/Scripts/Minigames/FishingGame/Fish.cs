@@ -11,8 +11,6 @@ public class Fish : MonoBehaviour
     private float _DistPercent = 0;
     private float _SplineLength;
 
-
-
     private void Start()
     {
         _Speed = _BaseSpeed * FishManager.Instance._SpeedMult;
@@ -23,8 +21,15 @@ public class Fish : MonoBehaviour
     {
         _DistPercent += _Speed * Time.deltaTime / _SplineLength;
         Vector3 currentPosition = _Spline[FishManager.Instance._BugValue].EvaluatePosition(_DistPercent);
+        if (currentPosition.x < transform.position.x)
+        {
+            transform.rotation = new Quaternion(0, 180, 0, 0);
+        }
+        else
+        {
+            transform.rotation = new Quaternion(0,0,0,0);
+        }
         transform.position = currentPosition;
-
         if (_DistPercent > 1f)
         {
             _DistPercent = 0f;

@@ -19,9 +19,12 @@ public class ButtonsScript : MonoBehaviour
     public void Load()
     {
         var files = from file in Directory.EnumerateFiles(root) select file;
-        if (files.Count() > 0)
+        foreach(var file in files)
         {
-            SceneManager.LoadSceneAsync(1);
+            if (file.EndsWith(".json"))
+            {
+                SceneManager.LoadSceneAsync(1);
+            }
         }
     }
     public void Begin()

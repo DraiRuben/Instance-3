@@ -5,6 +5,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Cups : Minigame
 {
@@ -18,16 +19,18 @@ public class Cups : Minigame
     public int _LoseCount = 0;
 
     [Header("Refs")]
-    [SerializeField] private List<GameObject> _Cups;
     [SerializeField] private GameObject _Ball;
     [SerializeField] private GameObject _BugMessagePrefab;
     [SerializeField] private TextMeshProUGUI _ScoreText;
+    [SerializeField] private GameObject _CupPrefab;
 
     [Header("Curves")]
     [SerializeField] private AnimationCurve _CupMovementEvolution;
     [SerializeField] private AnimationCurve _CupDisplacementEvolution;
     [SerializeField] private AnimationCurve _ShuffleDuration;
     [SerializeField] private AnimationCurve _WaitTimeBetweenShuffles;
+    [SerializeField] private AnimationCurve _CupCountEvolution;
+
 
     [Header("ShuffleParameters")]
     [SerializeField] private AnimationCurve _SwitchCountEvolution;
@@ -36,9 +39,11 @@ public class Cups : Minigame
     [SerializeField, MinValue(0.0f)] private float _DisplacementScalar;
     [SerializeField] private float _BallLeftCupOffsetX;
     [SerializeField] private float _BallRightCupOffsetX;
+    [SerializeField] private float _CupSpacingX;
     [SerializeField] private float _BallCupOffsetY;
 
     private List<Vector2> _CupPositions;
+    private List<GameObject> _Cups;
     private bool _HasSelectedCup;
     private bool _CanSelectCup;
     private bool _IsBugResolved;
@@ -56,10 +61,7 @@ public class Cups : Minigame
         MakeFakeGameFiles();
         _IsBugResolved = IsBugged();
         _CupPositions = new List<Vector2>();
-        foreach (GameObject cup in _Cups)
-        {
-            _CupPositions.Add((cup.transform as RectTransform).anchoredPosition);
-        }
+        _Cups = new List<GameObject>();
         if (File.Exists(Application.persistentDataPath + "/CupsSaveFile.json"))
         {
             JsonDataService dataService = new JsonDataService();
@@ -117,6 +119,7 @@ public class Cups : Minigame
         _CanSelectCup = false;
         if (_CurrentShuffleCount < (int)_MinigameDuration)
         {
+            ManageCupsCount();
             _BallCurrentIndex = Random.Range(0, _Cups.Count);
             _Ball.GetComponent<RectTransform>().anchoredPosition = _CupPositions[_BallCurrentIndex] + GetBallOffset(_BallCurrentIndex);
             //TODO: start a coroutine that shows the player where the ball is at the start
@@ -150,10 +153,45 @@ public class Cups : Minigame
             TriggerMinigameEnd();
         }
     }
+    private void ManageCupsCount()
+    {
+        int cupCount = (int)_CupCountEvolution.Evaluate(_CurrentShuffleCount);
+
+        if (_Cups.Count != cupCount)
+        {
+            _CupPositions.Clear();
+            if (_Cups.Count > cupCount)
+            {
+                for (int i = cupCount - 1; i < _Cups.Count; i++)
+                {
+                    Destroy(_Cups[i]);
+                    _Cups.RemoveAt(i);
+                }
+            }
+            else if (cupCount > _Cups.Count)
+            {
+                for(int i = _Cups.Count; i<cupCount; i++)
+                {
+                    var cup = Instantiate(_CupPrefab, transform.GetChild(1));
+                    (cup.transform as RectTransform).anchoredPosition = new Vector2(0, -205);
+                    cup.GetComponent<Button>().onClick.AddListener(() => SelectCup(cup));
+                    _Cups.Add(cup);
+                }
+            }
+            float originMult = -(_Cups.Count - 1f) / 2f;
+            for (int i = 0; i < _Cups.Count; i++)
+            {
+                RectTransform cupTransform = _Cups[i].transform as RectTransform;
+                cupTransform.anchoredPosition = new Vector3(_CupSpacingX * (originMult + i)/_Cups.Count, cupTransform.anchoredPosition.y);
+                _CupPositions.Add(cupTransform.anchoredPosition);
+            }
+        }
+    }
     private IEnumerator ShowBallRoutine()
     {
         //index not good
-        _Cups[_BallCurrentIndex].GetComponent<Animator>().SetTrigger($"ShowBall{_BallCurrentIndex + 1}");
+        int animIndex = _BallCurrentIndex == 0 ? 1 : _BallCurrentIndex == _Cups.Count - 1 ? 3 : 2;
+        _Cups[_BallCurrentIndex].GetComponent<Animator>().SetTrigger($"ShowBall{animIndex}");
         yield return new WaitForSeconds(0.3f);
         _Ball.SetActive(true);
         yield return new WaitForSeconds(2.7f);
@@ -162,7 +200,8 @@ public class Cups : Minigame
     private IEnumerator ShowCupRoutine(int cupIndex)
     {
         //index not good
-        _Cups[cupIndex].GetComponent<Animator>().SetTrigger($"ShowBall{cupIndex + 1}");
+        int animIndex = cupIndex == 0 ? 1 : cupIndex == _Cups.Count - 1 ? 3 : 2;
+        _Cups[cupIndex].GetComponent<Animator>().SetTrigger($"ShowBall{animIndex}");
         yield return new WaitForSeconds(3f);
     }
     private IEnumerator ChooseCupAnimation(bool win, int chosenCupIndex)

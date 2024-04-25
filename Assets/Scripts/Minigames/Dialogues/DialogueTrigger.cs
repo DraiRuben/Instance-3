@@ -68,7 +68,9 @@ public class DialogueTrigger : MonoBehaviour
     {
         //fade text out, then fade screen out, then start minigame
         _IsClosing = true;
+        _TextFullyDisplayed = false;
         _TypeWriter.StartDisappearingText();
+        _CurrentTextIndex = 0;
         StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
         yield return new WaitForSeconds(0.5f);

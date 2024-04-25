@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class ButtonsScript : MonoBehaviour
 {
-    [SerializeField] private GameObject _Settings;
     private string root;
 
     private void Start()
@@ -32,9 +31,11 @@ public class ButtonsScript : MonoBehaviour
         {
             foreach (var file in files)
             {
-                File.Delete(file);
+                if(!file.EndsWith(".log"))
+                    File.Delete(file);
             }
         }
+        if (Directory.Exists("Game")) Directory.Delete("Game",true);
         SceneManager.LoadSceneAsync(1);
     }
     public void Settings()

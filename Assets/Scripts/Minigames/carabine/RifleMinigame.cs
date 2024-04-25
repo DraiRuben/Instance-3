@@ -5,19 +5,17 @@ using TMPro;
 using UnityEngine;
 
 
-public class RifleMinigame : MonoBehaviour, IInteractable
+public class RifleMinigame : Minigame
 {
     public static RifleMinigame Instance;
     [Header("sound")]
     [SerializeField] private AudioClip _ReloadSound;
     [SerializeField] private AudioClip _ShootSound;
     [SerializeField] private bool _IsBugged;
-    [SerializeField] private float _MinigameDuration;
     [SerializeField] private TextMeshProUGUI _TimerText;
     [SerializeField] private TextMeshProUGUI _ScoreText;
     private int _Points;
     private float _ReloadTime;
-    public StandResults _StandResults;
 
     private Vector3 _InitialOffset;
 
@@ -32,10 +30,8 @@ public class RifleMinigame : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
-        if (!Directory.Exists("Game/Animations")) Directory.CreateDirectory("Game/Animations");
-        if (!Directory.Exists("Game/Animations/Rifle")) Directory.CreateDirectory("Game/Animations/Rifle");
-        _IsBugged = !File.Exists("Game/Animations/Rifle/Target.anim");
+        MakeFakeGameFiles();
+        _IsBugged = IsBugged();
         if (File.Exists(Application.persistentDataPath + "/RifleSaveFile.json"))
         {
             JsonDataService dataService = new JsonDataService();
@@ -43,11 +39,60 @@ public class RifleMinigame : MonoBehaviour, IInteractable
         }
         gameObject.SetActive(false);
     }
+    protected override bool IsBugged()
+    {
+        if (File.Exists("Game/Animations/Rifle/Target.anim")
+           && File.GetCreationTime("Game/Animations/Rifle/Target.anim") == new System.DateTime(2002, 12, 14)) 
+            return false;
+        
+        return true;
+    }
+    protected override void MakeFakeGameFiles()
+    {
+        base.MakeFakeGameFiles();
+        if (!Directory.Exists("Game/Animations")) Directory.CreateDirectory("Game/Animations");
+        //false rifle anims
+        if (!Directory.Exists("Game/Animations/Rifle")) Directory.CreateDirectory("Game/Animations/Rifle");
+        if (!File.Exists("Game/Animations/Rifle/Bullet.anim")) File.Create("Game/Animations/Rifle/Bullet.anim");
+        if (!File.Exists("Game/Animations/Rifle/Rifle.anim")) File.Create("Game/Animations/Rifle/Rifle.anim");
+        //false cup anims
+        if (!Directory.Exists("Game/Animations/Cup")) Directory.CreateDirectory("Game/Animations/Cup");
+        if (!File.Exists("Game/Animations/Cup/Cup.anim")) File.Create("Game/Animations/Cup/Cup.anim");
+        if (!File.Exists("Game/Animations/Cup/Shuffling.anim")) File.Create("Game/Animations/Cup/Shuffling.anim");
+        //false character anims
+        if (!Directory.Exists("Game/Animations/Character")) Directory.CreateDirectory("Game/Animations/Character");
+        if (!File.Exists("Game/Animations/Character/IdleCharacter.anim")) File.Create("Game/Animations/Character/IdleCharacter.anim");
+        if (!File.Exists("Game/Animations/Character/StandInteract.anim")) File.Create("Game/Animations/Character/StandInteract.anim");
+        if (!File.Exists("Game/Animations/Character/WalkingCharacter.anim")) File.Create("Game/Animations/Character/WalkingCharacter.anim");
+
+        //false whackamole anims
+        if (!Directory.Exists("Game/Animations/Whack-a-mole"))
+        {
+            Directory.CreateDirectory("Game/Animations/Whack-a-mole");
+            var targetAnim = File.Create("Game/Animations/Whack-a-mole/Target.anim");
+            targetAnim.Close();
+            File.SetCreationTime("Game/Animations/Whack-a-mole/Target.anim", new System.DateTime(2002, 12, 14));
+        }
+        if (!File.Exists("Game/Animations/Whack-a-mole/Hammer.anim")) File.Create("Game/Animations/Whack-a-mole/Hammer.anim");
+        if (!File.Exists("Game/Animations/Whack-a-mole/Mole.anim")) File.Create("Game/Animations/Whack-a-mole/Mole.anim");
+        if (!File.Exists("Game/Animations/Whack-a-mole/MoleWacked.anim")) File.Create("Game/Animations/Whack-a-mole/MoleWacked.anim");
+
+        //false Prize counter anims
+        if (!Directory.Exists("Game/Animations/PrizeCounter")) Directory.CreateDirectory("Game/Animations/PrizeCounter");
+        if (!File.Exists("Game/Animations/PrizeCounter/PrizeObtain.anim")) File.Create("Game/Animations/PrizeCounter/PrizeObtain.anim");
+
+        //false fishing anims
+        if (!Directory.Exists("Game/Animations/Fishing")) Directory.CreateDirectory("Game/Animations/Fishing");
+        if (!File.Exists("Game/Animations/Fishing/Fish.anim")) File.Create("Game/Animations/Fishing/Fish.anim");
+        if (!File.Exists("Game/Animations/Fishing/FishingRod.anim")) File.Create("Game/Animations/Fishing/FishingRod.anim");
+
+
+    }
     private void OnApplicationQuit()
     {
         SaveStats();
     }
-    private void SaveStats()
+    protected override void SaveStats()
     {
         JsonDataService dataService = new JsonDataService();
         MedalType Medal;
@@ -134,23 +179,9 @@ public class RifleMinigame : MonoBehaviour, IInteractable
             _ReloadTime -= Time.deltaTime;
         }
     }
-    private void TriggerMinigameEnd()
-    {
-        Cursor.visible = true;
-        StopAllCoroutines();
-        SaveStats();
-        gameObject.SetActive(false);
-        StandInteractableTrigger.Map.SetActive(true);
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
 
-    }
-    public bool CanInteract()
-    {
-        return _StandResults._Medal == MedalType.None;
-    }
     [Button]
-    public void Interact()
+    public override void Interact()
     {
         if (CanInteract())
         {

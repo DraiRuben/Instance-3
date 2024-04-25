@@ -35,7 +35,7 @@ public class ButtonsScript : MonoBehaviour
                     File.Delete(file);
             }
         }
-        if (Directory.Exists("Game")) Directory.Delete("Game");
+        if (Directory.Exists("Game")) Directory.Delete("Game",true);
         SceneManager.LoadSceneAsync(1);
     }
     public void Settings()

@@ -60,7 +60,7 @@ public sealed class FishManager : Minigame
         float spawnTimer = 0f;
         while (elapsedTime < _MinigameDuration)
         {
-            if (_FishList.Count < 6 && spawnTimer>=2)
+            if (_FishList.Count < 10 && spawnTimer>=1)
             {
                 _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity,transform));
                 _FishList[_FishList.Count - 1].GetComponent<Fish>()._Spline = _Splines;

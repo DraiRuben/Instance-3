@@ -15,7 +15,6 @@ public sealed class FishManager : Minigame
     [System.NonSerialized] public float _SpeedMult = 1;
     public List<GameObject> _FishList = new List<GameObject>();
     public int _BugValue;
-    private float _ElapsedTime;
 
     private Vector3 _InitialOffset;
 
@@ -58,8 +57,9 @@ public sealed class FishManager : Minigame
     }
     private IEnumerator FishSpawn()
     {
+        float elapsedTime = 0f;
         float spawnTimer = 0f;
-        while (_ElapsedTime < _MinigameDuration)
+        while (elapsedTime < _MinigameDuration)
         {
             if (_FishList.Count < 6 && spawnTimer>=2)
             {
@@ -67,9 +67,9 @@ public sealed class FishManager : Minigame
                 _FishList[_FishList.Count - 1].GetComponent<Fish>()._Spline = _Splines;
                 spawnTimer = 0f;
             }
-            _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime / _MinigameDuration);
+            _SpeedMult = _SpeedCurve.Evaluate(elapsedTime / _MinigameDuration);
             spawnTimer += Time.deltaTime;
-            _ElapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         TriggerMinigameEnd();

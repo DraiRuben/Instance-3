@@ -21,6 +21,7 @@ public class Cups : Minigame
     [SerializeField] private List<GameObject> _Cups;
     [SerializeField] private GameObject _Ball;
     [SerializeField] private GameObject _BugMessagePrefab;
+    [SerializeField] private TextMeshProUGUI _ScoreText;
 
     [Header("Curves")]
     [SerializeField] private AnimationCurve _CupMovementEvolution;
@@ -243,6 +244,7 @@ public class Cups : Minigame
                 {
                     //win feedback
                     _WinCount++;
+                    _ScoreText.SetText(_WinCount.ToString());
                     OnWin.Invoke();
                     StartCoroutine(ChooseCupAnimation(true,selectedIndex));
                     this.Invoke(() => _HasSelectedCup = true, 3f);

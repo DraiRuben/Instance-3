@@ -123,7 +123,7 @@ public class RifleMinigame : Minigame
             {
                 Destroy(target);
                 _Points++;
-                _ScoreText.SetText($"Score : {_Points}");
+                _ScoreText.SetText(_Points.ToString());
                 this.Invoke(() => {
                     if (transform.GetChild(0).childCount <= 0) //targets child
                     {

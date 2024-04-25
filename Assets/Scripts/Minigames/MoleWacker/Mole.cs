@@ -64,7 +64,8 @@ public class Mole : MonoBehaviour, IPointerClickHandler
                 if (_IsWacked)
                 {
                     _Animator.SetTrigger("Dead");
-                    MoleWacker.Instance._ScoreText.SetText($"Score : {++MoleWacker.Instance._WinCount}");
+                    MoleWacker.Instance._WinCount++;
+                    MoleWacker.Instance._ScoreText.SetText(MoleWacker.Instance._WinCount.ToString());
                     MoleWacker.Instance.OnMoleWacked.Invoke();
                     _IsDisappearancePaused = true;
                     this.Invoke(() => _IsDisappearancePaused = false, _DeathStunTime);

@@ -13,7 +13,7 @@ public class PoleManager : MonoBehaviour
 
     private bool _Fishing;
     private int _FishingScore;
-    private float _FishingTimer;
+    [System.NonSerialized] public float _FishingTimer;
     private Vector3 HookStartPos;
 
 
@@ -67,7 +67,7 @@ public class PoleManager : MonoBehaviour
     private void Update()
     {
         _FishingTimer += Time.deltaTime;
-        _FishingScoreText.text = "Score : " + _FishingScore;
+        _FishingScoreText.text = _FishingScore.ToString();
         _FishingTimerText.text = "Time : " + Mathf.RoundToInt(FishManager.Instance._MinigameDuration - _FishingTimer);
 
         

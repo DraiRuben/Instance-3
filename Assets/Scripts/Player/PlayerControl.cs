@@ -94,7 +94,7 @@ public class PlayerControls : MonoBehaviour
     }
     public void Interact(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && Time.timeScale ==1)
         {
             if (_CurrentInteractable)
             {
@@ -109,7 +109,7 @@ public class PlayerControls : MonoBehaviour
     }
     public void SkipDialogue(InputAction.CallbackContext context)
     {
-        if (_CurrentDialogue && context.started)
+        if (_CurrentDialogue && context.started && Time.timeScale == 1)
         {
             _CurrentDialogue.SkipDialogue();
         }

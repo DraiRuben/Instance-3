@@ -28,8 +28,8 @@ public class Minigame : MonoBehaviour, IInteractable
 
     protected virtual void TriggerMinigameEnd() 
     {
-        Cursor.visible = true;
         StopAllCoroutines();
+        Cursor.visible = true;
         StandInteractableTrigger.Map.SetActive(true);
         PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
         PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");

@@ -30,8 +30,7 @@ public class Cups : Minigame
     [SerializeField] private AnimationCurve _WaitTimeBetweenShuffles;
 
     [Header("ShuffleParameters")]
-    [SerializeField, Range(1, 20)] private int _MinSwitchCount;
-    [SerializeField, Range(1, 20), MinValue("_MinSwitchCount")] private int _MaxSwitchCount;
+    [SerializeField] private AnimationCurve _SwitchCountEvolution;
 
     [Header("Other")]
     [SerializeField, MinValue(0.0f)] private float _DisplacementScalar;
@@ -124,7 +123,7 @@ public class Cups : Minigame
             yield return ShowBallRoutine();
 
             //Generate Random cup switch amount
-            int chosenSwitchCount = Random.Range(_MinSwitchCount, _MaxSwitchCount + 1);
+            int chosenSwitchCount = (int)_SwitchCountEvolution.Evaluate(_CurrentShuffleCount);
             int currentSwitchCount = 0;
             while (currentSwitchCount < chosenSwitchCount)
             {

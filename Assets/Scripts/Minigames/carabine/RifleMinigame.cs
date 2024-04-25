@@ -149,7 +149,8 @@ public class RifleMinigame : Minigame
         while (true)
         {
             ReloadTimer();
-            Cursor.visible = false;
+            if(Time.timeScale == 1)
+                Cursor.visible = false;
             _elapsedTime += Time.deltaTime;
             _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration-_elapsedTime)}");
             if (_elapsedTime >= _MinigameDuration)

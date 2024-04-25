@@ -2,11 +2,12 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MoleWacker : MonoBehaviour, IInteractable
+public class MoleWacker : Minigame
 {
     public static MoleWacker Instance;
     [System.NonSerialized] public UnityEvent OnMoleWacked = new();
@@ -37,11 +38,9 @@ public class MoleWacker : MonoBehaviour, IInteractable
 
     [Header("Other")]
     [SerializeField] private float _MoleSpawnYOffset;
-    [SerializeField] private float _MinigameDuration;
 
     [System.NonSerialized] public List<int> _HolesTenants;
     private List<Vector3> _HolesPositions;
-    public StandResults _StandResults;
     private bool _IsBugResolved;
 
     private Vector3 _InitialOffset;
@@ -62,10 +61,8 @@ public class MoleWacker : MonoBehaviour, IInteractable
     }
     private void Start()
     {
-        if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
-        if (!Directory.Exists("Game/Minigames")) Directory.CreateDirectory("Game/Minigames");
-        if (!Directory.Exists("Game/Minigames/MoleWacker")) Directory.CreateDirectory("Game/Minigames/MoleWacker");
-        _IsBugResolved = File.Exists("Game/Minigames/MoleWacker/Mole.png");
+       MakeFakeGameFiles();
+        _IsBugResolved = IsBugged();
         if (File.Exists(Application.persistentDataPath + "/MoleSaveFile.json"))
         {
             JsonDataService dataService = new JsonDataService();
@@ -73,12 +70,21 @@ public class MoleWacker : MonoBehaviour, IInteractable
         }
         gameObject.SetActive(false);
     }
+
+    protected override void MakeFakeGameFiles()
+    {
+        base.MakeFakeGameFiles();
+        if (!Directory.Exists("Game/Minigames/MoleWacker")) Directory.CreateDirectory("Game/Minigames/MoleWacker");
+    }
+    protected override bool IsBugged()
+    {
+        return File.Exists("Game/Minigames/MoleWacker/Mole.png");
+    }
     private void OnApplicationQuit()
     {
         SaveStats();
     }
-
-    private void SaveStats()
+    protected override void SaveStats()
     {
         JsonDataService dataService = new JsonDataService();
         MedalType Medal;
@@ -129,24 +135,8 @@ public class MoleWacker : MonoBehaviour, IInteractable
         }
         TriggerMinigameEnd();
     }
-    private void TriggerMinigameEnd()
-    {
-        Cursor.visible = true;
-        StopAllCoroutines();
-        SaveStats();
-        gameObject.SetActive(false);
-        StandInteractableTrigger.Map.SetActive(true);
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
-
-        //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation
-    }
-    public bool CanInteract()
-    {
-        return _StandResults._Medal == MedalType.None;
-    }
     [Button]
-    public void Interact()
+    public override void Interact()
     {
         if (CanInteract())
         {

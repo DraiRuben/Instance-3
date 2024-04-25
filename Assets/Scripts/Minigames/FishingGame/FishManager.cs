@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class FishManager : MonoBehaviour, IInteractable
+public sealed class FishManager : Minigame
 {
     public static FishManager Instance;
     [SerializeField] private GameObject _Fish;
@@ -16,8 +16,6 @@ public class FishManager : MonoBehaviour, IInteractable
     public List<GameObject> _FishList = new List<GameObject>();
     public int _BugValue;
     private float _ElapsedTime;
-    public float _MinigameDuration;
-    public StandResults _StandResults;
 
     private Vector3 _InitialOffset;
 
@@ -30,14 +28,33 @@ public class FishManager : MonoBehaviour, IInteractable
     }
     private void Start()
     {
-        if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
-        if (!Directory.Exists("Game/Minigames")) Directory.CreateDirectory("Game/Minigames");
-        if (!Directory.Exists("Game/Minigames/FishingGame")) Directory.CreateDirectory("Game/Minigames/FishingGame");
-        StreamReader reader = new StreamReader("Game/Minigames/FishingGame/FishBehavior.txt");
-
-        _BugValue = reader.ReadLine() == "Enabled = true;" ? 0 : 1;
+        MakeFakeGameFiles();
+        IsBugged();
         gameObject.SetActive(false);
 
+    }
+    protected override void MakeFakeGameFiles()
+    {
+        base.MakeFakeGameFiles();
+        if (!Directory.Exists("Game/Minigames/FishingGame")) Directory.CreateDirectory("Game/Minigames/FishingGame");
+    }
+    protected override bool IsBugged()
+    {
+        if (!File.Exists("Game/Minigames/FishingGame/FishBehavior.txt"))
+        {
+            var file = File.Create("Game/Minigames/FishingGame/FishBehavior.txt");
+            StreamWriter writer = new StreamWriter(file);
+            writer.Write("Enabled = false;");
+            writer.Close();
+            _BugValue = 1;
+        }
+        else
+        {
+            StreamReader reader = new StreamReader("Game/Minigames/FishingGame/FishBehavior.txt");
+            _BugValue = reader.ReadLine() == "Enabled = true;" ? 0 : 1;
+            reader.Close();
+        }
+        return _BugValue == 1;
     }
     private IEnumerator FishSpawn()
     {
@@ -58,25 +75,12 @@ public class FishManager : MonoBehaviour, IInteractable
         TriggerMinigameEnd();
 
     }
-    private void TriggerMinigameEnd()
+    protected override void SaveStats()
     {
-        Cursor.visible = true;
-        StopAllCoroutines();
-        _PoleManager.StopAllCoroutines();
         _PoleManager.SaveStats();
-        gameObject.SetActive(false);
-        StandInteractableTrigger.Map.SetActive(true);
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
-
-
-    }
-    public bool CanInteract()
-    {
-        return _StandResults._Medal == MedalType.None;
     }
     [Button]
-    public void Interact()
+    public override void Interact()
     {
         if (CanInteract())
         {

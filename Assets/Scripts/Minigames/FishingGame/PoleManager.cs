@@ -15,6 +15,7 @@ public class PoleManager : MonoBehaviour
     private int _FishingScore;
     private float _FishingTimer;
     private Vector3 HookStartPos;
+    private float timer = 0;
 
 
     private void Start()
@@ -82,8 +83,15 @@ public class PoleManager : MonoBehaviour
 
     IEnumerator Tofish()
     {
+        timer = 0;
+        HookStartPos = transform.position;
         _Fishing = true;
-        yield return new WaitForSeconds(0.5f);
+        while (timer < 2)
+        {
+            transform.position = new Vector2(HookStartPos.x, HookStartPos.y- _FishingAnim.Evaluate(timer));
+            timer += Time.deltaTime;
+        }
+        yield return new WaitForSeconds(timer);
         _Fishing = false;
     }
 }

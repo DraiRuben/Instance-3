@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -57,3 +56,14 @@ public class AudioManager : MonoBehaviour
         _SfxSource.volume = volume;
     }
 }
+
+/* Type "AudioManager._Instance.X( );" 
+     * place it where you want to play/modify a sound
+
+     * if you want to play a sound replace X by either PlayMusic or PlaySFX
+     * and put the name of the sound you want to play in the (" ")
+
+     * if you want to mute all the sounds in a category replace X by either ToggleMusic or ToggleSFX
+
+     * if you want to modify the volume in a category replace X by either MusicVolume or SfxVolume
+     * and put the value you want the sound to be in the ( )*/

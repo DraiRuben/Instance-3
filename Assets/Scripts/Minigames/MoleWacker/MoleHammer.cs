@@ -31,9 +31,12 @@ public class MoleHammer : MonoBehaviour
     }
     public void Update()
     {
-        _MousePosition = Mouse.current.position.ReadValue();
-        _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
-        transform.position = new Vector3(_WorldMousePosition.x, _WorldMousePosition.y,0);
-        Cursor.visible = false;
+        if(Time.timeScale == 1)
+        {
+            _MousePosition = Mouse.current.position.ReadValue();
+            _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
+            transform.position = new Vector3(_WorldMousePosition.x, _WorldMousePosition.y, 0);
+            Cursor.visible = false;
+        }
     }
 }

@@ -230,6 +230,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2abab9f0-eacb-4583-8a0a-3f62814a1ece
     m_ActionName: Menus/Select[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 233c961d-9a0b-44a4-a774-e6ea167df7e4
+    m_ActionName: Player/Click[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -247,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a5b8cb0f73b8884b953a8738bfc837e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Speed: 4000
+  _Speed: 2000
 --- !u!50 &478983681233055863
 Rigidbody2D:
   serializedVersion: 4

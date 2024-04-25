@@ -75,6 +75,11 @@ public sealed class FishManager : Minigame
         TriggerMinigameEnd();
 
     }
+    protected override void TriggerMinigameEnd()
+    {
+        base.TriggerMinigameEnd();
+        _PoleManager._FishingTimer = 0;
+    }
     protected override void SaveStats()
     {
         _PoleManager.SaveStats();

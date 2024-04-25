@@ -18,7 +18,7 @@ public class MoleHammer : MonoBehaviour
     {
         PlayerControls.Instance?.OnSelect.AddListener(() =>
         {
-            if(Time.time- _LastWackTime > 0.2f)
+            if(Time.time- _LastWackTime > 0.2f && Time.timeScale == 1)
             {
                 _LastWackTime = Time.time;
                 _Animator.SetTrigger("Wack");

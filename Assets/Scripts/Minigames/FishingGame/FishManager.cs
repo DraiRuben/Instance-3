@@ -28,7 +28,6 @@ public sealed class FishManager : Minigame
     private void Start()
     {
         MakeFakeGameFiles();
-        IsBugged();
         gameObject.SetActive(false);
 
     }
@@ -84,6 +83,7 @@ public sealed class FishManager : Minigame
     {
         if (CanInteract())
         {
+            IsBugged();
             transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
 
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;

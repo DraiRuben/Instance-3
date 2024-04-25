@@ -1,6 +1,5 @@
 using System.Collections;
 using System.IO;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,12 +8,13 @@ public class PoleManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _FishingScoreText;
     [SerializeField] private TextMeshProUGUI _FishingTimerText;
-    [SerializeField] private AnimationCurve _FishingAnim;
 
     private bool _Fishing;
     private int _FishingScore;
     [System.NonSerialized] public float _FishingTimer;
     private Vector3 HookStartPos;
+    private Animator _Animator;
+    private float _LastFishTime;
 
 
     private void Start()
@@ -23,8 +23,8 @@ public class PoleManager : MonoBehaviour
         {
             JsonDataService FishSaveData = new JsonDataService();
             FishManager.Instance._StandResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
-            HookStartPos = transform.position;
         }
+        _Animator = GetComponent<Animator>();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -76,14 +76,19 @@ public class PoleManager : MonoBehaviour
     {
         if (context.started && !_Fishing)
         {
-            StartCoroutine(Tofish());
+            if (Time.time - _LastFishTime > 1f)
+            {
+                _LastFishTime = Time.time;
+                StartCoroutine(Tofish());
+            }
         }
     }
 
     IEnumerator Tofish()
     {
         _Fishing = true;
-        yield return new WaitForSeconds(0.5f);
+        _Animator.SetTrigger("Reel");
+        yield return new WaitForSeconds(1f);
         _Fishing = false;
     }
 }

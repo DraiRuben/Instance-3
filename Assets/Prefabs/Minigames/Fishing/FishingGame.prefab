@@ -1594,6 +1594,7 @@ GameObject:
   - component: {fileID: 7048928462529402095}
   - component: {fileID: 3951732002536021664}
   - component: {fileID: 5012200215864249912}
+  - component: {fileID: 8803699726307971653}
   m_Layer: 0
   m_Name: FishHook
   m_TagString: Untagged
@@ -1610,7 +1611,7 @@ Transform:
   m_GameObject: {fileID: 7980445614811412136}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.013912827, y: -0.8676281, z: 0.023605406}
+  m_LocalPosition: {x: 0, y: -0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1682,12 +1683,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _FishingScoreText: {fileID: 851097798311220735}
   _FishingTimerText: {fileID: 2319829575472323751}
-  _FishingAnim:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &3951732002536021664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1757,6 +1752,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2abab9f0-eacb-4583-8a0a-3f62814a1ece
     m_ActionName: Menus/Select[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 233c961d-9a0b-44a4-a774-e6ea167df7e4
+    m_ActionName: Player/Click[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Fishing
@@ -1807,6 +1806,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.318, y: 0.318}
   m_EdgeRadius: 0
+--- !u!95 &8803699726307971653
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980445614811412136}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a61c86da65e942048ba8b945019f3f9c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8864470071245088068
 GameObject:
   m_ObjectHideFlags: 0

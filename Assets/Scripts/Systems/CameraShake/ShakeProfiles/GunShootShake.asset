@@ -48,6 +48,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  listenerAmplitude: 1
+  listenerAmplitude: 0.5
   listenerFrequency: 1
-  listenerDuration: 0.5
+  listenerDuration: 1

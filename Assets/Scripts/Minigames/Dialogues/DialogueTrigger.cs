@@ -2,6 +2,7 @@ using Febucci.UI;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,10 +16,12 @@ public class DialogueTrigger : MonoBehaviour
     private TypewriterByCharacter _TypeWriter;
     private TextMeshProUGUI _TMP;
     [SerializeField] private DialogueSO _DialogueData;
+    public List<string> _DialoguesTexts;
     [SerializeField] private GameObject _Minigame;
     private bool _TextFullyDisplayed;
     private int _CurrentTextIndex;
     private bool _IsClosing;
+    private List<string> _UsedDialogues;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +35,21 @@ public class DialogueTrigger : MonoBehaviour
     public void TriggerDialogue()
     {
         //need to change input map to prevent player from moving
-        if (_CurrentTextIndex < _DialogueData._Texts.Count)
+        if (_DialogueData)
+        {
+            _UsedDialogues = _DialogueData._Texts;
+        }
+        else if (_DialoguesTexts != null)
+        {
+            _UsedDialogues = _DialoguesTexts;
+        }
+        else return;
+
+        if (_CurrentTextIndex < _UsedDialogues.Count)
         {
             _IsClosing = false;
             transform.parent.GetComponent<Image>().enabled = true;
-            _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);
+            _TypeWriter.ShowText(_UsedDialogues[_CurrentTextIndex++]);
         }
     }
     [Button]
@@ -46,10 +59,10 @@ public class DialogueTrigger : MonoBehaviour
         {
             if (_TextFullyDisplayed)
             {
-                if (_CurrentTextIndex < _DialogueData._Texts.Count)
+                if (_CurrentTextIndex < _UsedDialogues.Count)
                 {
                     //show next text
-                    _TypeWriter.ShowText(_DialogueData._Texts[_CurrentTextIndex++]);
+                    _TypeWriter.ShowText(_UsedDialogues[_CurrentTextIndex++]);
                     _TextFullyDisplayed = false;
                 }
                 else

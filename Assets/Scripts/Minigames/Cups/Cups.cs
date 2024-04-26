@@ -277,6 +277,7 @@ public class Cups : Minigame
         {
             if (_IsBugResolved)
             {
+                _CanSelectCup = false;
                 int selectedIndex = _CupPositions.FindIndex(0,x =>(int) x.x == (int)(SelectedCup.transform as RectTransform).anchoredPosition.x);
                 if (selectedIndex == _BallCurrentIndex)
                 {
@@ -321,6 +322,11 @@ public class Cups : Minigame
             }
 
         }
+    }
+    protected override void TriggerMinigameEnd()
+    {
+        base.TriggerMinigameEnd();
+        _CurrentShuffleCount = 0;
     }
     [Button]
     public override void Interact()

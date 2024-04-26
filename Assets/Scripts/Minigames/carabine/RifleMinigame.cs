@@ -118,14 +118,14 @@ public class RifleMinigame : Minigame
         _StandResults = new StandResults(Medal, _Points);
         dataService.SaveData("RifleSaveFile", _StandResults);
     }
-    public void HandleTargetHit(GameObject target)
+    public void HandleTargetHit(Target target)
     {
         if (_ReloadTime <= 0)
         {
             if (!_IsBugged)
             {
-                Destroy(target);
                 _Points++;
+                target.DoDestructionFeedback();
                 _ScoreText.SetText(_Points.ToString());
                 this.Invoke(() => {
                     if (transform.GetChild(0).childCount <= 0) //targets child

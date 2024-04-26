@@ -26,36 +26,46 @@ public class Gun : MonoBehaviour
     [SerializeField, MinMaxSlider(-10, 10)] private Vector2 _GunXRange;
     [System.NonSerialized] private float _MouseYMovementDelta;
     private Sprite _GunSprite;
-
+    private Vector3 _InitialCamPos;
+    private Vector3 _CameraShakeOffset;
     private void Awake()
     {
         _GunSprite = GetComponent<SpriteRenderer>().sprite;
     }
+    private void OnEnable()
+    {
+        _InitialCamPos = Camera.main.transform.position;
 
+    }
     private void Update()
     {
         if(Time.timeScale == 1)
         {
-            _OffsetXTimer += Time.deltaTime / _OffsetXDuration;
-            _OffsetYTimer += Time.deltaTime / _OffsetYDuration;
+            
 
-            if (_OffsetXTimer > 1)
-            {
-                _OffsetXTimer = 0;
-            }
-            if (_OffsetYTimer > 1)
-            {
-                _OffsetYTimer = 0;
-            }
-
-
+            _CameraShakeOffset = _InitialCamPos - Camera.main.transform.position;
+            _CameraShakeOffset.z = 0;
             _PreviousMouseWorldPosition = _WorldMousePosition;
             _MousePosition = Mouse.current.position.ReadValue();
             _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
             _MouseYMovementDelta = _WorldMousePosition.y - _PreviousMouseWorldPosition.y;
-            _OffsetX = _OffsetXBase * _OffsetXEvolution.Evaluate(_OffsetXTimer);
-            _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
-            transform.position = new Vector3(_WorldMousePosition.x + _OffsetX, _WorldMousePosition.y - _GunSprite.bounds.size.y / 2 - _YReach + _OffsetY);
+            if(_CameraShakeOffset.magnitude==0)
+            {
+                _OffsetXTimer += Time.deltaTime / _OffsetXDuration;
+                _OffsetYTimer += Time.deltaTime / _OffsetYDuration;
+
+                if (_OffsetXTimer > 1)
+                {
+                    _OffsetXTimer = 0;
+                }
+                if (_OffsetYTimer > 1)
+                {
+                    _OffsetYTimer = 0;
+                }
+                _OffsetX = _OffsetXBase * _OffsetXEvolution.Evaluate(_OffsetXTimer);
+                _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
+            }
+            transform.position = new Vector3(_WorldMousePosition.x + _OffsetX, _WorldMousePosition.y - _GunSprite.bounds.size.y / 2 - _YReach + _OffsetY) + _CameraShakeOffset;
 
             var screenPoint = new Vector2();
 

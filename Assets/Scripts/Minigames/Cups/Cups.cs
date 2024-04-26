@@ -162,7 +162,7 @@ public class Cups : Minigame
             _CupPositions.Clear();
             if (_Cups.Count > cupCount)
             {
-                for (int i = cupCount - 1; i < _Cups.Count; i++)
+                for (int i = cupCount - 1; i > _Cups.Count; i++)
                 {
                     Destroy(_Cups[i]);
                     _Cups.RemoveAt(i);

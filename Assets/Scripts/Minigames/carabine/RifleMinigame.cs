@@ -132,7 +132,7 @@ public class RifleMinigame : Minigame
                     {
                         TriggerMinigameEnd();
                     }
-                },0.1f);
+                },0.2f);
                 
             }
         }

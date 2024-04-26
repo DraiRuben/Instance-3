@@ -24,6 +24,7 @@ public class ButtonsScript : MonoBehaviour
             if (file.EndsWith(".json"))
             {
                 SceneManager.LoadSceneAsync(1);
+                return;
             }
         }
     }

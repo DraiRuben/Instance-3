@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MinigameDuration: 30
-  _Fish: {fileID: 1220467676874949222, guid: be1e48aa67110b84eaa3664d77839e0e, type: 3}
+  _Fish: {fileID: 5439272752004318542, guid: be1e48aa67110b84eaa3664d77839e0e, type: 3}
   _PoleManager: {fileID: 7048928462529402095}
   _Splines:
   - {fileID: 848605136884047465}
@@ -1595,6 +1595,7 @@ GameObject:
   - component: {fileID: 3951732002536021664}
   - component: {fileID: 5012200215864249912}
   - component: {fileID: 8803699726307971653}
+  - component: {fileID: 6813661144020659659}
   m_Layer: 0
   m_Name: FishHook
   m_TagString: Untagged
@@ -1611,7 +1612,7 @@ Transform:
   m_GameObject: {fileID: 7980445614811412136}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalPosition: {x: 0, y: -0.223, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1683,6 +1684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _FishingScoreText: {fileID: 851097798311220735}
   _FishingTimerText: {fileID: 2319829575472323751}
+  _FishingCooldown: 0.55
 --- !u!114 &3951732002536021664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1793,7 +1795,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.024411395, y: -0.08148074}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1804,7 +1806,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.318, y: 0.318}
+  m_Size: {x: 0.18674561, y: 0.35733604}
   m_EdgeRadius: 0
 --- !u!95 &8803699726307971653
 Animator:
@@ -1827,6 +1829,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &6813661144020659659
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980445614811412136}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 5
 --- !u!1 &8864470071245088068
 GameObject:
   m_ObjectHideFlags: 0

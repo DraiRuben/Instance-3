@@ -63,7 +63,7 @@ public sealed class FishManager : Minigame
             if (_FishList.Count < 10 && spawnTimer>=1)
             {
                 _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity,transform));
-                _FishList[_FishList.Count - 1].GetComponent<Fish>()._Spline = _Splines;
+                _FishList[_FishList.Count - 1].transform.GetChild(0).GetComponent<Fish>()._Spline = _Splines;
                 spawnTimer = 0f;
             }
             _SpeedMult = _SpeedCurve.Evaluate(elapsedTime / _MinigameDuration);
@@ -82,6 +82,10 @@ public sealed class FishManager : Minigame
     {
         base.TriggerMinigameEnd();
         _PoleManager._FishingTimer = 0;
+        foreach(var fish in _FishList)
+        {
+            Destroy(fish);
+        }
     }
     protected override void SaveStats()
     {

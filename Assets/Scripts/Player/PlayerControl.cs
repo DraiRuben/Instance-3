@@ -11,7 +11,7 @@ public class PlayerControls : MonoBehaviour
     private Animator _Animator;
     private SpriteRenderer _SpriteRenderer;
     private Vector2 _MoveInput;
-    private DialogueTrigger _CurrentDialogue;
+    [System.NonSerialized]public DialogueTrigger _CurrentDialogue;
     private StandInteractableTrigger _CurrentInteractable;
     [System.NonSerialized] public UnityEvent OnSelect = new(); 
     [System.NonSerialized] public PlayerInput _PlayerInput;

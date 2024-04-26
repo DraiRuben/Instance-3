@@ -10,7 +10,7 @@ public class PoleManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _FishingTimerText;
 
     private bool _Fishing;
-    private int _FishingScore;
+    public int _FishingScore;
     [System.NonSerialized] public float _FishingTimer;
     private Animator _Animator;
     private float _LastFishTime;

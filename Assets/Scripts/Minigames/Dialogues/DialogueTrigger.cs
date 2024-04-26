@@ -13,7 +13,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(TypewriterByCharacter))]
 public class DialogueTrigger : MonoBehaviour
 {
-    private TypewriterByCharacter _TypeWriter;
+    [NonSerialized] public TypewriterByCharacter _TypeWriter;
     private TextMeshProUGUI _TMP;
     [SerializeField] private DialogueSO _DialogueData;
     public List<string> _DialoguesTexts;
@@ -89,7 +89,7 @@ public class DialogueTrigger : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         transform.parent.GetComponent<Image>().enabled = false;
         yield return FadeInOut.Instance.FadeToBlack();
-        _Minigame.GetComponent<IInteractable>().Interact();
+        _Minigame?.GetComponent<IInteractable>().Interact();
     }
     public bool CanInteract()
     {

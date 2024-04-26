@@ -49,5 +49,5 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   listenerAmplitude: 0.5
-  listenerFrequency: 1
+  listenerFrequency: 2
   listenerDuration: 1

@@ -1,3 +1,4 @@
+using Cinemachine;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.IO;
@@ -14,6 +15,8 @@ public class RifleMinigame : Minigame
     [SerializeField] private bool _IsBugged;
     [SerializeField] private TextMeshProUGUI _TimerText;
     [SerializeField] private TextMeshProUGUI _ScoreText;
+    [SerializeField] private CameraShakeProfile _ShootShakeProfile;
+    private CinemachineImpulseSource _ShootShakeSource;
     private int _Points;
     private float _ReloadTime;
 
@@ -25,7 +28,7 @@ public class RifleMinigame : Minigame
         else Instance = this;
         _InitialOffset = transform.position - Camera.main.transform.position;
         _InitialOffset.z = 0;
-
+        _ShootShakeSource = GetComponent<CinemachineImpulseSource>();
     }
 
     private void Start()
@@ -167,6 +170,7 @@ public class RifleMinigame : Minigame
     private IEnumerator Shoot()
     {
         AudioManager._Instance.PlaySFX("shoot");
+        CameraShakeManager.Instance.ShakeCamera(_ShootShakeSource,_ShootShakeProfile);
         yield return null;
         _ReloadTime = _ReloadSound.length + _ShootSound.length;
         yield return new WaitForSeconds(_ShootSound.length);

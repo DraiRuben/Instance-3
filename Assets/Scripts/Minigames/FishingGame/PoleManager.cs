@@ -12,7 +12,6 @@ public class PoleManager : MonoBehaviour
     private bool _Fishing;
     private int _FishingScore;
     [System.NonSerialized] public float _FishingTimer;
-    private Vector3 HookStartPos;
     private Animator _Animator;
     private float _LastFishTime;
 

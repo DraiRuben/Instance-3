@@ -74,6 +74,10 @@ public sealed class FishManager : Minigame
         TriggerMinigameEnd();
 
     }
+    private void OnApplicationQuit()
+    {
+        SaveStats();
+    }
     protected override void TriggerMinigameEnd()
     {
         base.TriggerMinigameEnd();

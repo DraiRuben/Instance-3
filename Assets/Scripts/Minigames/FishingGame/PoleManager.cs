@@ -17,7 +17,7 @@ public class PoleManager : MonoBehaviour
     private float _LastFishTime;
 
 
-    private void Start()
+    private void Awake()
     {
         if (File.Exists(Application.persistentDataPath + "/FishSaveFile.json"))
         {

@@ -119,6 +119,10 @@ public class PlayerControls : MonoBehaviour
     {
         if(context.started)
             OnSelect.Invoke();
+        if (_CurrentDialogue && context.started && Time.timeScale == 1)
+        {
+            _CurrentDialogue.SkipDialogue();
+        }
     }
     private void OnApplicationQuit()
     {

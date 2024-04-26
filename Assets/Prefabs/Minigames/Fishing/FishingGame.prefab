@@ -248,6 +248,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _MaxConcurrentFishCount: 5
+  _FishSpawnFrequency: 1
   _FishList: []
   _BugValue: 0
 --- !u!1 &2803379313504288083

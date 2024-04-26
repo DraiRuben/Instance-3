@@ -87,9 +87,37 @@ public class PlayerControls : MonoBehaviour
     {
         if(context.started)
         {
-            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
-            PauseMenu.instance.gameObject.SetActive(Time.timeScale==0);
-            Cursor.visible = true;
+            if(Time.timeScale == 1)
+            {
+                Time.timeScale = 0;
+            }
+            //check if sub menus are active then deactivate the deepest menu
+            if (PauseMenu.instance.gameObject.activeSelf)
+            {
+                if (SettingsMenu.instance.gameObject.activeSelf)
+                {
+                    if (AudioMenu.instance.gameObject.activeSelf)
+                    {
+                        AudioMenu.instance.gameObject.SetActive(false);
+                        return;//return so only one menu at a time gets deactivated 
+                    }
+                    SettingsMenu.instance.gameObject.SetActive(false);
+                    return;//return so only one menu at a time gets deactivated 
+                }
+                else
+                {
+                    Time.timeScale = 1;
+                    PauseMenu.instance.gameObject.SetActive(Time.timeScale == 0);
+                }
+            }
+            //if pause menu not active then active it, sub menus are inacessible except with pauseMenu
+            else
+            {
+                PauseMenu.instance.gameObject.SetActive(Time.timeScale == 0);
+            }
+            //Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+
+
         }
     }
     public void Interact(InputAction.CallbackContext context)

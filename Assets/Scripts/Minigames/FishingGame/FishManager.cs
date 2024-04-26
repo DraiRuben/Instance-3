@@ -12,6 +12,8 @@ public sealed class FishManager : Minigame
     [SerializeField] private PoleManager _PoleManager;
     [SerializeField] private SplineContainer[] _Splines;
     [SerializeField] private AnimationCurve _SpeedCurve;
+    [SerializeField] private float _MaxConcurrentFishCount;
+    [SerializeField] private float _FishSpawnFrequency;
     [System.NonSerialized] public float _SpeedMult = 1;
     public List<GameObject> _FishList = new List<GameObject>();
     public int _BugValue;
@@ -60,7 +62,7 @@ public sealed class FishManager : Minigame
         float spawnTimer = 0f;
         while (elapsedTime < _MinigameDuration)
         {
-            if (_FishList.Count < 10 && spawnTimer>=1)
+            if (_FishList.Count < _MaxConcurrentFishCount && spawnTimer>= _FishSpawnFrequency)
             {
                 _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity,transform));
                 _FishList[_FishList.Count - 1].transform.GetChild(0).GetComponent<Fish>()._Spline = _Splines;

@@ -16936,18 +16936,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 807523709}
     m_Modifications:
-    - target: {fileID: 1202994912672624169, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 1202994912672624169, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 7020417606434795922, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 1202994912672624169, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4731895500634840658, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
       propertyPath: m_Camera
       value: 
@@ -16990,22 +16978,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5142435843475914618, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6203298221332594242, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6592627035004337489, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 6592627035004337489, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 7020417606434795922, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 6592627035004337489, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
-      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8023200167836772590, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
@@ -17272,37 +17244,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 807523709}
     m_Modifications:
-    - target: {fileID: 304531470221304996, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 525db45b2ebe18842a5def43de83a261, type: 2}
-    - target: {fileID: 851097798311220735, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 851097798311220735, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 7020417606434795922, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 851097798311220735, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2163291251118074958, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
       propertyPath: m_Name
       value: FishingGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 2319829575472323751, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 2319829575472323751, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 7020417606434795922, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 2319829575472323751, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3644885962123424269, guid: 5a73a58d7c8d2844fbfec2674a54cbe4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17839,7 +17783,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 331678277717316500, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.49
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 331678277717316500, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -17877,22 +17821,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 375960231871975161, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_LocalAABB.m_Center.y
-      value: -0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 822639336310328917, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 822639336310328917, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 7020417606434795922, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 822639336310328917, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 927709542089065612, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
       propertyPath: m_Name
       value: MoleWacker
@@ -17901,26 +17829,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
-    - target: {fileID: 6589908841456993376, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 6589908841456993376, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 7020417606434795922, guid: 139fea3f0b7363d478c2bb2f6a996313, type: 2}
-    - target: {fileID: 6589908841456993376, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7576670998332227702, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_BlockingMask.m_Bits
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 9043916916448534599, guid: 26d53d3b7b1425242a98175bd24524c9, type: 3}
-      propertyPath: m_Creator
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

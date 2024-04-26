@@ -120,7 +120,7 @@ public class MoleWacker : Minigame
             {
                 int chosenHole = _HolesTenants[Random.Range(0, _HolesTenants.Count)];
                 _HolesTenants.Remove(chosenHole);
-                GameObject mole = Instantiate(_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity);
+                GameObject mole = Instantiate(_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity,transform);
                 mole.GetComponent<Mole>()._OccupiedHole = chosenHole;
                 mole.GetComponent<Mole>()._PersistenceTime = _MoleStayTimeEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleStayTimeBase;
                 mole.GetComponent<Mole>()._AppearanceDuration = _MoleMovementSpeedEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleMovementSpeedBase;

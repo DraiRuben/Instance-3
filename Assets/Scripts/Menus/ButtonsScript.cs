@@ -7,6 +7,7 @@ public class ButtonsScript : MonoBehaviour
 {
     private string root;
     private bool _HasSave;
+    [SerializeField] private ConfirmationPrompt _NewGamePrompt;
     private void Start()
     {
         root = Application.persistentDataPath;
@@ -39,7 +40,7 @@ public class ButtonsScript : MonoBehaviour
         //shows confirmation prompt in case the user already has a save file
         if (_HasSave)
         {
-            ConfirmationPrompt.Instance.OpenConfirmationPrompt(
+            _NewGamePrompt.OpenConfirmationPrompt(
             () =>
             {
                 var files = from file in Directory.EnumerateFiles(root) select file;
@@ -53,11 +54,11 @@ public class ButtonsScript : MonoBehaviour
                 }
                 if (Directory.Exists("Game")) Directory.Delete("Game", true);
                 SceneManager.LoadSceneAsync(1);
-                ConfirmationPrompt.Instance.ChangePromptState();
+                _NewGamePrompt.ChangePromptState();
             }, 
             () => 
             {
-                ConfirmationPrompt.Instance.ChangePromptState();
+                _NewGamePrompt.ChangePromptState();
             }, 
             "Si vous continuez, toute progression sera effacée !");
         }

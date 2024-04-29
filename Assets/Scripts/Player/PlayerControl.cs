@@ -11,9 +11,9 @@ public class PlayerControls : MonoBehaviour
     private Animator _Animator;
     private SpriteRenderer _SpriteRenderer;
     private Vector2 _MoveInput;
-    [System.NonSerialized]public DialogueTrigger _CurrentDialogue;
+    [System.NonSerialized] public DialogueTrigger _CurrentDialogue;
     private StandInteractableTrigger _CurrentInteractable;
-    [System.NonSerialized] public UnityEvent OnSelect = new(); 
+    [System.NonSerialized] public UnityEvent OnSelect = new();
     [System.NonSerialized] public PlayerInput _PlayerInput;
     private void Awake()
     {
@@ -27,11 +27,11 @@ public class PlayerControls : MonoBehaviour
     }
     private void Start()
     {
-        if(File.Exists(Application.persistentDataPath + "/PlayerPosition.json"))
+        if (File.Exists(Application.persistentDataPath + "/PlayerPosition.json"))
         {
             JsonDataService dataService = new JsonDataService();
             var position = dataService.LoadData<Vector3Json>("PlayerPosition");
-            transform.position = new Vector3(position.x,position.y,position.z);
+            transform.position = new Vector3(position.x, position.y, position.z);
         }
     }
     private void FixedUpdate()
@@ -59,7 +59,7 @@ public class PlayerControls : MonoBehaviour
     //overworld action map
     public void Movement(InputAction.CallbackContext context)
     {
-        if(Time.timeScale == 1)
+        if (Time.timeScale == 1)
         {
             _MoveInput = context.ReadValue<Vector2>();
             if (_MoveInput.x < -0)
@@ -85,9 +85,9 @@ public class PlayerControls : MonoBehaviour
 
     public void Pause(InputAction.CallbackContext context)
     {
-        if(context.started && !PauseMenu.instance._IsPauseBlocked)
+        if (context.started && !PauseMenu.instance._IsPauseBlocked)
         {
-            if(Time.timeScale == 1)
+            if (Time.timeScale == 1)
             {
                 Time.timeScale = 0;
             }
@@ -122,7 +122,7 @@ public class PlayerControls : MonoBehaviour
     }
     public void Interact(InputAction.CallbackContext context)
     {
-        if (context.started && Time.timeScale ==1)
+        if (context.started && Time.timeScale == 1)
         {
             if (_CurrentInteractable)
             {
@@ -145,7 +145,7 @@ public class PlayerControls : MonoBehaviour
     //menu action map
     public void Select(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if (context.started)
             OnSelect.Invoke();
         if (_CurrentDialogue && context.started && Time.timeScale == 1)
         {
@@ -155,7 +155,7 @@ public class PlayerControls : MonoBehaviour
     private void OnApplicationQuit()
     {
         JsonDataService dataService = new JsonDataService();
-        dataService.SaveData("PlayerPosition", new Vector3Json(transform.position.x,transform.position.y,transform.position.z));
+        dataService.SaveData("PlayerPosition", new Vector3Json(transform.position.x, transform.position.y, transform.position.z));
     }
     //newtonsoft can't serialize vector3's because of all values in the struct
     public struct Vector3Json

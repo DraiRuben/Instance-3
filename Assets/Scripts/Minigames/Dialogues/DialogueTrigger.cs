@@ -89,6 +89,7 @@ public class DialogueTrigger : MonoBehaviour
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
         yield return FadeInOut.Instance.FadeToBlack();
         if(_Minigame)_Minigame.GetComponent<IInteractable>().Interact();
+        if(PlayerControls.Instance._CurrentDialogue == this) PlayerControls.Instance._CurrentDialogue = null;
         transform.parent.gameObject.SetActive(false);
 
     }

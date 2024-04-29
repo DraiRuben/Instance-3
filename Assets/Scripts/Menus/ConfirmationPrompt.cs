@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ConfirmationPrompt : MonoBehaviour
 {
-    public static ConfirmationPrompt Instance;
     [SerializeField] private TextMeshProUGUI _ConfirmationText;
     [SerializeField] private Button _ConfirmButton;
     [SerializeField] private Button _DenyButton;
@@ -14,8 +13,6 @@ public class ConfirmationPrompt : MonoBehaviour
     private Animator _Animator;
     private void Awake()
     {
-        if (Instance) Destroy(gameObject);
-        else Instance = this;
         _Animator = GetComponent<Animator>();
     }
     private void Start()

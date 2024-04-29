@@ -170,4 +170,8 @@ public class PlayerControls : MonoBehaviour
             this.z = z;
         }
     }
+    public void PlayWalkSound()
+    {
+        AudioManager._Instance.PlaySFX("playerWalk");
+    }
 }

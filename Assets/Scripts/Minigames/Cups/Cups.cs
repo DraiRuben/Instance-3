@@ -343,9 +343,9 @@ public class Cups : Minigame
 
         }
     }
-    protected override void TriggerMinigameEnd()
+    public override void TriggerMinigameEnd(bool ClosePreEmptively = false)
     {
-        base.TriggerMinigameEnd();
+        base.TriggerMinigameEnd(ClosePreEmptively);
         _CurrentShuffleCount = 0;
     }
     [Button]

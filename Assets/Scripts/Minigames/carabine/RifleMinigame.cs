@@ -131,6 +131,7 @@ public class RifleMinigame : Minigame
                 _Points++;
                 target.DoDestructionFeedback();
                 _ScoreText.SetText(_Points.ToString());
+                AudioManager._Instance.PlaySFX("targetHit");
                 this.Invoke(() => {
                     if (transform.GetChild(0).childCount <= 0) //targets child
                     {
@@ -207,7 +208,6 @@ public class RifleMinigame : Minigame
     {
         _ScreenPos = Input.mousePosition;
         _WorldPos = Camera.main.ScreenToWorldPoint(_ScreenPos);
-
         GameObject impact = Instantiate(_ImpactGameObject, _WorldPos, Quaternion.identity);
         Destroy(impact, 1f);
     }

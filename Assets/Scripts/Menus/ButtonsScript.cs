@@ -1,19 +1,47 @@
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ButtonsScript : MonoBehaviour
+public class ButtonsScript : Minigame
 {
     private string root;
+    private GameObject _FM;
+    private GameObject _RM;
+    private GameObject _CM;
+    private GameObject _MM;
 
     private void Start()
     {
         root = Application.persistentDataPath;
+        _FM = FishManager.Instance.gameObject;
+        _RM = RifleMinigame.Instance.gameObject;
+        _CM = Cups.Instance.gameObject;
+        _MM = MoleWacker.Instance.gameObject;
     }
     public void Quit()
     {
-        Application.Quit();
+        if (_FM.activeSelf)
+        {
+            _FM.GetComponent<Minigame>().TriggerMinigameEnd();
+        }
+        else if (_CM.activeSelf)
+        {
+            _CM.GetComponent<Minigame>().TriggerMinigameEnd();
+        }
+        else if(_RM.activeSelf)
+        {
+            _RM.GetComponent<Minigame>().TriggerMinigameEnd();
+        }
+        else if (_MM.activeSelf)
+        {
+            _MM.GetComponent<Minigame>().TriggerMinigameEnd();
+        }
+        else
+        {
+            Application.Quit();
+        }  
     }
 
     public void Load()

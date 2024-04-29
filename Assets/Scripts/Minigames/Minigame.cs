@@ -26,7 +26,7 @@ public class Minigame : MonoBehaviour, IInteractable
         throw new System.NotImplementedException();
     }
 
-    protected virtual void TriggerMinigameEnd() 
+    public virtual void TriggerMinigameEnd() 
     {
         StopAllCoroutines();
         Cursor.visible = true;

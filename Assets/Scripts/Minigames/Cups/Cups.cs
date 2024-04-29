@@ -340,7 +340,7 @@ public class Cups : Minigame
 
         }
     }
-    protected override void TriggerMinigameEnd()
+    public override void TriggerMinigameEnd()
     {
         base.TriggerMinigameEnd();
         _CurrentShuffleCount = 0;

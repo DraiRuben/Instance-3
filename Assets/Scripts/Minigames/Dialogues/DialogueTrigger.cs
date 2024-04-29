@@ -87,10 +87,10 @@ public class DialogueTrigger : MonoBehaviour
         _CurrentTextIndex = 0;
         StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
-        yield return new WaitForSeconds(0.5f);
-        transform.parent.gameObject.SetActive(false);
         yield return FadeInOut.Instance.FadeToBlack();
         _Minigame.GetComponent<IInteractable>().Interact();
+        transform.parent.gameObject.SetActive(false);
+
     }
     public bool CanInteract()
     {

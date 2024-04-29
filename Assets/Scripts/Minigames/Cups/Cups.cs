@@ -327,7 +327,7 @@ public class Cups : Minigame
                     GameObject _BugMsg = Instantiate(_BugMessagePrefab);
                     _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la balle est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
                 }, 1.0f, true);
-                this.Invoke(() => Application.Quit(),7.0f, true);
+                this.Invoke(() => Application.Quit(),10f, true);
             }
 
         }

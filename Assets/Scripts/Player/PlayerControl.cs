@@ -104,6 +104,11 @@ public class PlayerControls : MonoBehaviour
                     SettingsMenu.instance.gameObject.SetActive(false);
                     return;//return so only one menu at a time gets deactivated 
                 }
+                else if (ControlsMenu.Instance.gameObject.activeSelf)
+                {
+                    ControlsMenu.Instance.gameObject.SetActive(false);
+                    return;
+                }
                 else
                 {
                     Time.timeScale = 1;

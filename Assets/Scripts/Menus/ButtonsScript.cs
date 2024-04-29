@@ -76,7 +76,10 @@ public class ButtonsScript : MonoBehaviour
     {
         AudioMenu.instance.gameObject.SetActive(true);
     }
-
+    public void Controls()
+    {
+        ControlsMenu.Instance.gameObject.SetActive(true);
+    }
     public void Resume()
     {
         if (transform.parent.name == "PauseMenu")

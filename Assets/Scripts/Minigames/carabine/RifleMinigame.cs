@@ -34,7 +34,6 @@ public class RifleMinigame : Minigame
     private void Start()
     {
         MakeFakeGameFiles();
-        _IsBugged = IsBugged();
         if (File.Exists(Application.persistentDataPath + "/RifleSaveFile.json"))
         {
             JsonDataService dataService = new JsonDataService();
@@ -190,6 +189,7 @@ public class RifleMinigame : Minigame
     {
         if (CanInteract())
         {
+            _IsBugged = IsBugged();
             transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
 
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;

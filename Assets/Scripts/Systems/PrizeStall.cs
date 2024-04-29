@@ -10,13 +10,18 @@ public class PrizeStall : MonoBehaviour,IInteractable
     private int _FinalScore;
     private TypewriterByCharacter _TypeWriter;
     private bool _TextFullyDisplayed;
+    private Vector3 _InitialOffset;
 
-
+    private void Awake()
+    {
+        _InitialOffset = transform.position - Camera.main.transform.position;
+        _InitialOffset.z = 0;
+    }
     private void Start()
     {
         _TypeWriter = GetComponent<TypewriterByCharacter>();
         _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
-
+        gameObject.SetActive(false);
     }
     private void CalculateScore(MedalType medal)
     {
@@ -97,9 +102,10 @@ public class PrizeStall : MonoBehaviour,IInteractable
     [Button]
     public void Interact()
     {
-            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
-            gameObject.SetActive(true);
-            StandInteractableTrigger.Map.SetActive(false);
-            getReward();
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+        transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
+        gameObject.SetActive(true);
+        StandInteractableTrigger.Map.SetActive(false);
+        getReward();
     }
 }

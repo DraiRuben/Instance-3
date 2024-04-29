@@ -11,6 +11,7 @@ public class ButtonsScript : Minigame
     private GameObject _RM;
     private GameObject _CM;
     private GameObject _MM;
+    private bool test = true;
 
     private void Start()
     {
@@ -24,19 +25,19 @@ public class ButtonsScript : Minigame
     {
         if (_FM.activeSelf)
         {
-            _FM.GetComponent<Minigame>().TriggerMinigameEnd();
+            _FM.GetComponent<Minigame>().TriggerMinigameEnd(test);
         }
         else if (_CM.activeSelf)
         {
-            _CM.GetComponent<Minigame>().TriggerMinigameEnd();
+            _CM.GetComponent<Minigame>().TriggerMinigameEnd(test);
         }
         else if(_RM.activeSelf)
         {
-            _RM.GetComponent<Minigame>().TriggerMinigameEnd();
+            _RM.GetComponent<Minigame>().TriggerMinigameEnd(test);
         }
         else if (_MM.activeSelf)
         {
-            _MM.GetComponent<Minigame>().TriggerMinigameEnd();
+            _MM.GetComponent<Minigame>().TriggerMinigameEnd(test);
         }
         else
         {

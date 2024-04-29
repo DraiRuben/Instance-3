@@ -80,9 +80,9 @@ public sealed class FishManager : Minigame
     {
         SaveStats();
     }
-    public override void TriggerMinigameEnd()
+    public override void TriggerMinigameEnd(bool ClosePreEmptively = false)
     {
-        base.TriggerMinigameEnd();
+        base.TriggerMinigameEnd(ClosePreEmptively);
         _PoleManager._FishingTimer = 0;
         foreach(var fish in _FishList)
         {

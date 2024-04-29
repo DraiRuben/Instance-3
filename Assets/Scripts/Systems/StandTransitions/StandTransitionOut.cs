@@ -89,6 +89,8 @@ public class StandTransitionOut : MonoBehaviour
         PlayerControls.Instance._CurrentDialogue = null;
         yield return FadeInOut.Instance.FadeToBlack();
         PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+        StandInteractableTrigger.Map.SetActive(true);
+
     }
 
     private IEnumerator WaitUntilEvent(UnityEvent unityEvent)

@@ -145,6 +145,7 @@ public class Cups : Minigame
             _CanSelectCup = true;
             _CurrentShuffleCount++;
             _Ball.GetComponent<RectTransform>().anchoredPosition = _CupPositions[_BallCurrentIndex] + GetBallOffset(_BallCurrentIndex);
+            SetCupsInteractable(true);
             yield return new WaitUntil(() => _HasSelectedCup);
             //Shuffles again after cup has been selected, this effectively works like a recursive function, but with async execution
             StartCoroutine(ShuffleCupsRoutine());
@@ -232,7 +233,13 @@ public class Cups : Minigame
             yield return ShowBallRoutine();
         }
     }
-    
+    private void SetCupsInteractable(bool interactable)
+    {
+        foreach(var cup in _Cups)
+        {
+            cup.GetComponent<Button>().interactable = interactable;
+        }
+    }
     private IEnumerator CupSwitchRoutine(int cupIndex1, int cupIndex2)
     {
         //fetches both cup refs and their original locations
@@ -277,6 +284,7 @@ public class Cups : Minigame
     {
         if (_CanSelectCup)
         {
+            SetCupsInteractable(false);
             if (_IsBugResolved)
             {
                 _CanSelectCup = false;

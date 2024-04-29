@@ -951,6 +951,7 @@ MonoBehaviour:
   _TimerText: {fileID: 6592627035004337489}
   _ScoreText: {fileID: 1202994912672624169}
   _ShootShakeProfile: {fileID: 11400000, guid: 491a19c29f85ead4b9be8acf398c4dbd, type: 2}
+  _ImpactGameObject: {fileID: 7124156632239269167, guid: 33e99b41d42d74d4eaf606ed6879cafd, type: 3}
 --- !u!114 &5135910052624086899
 MonoBehaviour:
   m_ObjectHideFlags: 0

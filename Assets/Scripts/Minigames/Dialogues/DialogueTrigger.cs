@@ -28,12 +28,13 @@ public class DialogueTrigger : MonoBehaviour
         _TypeWriter = GetComponent<TypewriterByCharacter>();
         _TMP = GetComponent<TextMeshProUGUI>();
         _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
-        transform.parent.GetComponent<Image>().enabled = false;
+        transform.parent.gameObject.SetActive(false);
     }
 
     [Button]
     public void TriggerDialogue()
     {
+        transform.parent.gameObject.SetActive(true);
         //need to change input map to prevent player from moving
         if (_DialogueData)
         {
@@ -87,7 +88,7 @@ public class DialogueTrigger : MonoBehaviour
         StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
         yield return new WaitForSeconds(0.5f);
-        transform.parent.GetComponent<Image>().enabled = false;
+        transform.parent.gameObject.SetActive(false);
         yield return FadeInOut.Instance.FadeToBlack();
         _Minigame.GetComponent<IInteractable>().Interact();
     }

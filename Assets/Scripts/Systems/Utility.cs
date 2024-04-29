@@ -40,11 +40,18 @@ public static class Utility
         worldScreenCenterPos.z = 0;
         return worldScreenCenterPos;
     }
-    public static void Invoke(this MonoBehaviour mb, System.Action f, float delay)
+    public static void Invoke(this MonoBehaviour mb, System.Action f, float delay, bool UnscaledTime = false)
     {
-        mb.StartCoroutine(InvokeRoutine(f, delay));
+        if(UnscaledTime)
+            mb.StartCoroutine(InvokeRoutineUnscaled(f, delay));
+        else
+            mb.StartCoroutine(InvokeRoutine(f, delay));
     }
-
+    private static IEnumerator InvokeRoutineUnscaled(System.Action f, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        f();
+    }
     private static IEnumerator InvokeRoutine(System.Action f, float delay)
     {
         yield return new WaitForSeconds(delay);

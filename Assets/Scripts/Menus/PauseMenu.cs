@@ -1,9 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
     public static PauseMenu instance;
-
+    public bool _IsPauseBlocked;
     private void Awake()
     {
         if (!instance)
@@ -11,5 +12,9 @@ public class PauseMenu : MonoBehaviour
             instance = this;
         }
         gameObject.SetActive(false);
+    }
+    private void Update()
+    {
+        Cursor.visible = true;
     }
 }

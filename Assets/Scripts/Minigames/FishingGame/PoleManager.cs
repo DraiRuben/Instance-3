@@ -1,19 +1,28 @@
+using System;
 using System.Collections;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PoleManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _FishingScoreText;
     [SerializeField] private TextMeshProUGUI _FishingTimerText;
-
+    [SerializeField] private float _FishingCooldown;
     private bool _Fishing;
-    private int _FishingScore;
-    private float _FishingTimer;
+    public int _FishingScore;
+    [System.NonSerialized] public float _FishingTimer;
+    private Animator _Animator;
+    private float _LastFishTime;
+    private UnityEvent OnHookDown = new();
+    private UnityEvent OnHookReel = new();
 
-
+    private void Awake()
+    {
+        _Animator = GetComponent<Animator>();
+    }
     private void Start()
     {
         if (File.Exists(Application.persistentDataPath + "/FishSaveFile.json"))
@@ -24,18 +33,36 @@ public class PoleManager : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+
         if (_Fishing)
         {
+            Debug.Log(other.gameObject.name + " enter");
+            if (other.CompareTag("Fish"))
+            {
+                AudioManager._Instance.PlaySFX("fishCatch",true);
+                FishManager.Instance._FishList.Remove(other.gameObject);
+                _FishingScore++;
+                _Fishing = false;
+                other.gameObject.GetComponent<Fish>().DoDestructionFeedback();
+            }
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+
+        if (_Fishing)
+        {
+            Debug.Log(other.gameObject.name + " stay");
+
             if (other.CompareTag("Fish"))
             {
                 FishManager.Instance._FishList.Remove(other.gameObject);
                 _FishingScore++;
                 _Fishing = false;
-                Destroy(other.gameObject);
+                other.gameObject.GetComponent<Fish>().DoDestructionFeedback();
             }
         }
     }
-
     public void SaveStats()
     {
         JsonDataService FishSaveData = new JsonDataService();
@@ -63,7 +90,7 @@ public class PoleManager : MonoBehaviour
     private void Update()
     {
         _FishingTimer += Time.deltaTime;
-        _FishingScoreText.text = "Score : " + _FishingScore;
+        _FishingScoreText.text = _FishingScore.ToString();
         _FishingTimerText.text = "Time : " + Mathf.RoundToInt(FishManager.Instance._MinigameDuration - _FishingTimer);
 
         
@@ -72,14 +99,37 @@ public class PoleManager : MonoBehaviour
     {
         if (context.started && !_Fishing)
         {
-            StartCoroutine(Tofish());
+            if (Time.time - _LastFishTime > _FishingCooldown)
+            {
+                _LastFishTime = Time.time;
+                StartCoroutine(Tofish());
+            }
         }
     }
-
+    public void StartDownTime()
+    {
+        OnHookDown.Invoke();
+    }
+    public void StartReeling()
+    {
+        OnHookReel.Invoke();
+        AudioManager._Instance.PlaySFX("fishFail");
+    }
     IEnumerator Tofish()
     {
+        //time for hook to be down
+        _Animator.SetTrigger("Reel");
+        yield return WaitUntilEvent(OnHookDown);
         _Fishing = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return WaitUntilEvent(OnHookReel);
         _Fishing = false;
+    }
+    private IEnumerator WaitUntilEvent(UnityEvent unityEvent)
+    {
+        var trigger = false;
+        Action action = () => trigger = true;
+        unityEvent.AddListener(action.Invoke);
+        yield return new WaitUntil(() => trigger);
+        unityEvent.RemoveListener(action.Invoke);
     }
 }

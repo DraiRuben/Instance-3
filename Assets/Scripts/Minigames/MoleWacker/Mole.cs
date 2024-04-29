@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -7,17 +8,24 @@ using UnityEngine.Splines;
 
 public class Mole : MonoBehaviour, IPointerClickHandler
 {
-    public float _PersistenceTime;
-    public float _AppearanceDuration;
-    public int _OccupiedHole;
+    [System.NonSerialized] public float _PersistenceTime;
+    [System.NonSerialized] public float _AppearanceDuration;
+    [System.NonSerialized] public int _OccupiedHole;
 
     private float _MovementLerpAlpha;
     private bool _IsDisappearing;
     private bool _IsWacked;
     private Animator _Animator;
+
+    [Header("Behaviour")]
     [SerializeField] private float _DisappearanceDuration;
     [SerializeField] private float _DeathStunTime;
     [SerializeField] private float _ShowLocationYOffset = 1.5f;
+
+    [Header("Stun Parameters")]
+    [SerializeField, MinMaxSlider(0,1.5f)] private Vector2 _TimeBetweenStunFramesRange;
+    [SerializeField, MinMaxSlider(-1f,1f)] private Vector2 _StunDistanceXFrameOffsetRange;
+    [SerializeField, MinMaxSlider(-1f,1f)] private Vector2 _StunDistanceYFrameOffsetRange;
 
     private static Texture2D _MoleEasterEggTexture;
     private static Sprite _MoleEasterEggSprite;
@@ -31,7 +39,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         _MoleHiddenLocation = transform.position;
-        _MoleShownLocation = transform.position + new Vector3(0.0f, _ShowLocationYOffset, 0.0f);
+        _MoleShownLocation = transform.position + new Vector3(0.0f, _ShowLocationYOffset);
         StartCoroutine(MoleSpawnMovementRoutine());
 
         //easter egg that loads image from folder
@@ -48,6 +56,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         MakeMoleDisappear(true);
+        AudioManager._Instance.PlaySFX("moleHit", true);
     }
     public void SetLayer(int layer)
     {
@@ -64,9 +73,11 @@ public class Mole : MonoBehaviour, IPointerClickHandler
                 if (_IsWacked)
                 {
                     _Animator.SetTrigger("Dead");
-                    MoleWacker.Instance._ScoreText.SetText($"Score : {++MoleWacker.Instance._WinCount}");
+                    MoleWacker.Instance._WinCount++;
+                    MoleWacker.Instance._ScoreText.SetText(MoleWacker.Instance._WinCount.ToString());
                     MoleWacker.Instance.OnMoleWacked.Invoke();
                     _IsDisappearancePaused = true;
+                    StartCoroutine(StunMole());
                     this.Invoke(() => _IsDisappearancePaused = false, _DeathStunTime);
                 }
                 else
@@ -79,6 +90,26 @@ public class Mole : MonoBehaviour, IPointerClickHandler
                 StartCoroutine(MoleDisappearanceRoutine());
                 _IsDisappearing = true;
             }
+        }
+    }
+    private IEnumerator StunMole()
+    {
+        float lastOffsetGeneration =0;
+        float currentOffsetFrameDuration = Random.Range(_TimeBetweenStunFramesRange.x,_TimeBetweenStunFramesRange.y);
+        float OffsetX = 0;
+        float OffsetY = 0;
+        Vector3 nonOffsetPos = transform.position;
+        while (_IsDisappearancePaused)
+        {
+            if(Time.time-lastOffsetGeneration > currentOffsetFrameDuration)
+            {
+                lastOffsetGeneration = Time.time;
+                currentOffsetFrameDuration = Random.Range(_TimeBetweenStunFramesRange.x, _TimeBetweenStunFramesRange.y);
+                OffsetX = Random.Range(_StunDistanceXFrameOffsetRange.x, _StunDistanceXFrameOffsetRange.y);
+                OffsetY = Random.Range(_StunDistanceYFrameOffsetRange.x, _StunDistanceYFrameOffsetRange.y);
+                transform.position = nonOffsetPos + new Vector3(OffsetX, OffsetY);
+            }
+            yield return null;
         }
     }
     private IEnumerator MoleDisappearanceRoutine()

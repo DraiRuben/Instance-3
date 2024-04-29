@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,7 +15,7 @@ public class MoleHammer : MonoBehaviour
     {
         PlayerControls.Instance?.OnSelect.AddListener(() =>
         {
-            if(Time.time- _LastWackTime > 0.2f)
+            if(Time.time- _LastWackTime > 0.2f && Time.timeScale == 1)
             {
                 _LastWackTime = Time.time;
                 _Animator.SetTrigger("Wack");
@@ -31,9 +28,12 @@ public class MoleHammer : MonoBehaviour
     }
     public void Update()
     {
-        _MousePosition = Mouse.current.position.ReadValue();
-        _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
-        transform.position = new Vector3(_WorldMousePosition.x, _WorldMousePosition.y,0);
-        Cursor.visible = false;
+        if(Time.timeScale == 1)
+        {
+            _MousePosition = Mouse.current.position.ReadValue();
+            _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
+            transform.position = new Vector3(_WorldMousePosition.x, _WorldMousePosition.y, 0);
+            Cursor.visible = false;
+        }
     }
 }

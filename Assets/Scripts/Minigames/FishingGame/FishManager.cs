@@ -2,23 +2,21 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class FishManager : MonoBehaviour, IInteractable
+public sealed class FishManager : Minigame
 {
     public static FishManager Instance;
     [SerializeField] private GameObject _Fish;
     [SerializeField] private PoleManager _PoleManager;
     [SerializeField] private SplineContainer[] _Splines;
     [SerializeField] private AnimationCurve _SpeedCurve;
+    [SerializeField] private float _MaxConcurrentFishCount;
+    [SerializeField] private float _FishSpawnFrequency;
     [System.NonSerialized] public float _SpeedMult = 1;
     public List<GameObject> _FishList = new List<GameObject>();
     public int _BugValue;
-    private float _ElapsedTime;
-    public float _MinigameDuration;
-    public StandResults _StandResults;
 
     private Vector3 _InitialOffset;
 
@@ -31,56 +29,77 @@ public class FishManager : MonoBehaviour, IInteractable
     }
     private void Start()
     {
-        if (!Directory.Exists("Game")) Directory.CreateDirectory("Game");
-        if (!Directory.Exists("Game/Minigames")) Directory.CreateDirectory("Game/Minigames");
-        if (!Directory.Exists("Game/Minigames/FishingGame")) Directory.CreateDirectory("Game/Minigames/FishingGame");
-        StreamReader reader = new StreamReader("Game/Minigames/FishingGame/FishBehavior.txt");
-
-        _BugValue = reader.ReadLine() == "Enabled = true;" ? 0 : 1;
+        MakeFakeGameFiles();
         gameObject.SetActive(false);
 
     }
+    protected override void MakeFakeGameFiles()
+    {
+        base.MakeFakeGameFiles();
+        if (!Directory.Exists("Game/Minigames/FishingGame")) Directory.CreateDirectory("Game/Minigames/FishingGame");
+    }
+    protected override bool IsBugged()
+    {
+        if (!File.Exists("Game/Minigames/FishingGame/FishBehavior.txt"))
+        {
+            var file = File.Create("Game/Minigames/FishingGame/FishBehavior.txt");
+            StreamWriter writer = new StreamWriter(file);
+            writer.Write("Enabled = false;");
+            writer.Close();
+            _BugValue = 1;
+        }
+        else
+        {
+            StreamReader reader = new StreamReader("Game/Minigames/FishingGame/FishBehavior.txt");
+            _BugValue = reader.ReadLine() == "Enabled = true;" ? 0 : 1;
+            reader.Close();
+        }
+        return _BugValue == 1;
+    }
     private IEnumerator FishSpawn()
     {
+        float elapsedTime = 0f;
         float spawnTimer = 0f;
-        while (_ElapsedTime < _MinigameDuration)
+        while (elapsedTime < _MinigameDuration)
         {
-            if (_FishList.Count < 6 && spawnTimer>=2)
+            if (_FishList.Count < _MaxConcurrentFishCount && spawnTimer>= _FishSpawnFrequency)
             {
-                _FishList.Add(Instantiate(_Fish, new Vector2(0, 1), Quaternion.identity,transform));
-                _FishList[_FishList.Count - 1].GetComponent<Fish>()._Spline = _Splines;
+                _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity,transform));
+                _FishList[_FishList.Count - 1].transform.GetChild(0).GetComponent<Fish>()._Spline = _Splines;
                 spawnTimer = 0f;
             }
-            _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime / _MinigameDuration);
+            _SpeedMult = _SpeedCurve.Evaluate(elapsedTime / _MinigameDuration);
             spawnTimer += Time.deltaTime;
-            _ElapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         TriggerMinigameEnd();
 
     }
-    private void TriggerMinigameEnd()
+    private void OnApplicationQuit()
     {
-        Cursor.visible = true;
-        StopAllCoroutines();
-        _PoleManager.StopAllCoroutines();
-        _PoleManager.SaveStats();
-        gameObject.SetActive(false);
-        StandInteractableTrigger.Map.SetActive(true);
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
-
-
+        SaveStats();
     }
-    public bool CanInteract()
+    protected override void TriggerMinigameEnd()
     {
-        return _StandResults._Medal == MedalType.None;
+        base.TriggerMinigameEnd();
+        _PoleManager._FishingTimer = 0;
+        foreach(var fish in _FishList)
+        {
+            Destroy(fish);
+        }
+        _FishList.Clear();
+    }
+    protected override void SaveStats()
+    {
+        _PoleManager.SaveStats();
     }
     [Button]
-    public void Interact()
+    public override void Interact()
     {
         if (CanInteract())
         {
+            IsBugged();
             transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
 
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;

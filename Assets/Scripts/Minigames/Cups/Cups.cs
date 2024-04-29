@@ -329,7 +329,8 @@ public class Cups : Minigame
                 StreamWriter writer = new StreamWriter("crashdump.txt");
                 writer.Write("CODE_401_AUTH_FAILED");
                 writer.Close();
-
+                Time.timeScale = 0;
+                PauseMenu.instance._IsPauseBlocked = true;
                 this.Invoke(() =>
                 {
                     GameObject _BugMsg = Instantiate(_BugMessagePrefab);

@@ -85,7 +85,7 @@ public class PlayerControls : MonoBehaviour
 
     public void Pause(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if(context.started && !PauseMenu.instance._IsPauseBlocked)
         {
             if(Time.timeScale == 1)
             {

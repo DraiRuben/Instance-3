@@ -42,7 +42,6 @@ public class Minigame : MonoBehaviour, IInteractable
         else
         {
             PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
-            StandInteractableTrigger.Map.SetActive(true);
         }
         gameObject.SetActive(false);
         //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation

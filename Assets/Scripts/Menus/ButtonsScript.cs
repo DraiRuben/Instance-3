@@ -42,7 +42,12 @@ public class ButtonsScript : Minigame
         else
         {
             Application.Quit();
-        }  
+        }
+        if (PauseMenu.instance.gameObject.activeSelf)
+        {
+            PauseMenu.instance.gameObject.SetActive(false);
+            Time.timeScale = 1;
+        }
     }
 
     public void Load()

@@ -88,6 +88,7 @@ public sealed class FishManager : Minigame
         {
             Destroy(fish);
         }
+        _FishList.Clear();
     }
     protected override void SaveStats()
     {

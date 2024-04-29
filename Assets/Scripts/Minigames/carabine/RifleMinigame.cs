@@ -4,6 +4,7 @@ using System.Collections;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class RifleMinigame : Minigame
@@ -16,9 +17,13 @@ public class RifleMinigame : Minigame
     [SerializeField] private TextMeshProUGUI _TimerText;
     [SerializeField] private TextMeshProUGUI _ScoreText;
     [SerializeField] private CameraShakeProfile _ShootShakeProfile;
+    [SerializeField] private GameObject _ImpactGameObject;
     private CinemachineImpulseSource _ShootShakeSource;
     private int _Points;
     private float _ReloadTime;
+
+    private Vector2 _ScreenPos;
+    private Vector2 _WorldPos;
 
     private Vector3 _InitialOffset;
 
@@ -132,7 +137,6 @@ public class RifleMinigame : Minigame
                         TriggerMinigameEnd();
                     }
                 },0.2f);
-                
             }
         }
     }
@@ -169,6 +173,7 @@ public class RifleMinigame : Minigame
     private IEnumerator Shoot()
     {
         AudioManager._Instance.PlaySFX("shoot");
+        BulletImpact();
         CameraShakeManager.Instance.ShakeCamera(_ShootShakeSource,_ShootShakeProfile);
         yield return null;
         _ReloadTime = _ReloadSound.length + _ShootSound.length;
@@ -196,6 +201,15 @@ public class RifleMinigame : Minigame
             gameObject.SetActive(true);
             StartCoroutine(RunMinigame());
         }
+    }
+
+    private void BulletImpact()
+    {
+        _ScreenPos = Input.mousePosition;
+        _WorldPos = Camera.main.ScreenToWorldPoint(_ScreenPos);
+
+        GameObject impact = Instantiate(_ImpactGameObject, _WorldPos, Quaternion.identity);
+        Destroy(impact, 1f);
     }
 
 }

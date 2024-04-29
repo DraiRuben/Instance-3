@@ -24,15 +24,23 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySFX(string name)
+    public void PlaySFX(string name, bool overlapSounds = false)
     {
         Sound s = Array.Find(_SfxSounds, x => x._Name == name);
         if (s == null){
             print("SFX not found");
         }
         else{
-            _SfxSource.clip = s._AudioClip;
-            _SfxSource.Play();
+            if (overlapSounds)
+            {
+                _SfxSource.PlayOneShot(s._AudioClip);
+            }
+            else
+            {
+                _SfxSource.clip = s._AudioClip;
+
+                _SfxSource.Play();
+            }   
         }
     }
 

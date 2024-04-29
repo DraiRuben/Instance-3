@@ -49,21 +49,25 @@ MonoBehaviour:
   _MusicSounds: []
   _SfxSounds:
   - _Name: glitch
-    _AudioClip: {fileID: 8300000, guid: f6b98c29988870d449e6b498789dc5a5, type: 3}
+    _AudioClip: {fileID: 8300000, guid: a96ca18e907e9a048a53daed95fd8b75, type: 3}
   - _Name: reload
-    _AudioClip: {fileID: 8300000, guid: cf0add255ca4afd4b901391cd9b2d0f6, type: 3}
+    _AudioClip: {fileID: 8300000, guid: b214aceb72fd36248be2fda0326eac04, type: 3}
   - _Name: shoot
-    _AudioClip: {fileID: 8300000, guid: a88f765007557b241bebecfe8e263615, type: 3}
+    _AudioClip: {fileID: 8300000, guid: d3629d542462d9b4098b5bc5b70ba639, type: 3}
   - _Name: targetHit
-    _AudioClip: {fileID: 8300000, guid: a4629e9c526fd924ea30e2ba3798601a, type: 3}
-  - _Name: roadThrow
-    _AudioClip: {fileID: 8300000, guid: b7bdc2cdeb0bb544299d746e30495007, type: 3}
+    _AudioClip: {fileID: 8300000, guid: cf4060824c856ac4eb459830a33ffdd6, type: 3}
   - _Name: fishCatch
-    _AudioClip: {fileID: 8300000, guid: 7249bbafaedb3cf419437f9b2789799a, type: 3}
-  - _Name: roadFail
-    _AudioClip: {fileID: 8300000, guid: ea99314242c42d94a94c870a1c756f21, type: 3}
+    _AudioClip: {fileID: 8300000, guid: 71a15cc51796b6748991ba2fc43860eb, type: 3}
+  - _Name: fishFail
+    _AudioClip: {fileID: 8300000, guid: 1048e962d11a9f647a690f736ae1a76e, type: 3}
   - _Name: moleHit
-    _AudioClip: {fileID: 8300000, guid: 7a65a0ca2e136724284fb961c18f870b, type: 3}
+    _AudioClip: {fileID: 8300000, guid: 4c0c9b41034d3164998ad76487a7d3aa, type: 3}
+  - _Name: cupSlide
+    _AudioClip: {fileID: 8300000, guid: 54d1db8f2178d40429cdf4e9015c7480, type: 3}
+  - _Name: cupWin
+    _AudioClip: {fileID: 8300000, guid: 6dc675a98ce113f48b6d3e8a51faba11, type: 3}
+  - _Name: playerWalk
+    _AudioClip: {fileID: 8300000, guid: 08c3651e3a44bd243a376d91a4c07517, type: 3}
   _MusicSource: {fileID: 552521194276973735}
   _SfxSource: {fileID: 5263147049833090946}
 --- !u!1 &4905792099379423602

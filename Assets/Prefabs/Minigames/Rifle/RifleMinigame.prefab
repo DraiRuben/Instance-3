@@ -945,8 +945,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MinigameDuration: 40
-  _ReloadSound: {fileID: 8300000, guid: cf0add255ca4afd4b901391cd9b2d0f6, type: 3}
-  _ShootSound: {fileID: 8300000, guid: a88f765007557b241bebecfe8e263615, type: 3}
+  _ReloadSound: {fileID: 8300000, guid: b214aceb72fd36248be2fda0326eac04, type: 3}
+  _ShootSound: {fileID: 8300000, guid: d3629d542462d9b4098b5bc5b70ba639, type: 3}
   _IsBugged: 0
   _TimerText: {fileID: 6592627035004337489}
   _ScoreText: {fileID: 1202994912672624169}

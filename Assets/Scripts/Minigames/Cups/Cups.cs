@@ -254,6 +254,7 @@ public class Cups : Minigame
         float timeSinceSwitchStart = 0.0f;
         float switchDuration = _ShuffleDuration.Evaluate((float)_CurrentShuffleCount / ((int)_MinigameDuration));
         Vector3 displacementVector;
+        AudioManager._Instance.PlaySFX("cupSlide");
         while (lerpAlpha < 1.0f)
         {
             displacementVector = cupUpVector * _DisplacementScalar * _CupDisplacementEvolution.Evaluate(lerpAlpha);
@@ -301,6 +302,7 @@ public class Cups : Minigame
                     StartCoroutine(ChooseCupAnimation(true,selectedIndex));
                     this.Invoke(() => _HasSelectedCup = true, 3f);
                     Debug.Log("Win");
+                    AudioManager._Instance.PlaySFX("cupWin");
                 }
                 else
                 {

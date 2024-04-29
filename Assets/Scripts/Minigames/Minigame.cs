@@ -26,17 +26,35 @@ public class Minigame : MonoBehaviour, IInteractable
         throw new System.NotImplementedException();
     }
 
-    protected virtual void TriggerMinigameEnd() 
+    public virtual void TriggerMinigameEnd(bool ClosePreEmptively = false) 
     {
         StopAllCoroutines();
         Cursor.visible = true;
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        StandInteractableTrigger.Map.SetActive(true);
+        
+        
 
-        SaveStats();
-        StandTransitionOut.Instance.StartCoroutine(StandTransitionOut.Instance.TransitionOut());
 
+        if (!ClosePreEmptively)
+        {
+            SaveStats();
+            StandTransitionOut.Instance.StartCoroutine(StandTransitionOut.Instance.TransitionOut());
+            StandInteractableTrigger.Map.SetActive(true);
+            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else
+        {
+            FadeInOut.Instance.StartCoroutine(fadeinout());
+            PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+        }
         gameObject.SetActive(false);
         //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation
+    }
+
+    private IEnumerator fadeinout()
+    {
+        yield return FadeInOut.Instance.FadeToBlack();
+        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
+        yield return FadeInOut.Instance.FadeToBlack();
     }
 }

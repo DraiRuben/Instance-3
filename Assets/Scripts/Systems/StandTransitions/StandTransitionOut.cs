@@ -22,7 +22,6 @@ public class StandTransitionOut : MonoBehaviour
             
             if (FishManager.Instance._StandResults._Medal != MedalType.None)
             {
-                Debug.Log(2);
                 _DialogueWindow._DialoguesTexts.Add
                 ("avec un score de " + FishManager.Instance._StandResults._Points + ", tu mérites la" +
                 _TranslationList[(int)FishManager.Instance._StandResults._Medal] +
@@ -31,7 +30,6 @@ public class StandTransitionOut : MonoBehaviour
             }
             else
             {
-                Debug.Log(3);
                 _DialogueWindow._DialoguesTexts.Add("Mince alors…" +
                     " Tu n’as pas pêché assez de poissons pour obtenir une médaille… Peut-être devrais-tu réessayer ?");
             }

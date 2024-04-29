@@ -39,7 +39,7 @@ public class PoleManager : MonoBehaviour
             Debug.Log(other.gameObject.name + " enter");
             if (other.CompareTag("Fish"))
             {
-                AudioManager._Instance.PlaySFX("fishCatch");
+                AudioManager._Instance.PlaySFX("fishCatch",true);
                 FishManager.Instance._FishList.Remove(other.gameObject);
                 _FishingScore++;
                 _Fishing = false;

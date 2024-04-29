@@ -56,7 +56,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         MakeMoleDisappear(true);
-        AudioManager._Instance.PlaySFX("moleHit");
+        AudioManager._Instance.PlaySFX("moleHit", true);
     }
     public void SetLayer(int layer)
     {

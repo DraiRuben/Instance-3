@@ -172,6 +172,6 @@ public class PlayerControls : MonoBehaviour
     }
     public void PlayWalkSound()
     {
-        AudioManager._Instance.PlaySFX("playerWalk");
+        AudioManager._Instance.PlaySFX("playerWalk", true);
     }
 }

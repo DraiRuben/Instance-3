@@ -13,7 +13,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(TypewriterByCharacter))]
 public class DialogueTrigger : MonoBehaviour
 {
-    private TypewriterByCharacter _TypeWriter;
+    [NonSerialized] public TypewriterByCharacter _TypeWriter;
     private TextMeshProUGUI _TMP;
     [SerializeField] private DialogueSO _DialogueData;
     public List<string> _DialoguesTexts;
@@ -88,7 +88,7 @@ public class DialogueTrigger : MonoBehaviour
         StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
         yield return FadeInOut.Instance.FadeToBlack();
-        _Minigame.GetComponent<IInteractable>().Interact();
+        _Minigame?.GetComponent<IInteractable>().Interact();
         transform.parent.gameObject.SetActive(false);
 
     }

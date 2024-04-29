@@ -44,6 +44,8 @@ public class Cups : Minigame
 
     private List<Vector2> _CupPositions;
     private List<GameObject> _Cups;
+    private GameObject _CupGagné;
+    private GameObject _CupPerdu;
     private bool _HasSelectedCup;
     private bool _CanSelectCup;
     private bool _IsBugResolved;
@@ -162,7 +164,7 @@ public class Cups : Minigame
             _CupPositions.Clear();
             if (_Cups.Count > cupCount)
             {
-                for (int i = cupCount - 1; i > _Cups.Count; i++)
+                for (int i = cupCount - 1; i < _Cups.Count; i++)
                 {
                     Destroy(_Cups[i]);
                     _Cups.RemoveAt(i);
@@ -282,6 +284,9 @@ public class Cups : Minigame
                 if (selectedIndex == _BallCurrentIndex)
                 {
                     //win feedback
+                    _Cups[selectedIndex].gameObject.transform.GetChild(0).gameObject.SetActive(true);
+                    _Cups[selectedIndex].gameObject.transform.GetChild(0).gameObject.GetComponent<Animator>().SetTrigger("Gagné");
+
                     _WinCount++;
                     _ScoreText.SetText(_WinCount.ToString());
                     OnWin.Invoke();
@@ -292,6 +297,10 @@ public class Cups : Minigame
                 else
                 {
                     //lose feedback
+                    _Cups[selectedIndex].gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                    _Cups[selectedIndex].gameObject.transform.GetChild(1).gameObject.GetComponent<Animator>().SetTrigger("Perdu");
+                    //_CupPerdu.SetActive(true);
+                    //_CupPerdu.GetComponent<Animator>().SetTrigger("Perdu");
                     _LoseCount++;
                     OnLose.Invoke();
                     StartCoroutine(ChooseCupAnimation(false, selectedIndex));

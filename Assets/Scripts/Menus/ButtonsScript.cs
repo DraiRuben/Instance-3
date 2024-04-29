@@ -18,10 +18,10 @@ public class ButtonsScript : Minigame
     {
        
         root = Application.persistentDataPath;
-        _FM = FishManager.Instance.gameObject;
-        _RM = RifleMinigame.Instance.gameObject;
-        _CM = Cups.Instance.gameObject;
-        _MM = MoleWacker.Instance.gameObject;
+        _FM = FishManager.Instance?.gameObject;
+        _RM = RifleMinigame.Instance?.gameObject;
+        _CM = Cups.Instance?.gameObject;
+        _MM = MoleWacker.Instance?.gameObject;
 
         root = Application.persistentDataPath;
         var files = from file in Directory.EnumerateFiles(root) select file;

@@ -13,7 +13,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(TypewriterByCharacter))]
 public class DialogueTrigger : MonoBehaviour
 {
-    private TypewriterByCharacter _TypeWriter;
+    [NonSerialized] public TypewriterByCharacter _TypeWriter;
     private TextMeshProUGUI _TMP;
     [SerializeField] private DialogueSO _DialogueData;
     public List<string> _DialoguesTexts;
@@ -28,12 +28,13 @@ public class DialogueTrigger : MonoBehaviour
         _TypeWriter = GetComponent<TypewriterByCharacter>();
         _TMP = GetComponent<TextMeshProUGUI>();
         _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
-        transform.parent.GetComponent<Image>().enabled = false;
+        transform.parent.gameObject.SetActive(false);
     }
 
     [Button]
     public void TriggerDialogue()
     {
+        transform.parent.gameObject.SetActive(true);
         //need to change input map to prevent player from moving
         if (_DialogueData)
         {
@@ -86,10 +87,10 @@ public class DialogueTrigger : MonoBehaviour
         _CurrentTextIndex = 0;
         StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
-        yield return new WaitForSeconds(0.5f);
-        transform.parent.GetComponent<Image>().enabled = false;
         yield return FadeInOut.Instance.FadeToBlack();
-        _Minigame.GetComponent<IInteractable>().Interact();
+        if(_Minigame)_Minigame.GetComponent<IInteractable>().Interact();
+        transform.parent.gameObject.SetActive(false);
+
     }
     public bool CanInteract()
     {

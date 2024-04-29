@@ -12,9 +12,8 @@ public class PoleManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _FishingTimerText;
     [SerializeField] private float _FishingCooldown;
     private bool _Fishing;
-    private int _FishingScore;
+    public int _FishingScore;
     [System.NonSerialized] public float _FishingTimer;
-    private Vector3 HookStartPos;
     private Animator _Animator;
     private float _LastFishTime;
     private UnityEvent OnHookDown = new();

@@ -30,10 +30,12 @@ public class Minigame : MonoBehaviour, IInteractable
     {
         StopAllCoroutines();
         Cursor.visible = true;
-        StandInteractableTrigger.Map.SetActive(true);
         PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+        StandInteractableTrigger.Map.SetActive(true);
+
         SaveStats();
+        StandTransitionOut.Instance.StartCoroutine(StandTransitionOut.Instance.TransitionOut());
+
         gameObject.SetActive(false);
         //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation
     }

@@ -6,10 +6,21 @@ using UnityEngine.SceneManagement;
 public class ButtonsScript : MonoBehaviour
 {
     private string root;
-
+    private bool _HasSave;
+    [SerializeField] private ConfirmationPrompt _NewGamePrompt;
     private void Start()
     {
         root = Application.persistentDataPath;
+        var files = from file in Directory.EnumerateFiles(root) select file;
+        foreach (var file in files)
+        {
+            if (file.EndsWith(".json"))
+            {
+                _HasSave = true;
+                return;
+            }
+        }
+        _HasSave = false;
     }
     public void Quit()
     {
@@ -18,29 +29,43 @@ public class ButtonsScript : MonoBehaviour
 
     public void Load()
     {
-        var files = from file in Directory.EnumerateFiles(root) select file;
-        foreach(var file in files)
+        if (_HasSave)
         {
-            if (file.EndsWith(".json"))
-            {
-                SceneManager.LoadSceneAsync(1);
-                return;
-            }
+            SceneManager.LoadSceneAsync(1);
+            return;
         }
     }
     public void Begin()
     {
-        var files = from file in Directory.EnumerateFiles(root) select file;
-        if (files.Count() > 0)
+        //shows confirmation prompt in case the user already has a save file
+        if (_HasSave)
         {
-            foreach (var file in files)
+            _NewGamePrompt.OpenConfirmationPrompt(
+            () =>
             {
-                if(!file.EndsWith(".log"))
-                    File.Delete(file);
-            }
+                var files = from file in Directory.EnumerateFiles(root) select file;
+                if (files.Count() > 0)
+                {
+                    foreach (var file in files)
+                    {
+                        if (!file.EndsWith(".log"))
+                            File.Delete(file);
+                    }
+                }
+                if (Directory.Exists("Game")) Directory.Delete("Game", true);
+                SceneManager.LoadSceneAsync(1);
+                _NewGamePrompt.ChangePromptState();
+            }, 
+            () => 
+            {
+                _NewGamePrompt.ChangePromptState();
+            }, 
+            "Si vous continuez, toute progression sera effacée !");
         }
-        if (Directory.Exists("Game")) Directory.Delete("Game",true);
-        SceneManager.LoadSceneAsync(1);
+        else
+        {
+            SceneManager.LoadSceneAsync(1);
+        }
     }
     public void Settings()
     {

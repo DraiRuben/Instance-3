@@ -86,7 +86,6 @@ public class PrizeStall : MonoBehaviour,IInteractable
             Debug.Log("you can't get anything");
         }
         _DialogueWindow.TriggerDialogue();
-        PlayerControls.Instance._CurrentDialogue = null;
         _FinalScore = 0;
     }
 

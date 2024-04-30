@@ -46,7 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ce554fedd538241954729b6e6ba44d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _MusicSounds: []
+  _MusicSounds:
+  - _Name: mainScreenLoop
+    _AudioClip: {fileID: 8300000, guid: 0d10c03e022095d46a48f5c436266618, type: 3}
+  - _Name: funfairLoop
+    _AudioClip: {fileID: 8300000, guid: 22e45d24ac89b614ead9d64a47584e36, type: 3}
   _SfxSounds:
   - _Name: glitch
     _AudioClip: {fileID: 8300000, guid: a96ca18e907e9a048a53daed95fd8b75, type: 3}
@@ -68,6 +72,10 @@ MonoBehaviour:
     _AudioClip: {fileID: 8300000, guid: 6dc675a98ce113f48b6d3e8a51faba11, type: 3}
   - _Name: playerWalk
     _AudioClip: {fileID: 8300000, guid: 08c3651e3a44bd243a376d91a4c07517, type: 3}
+  - _Name: cupFail
+    _AudioClip: {fileID: 8300000, guid: 578e2fbdbeff25d47a760f835fc3ceb3, type: 3}
+  - _Name: uiClick
+    _AudioClip: {fileID: 8300000, guid: 5afb4a33213a28e4fa02fbcb0e94bb8b, type: 3}
   _MusicSource: {fileID: 552521194276973735}
   _SfxSource: {fileID: 5263147049833090946}
 --- !u!1 &4905792099379423602

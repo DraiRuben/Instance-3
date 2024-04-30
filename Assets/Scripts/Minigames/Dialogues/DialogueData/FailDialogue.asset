@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: FailDialogue
   m_EditorClassIdentifier: 
   _Texts:
-  - "alors on revient joue alors qu'on a deja une m\xE9daille. Laisse en un peu autre
-    mon gar\xE7on puis je suis sur que les autres stand son tout aussi amusant que
-    le miens."
+  - "Alors on revient jouer alors qu'on a d\xE9j\xE0 une m\xE9daille ? Laisse en
+    un peu pour les autres mon gar\xE7on !"
+  - "En plus je suis s\xFBr que les autres stands sont tous aussi amusants que le
+    mien."

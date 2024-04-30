@@ -92,7 +92,7 @@ public class PrizeStall : MonoBehaviour,IInteractable
         {
             _ConfettiEffect.transform.position = _RatPlush.transform.position;
             _ConfettiEffect.Play();
-            _DialogueWindow._DialoguesTexts.Add("Avec si peu de ticket tu peux avoir cette peluche de rat");
+            _DialogueWindow._DialoguesTexts.Add("Avec si peu de tickets tu peux avoir cette peluche de rat");
             Debug.Log("you got the rat");
         }
         else

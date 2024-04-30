@@ -11,9 +11,9 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     [System.NonSerialized] public float _PersistenceTime;
     [System.NonSerialized] public float _AppearanceDuration;
     [System.NonSerialized] public int _OccupiedHole;
+    [SerializeField] private int _ScoreGain;
 
     private float _MovementLerpAlpha;
-    private bool _IsDisappearing;
     private bool _IsWacked;
     private Animator _Animator;
 
@@ -23,9 +23,9 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     [SerializeField] private float _ShowLocationYOffset = 1.5f;
 
     [Header("Stun Parameters")]
-    [SerializeField, MinMaxSlider(0,1.5f)] private Vector2 _TimeBetweenStunFramesRange;
-    [SerializeField, MinMaxSlider(-1f,1f)] private Vector2 _StunDistanceXFrameOffsetRange;
-    [SerializeField, MinMaxSlider(-1f,1f)] private Vector2 _StunDistanceYFrameOffsetRange;
+    [SerializeField, MinMaxSlider(0, 1.5f)] private Vector2 _TimeBetweenStunFramesRange;
+    [SerializeField, MinMaxSlider(-1f, 1f)] private Vector2 _StunDistanceXFrameOffsetRange;
+    [SerializeField, MinMaxSlider(-1f, 1f)] private Vector2 _StunDistanceYFrameOffsetRange;
 
     private static Texture2D _MoleEasterEggTexture;
     private static Sprite _MoleEasterEggSprite;
@@ -51,12 +51,15 @@ public class Mole : MonoBehaviour, IPointerClickHandler
             _MoleEasterEggSprite = Sprite.Create(_MoleEasterEggTexture, new Rect(0, 0, _MoleEasterEggTexture.width, _MoleEasterEggTexture.height), new Vector2(0, 0), 100, 0, SpriteMeshType.Tight);
         }
         GetComponent<SpriteRenderer>().sprite = _MoleEasterEggSprite;*/
-        
+
     }
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        MakeMoleDisappear(true);
-        AudioManager._Instance.PlaySFX("moleHit", true);
+        if (!_IsWacked)
+        {
+            MakeMoleDisappear(true);
+        }
     }
     public void SetLayer(int layer)
     {
@@ -65,43 +68,37 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     }
     private void MakeMoleDisappear(bool _KillMole = false)
     {
-        if (true/*_MovementLerpAlpha > 0.5f*/)
+        _IsWacked = _KillMole;
+        StopAllCoroutines();
+        if (_IsWacked)
         {
-            if (!_IsDisappearing ||(_KillMole && !_IsWacked))
-            {
-                _IsWacked = _KillMole;
-                if (_IsWacked)
-                {
-                    _Animator.SetTrigger("Dead");
-                    MoleWacker.Instance._WinCount++;
-                    MoleWacker.Instance._ScoreText.SetText(MoleWacker.Instance._WinCount.ToString());
-                    MoleWacker.Instance.OnMoleWacked.Invoke();
-                    _IsDisappearancePaused = true;
-                    StartCoroutine(StunMole());
-                    this.Invoke(() => _IsDisappearancePaused = false, _DeathStunTime);
-                }
-                else
-                {
-                    _Animator.SetTrigger("Gone");
-                    MoleWacker.Instance._LoseCount++;
-                    MoleWacker.Instance.OnMoleLost.Invoke();
-                    
-                }
-                StartCoroutine(MoleDisappearanceRoutine());
-                _IsDisappearing = true;
-            }
+            AudioManager._Instance.PlaySFX("moleHit", true);
+            _Animator.SetTrigger("Dead");
+            MoleWacker.Instance._WinCount += _ScoreGain;
+            MoleWacker.Instance._ScoreText.SetText(MoleWacker.Instance._WinCount.ToString());
+            MoleWacker.Instance.OnMoleWacked.Invoke();
+            _IsDisappearancePaused = true;
+            StartCoroutine(StunMole());
+            this.Invoke(() => _IsDisappearancePaused = false, _DeathStunTime);
         }
+        else
+        {
+            _Animator.SetTrigger("Gone");
+            MoleWacker.Instance._LoseCount++;
+            MoleWacker.Instance.OnMoleLost.Invoke();
+        }
+        StartCoroutine(MoleDisappearanceRoutine());
     }
     private IEnumerator StunMole()
     {
-        float lastOffsetGeneration =0;
-        float currentOffsetFrameDuration = Random.Range(_TimeBetweenStunFramesRange.x,_TimeBetweenStunFramesRange.y);
+        float lastOffsetGeneration = 0;
+        float currentOffsetFrameDuration = Random.Range(_TimeBetweenStunFramesRange.x, _TimeBetweenStunFramesRange.y);
         float OffsetX = 0;
         float OffsetY = 0;
         Vector3 nonOffsetPos = transform.position;
         while (_IsDisappearancePaused)
         {
-            if(Time.time-lastOffsetGeneration > currentOffsetFrameDuration)
+            if (Time.time - lastOffsetGeneration > currentOffsetFrameDuration)
             {
                 lastOffsetGeneration = Time.time;
                 currentOffsetFrameDuration = Random.Range(_TimeBetweenStunFramesRange.x, _TimeBetweenStunFramesRange.y);
@@ -112,9 +109,10 @@ public class Mole : MonoBehaviour, IPointerClickHandler
             yield return null;
         }
     }
+
     private IEnumerator MoleDisappearanceRoutine()
     {
-        float currentDisappearanceLerpAlpha = 0.0f;
+        float currentDisappearanceLerpAlpha = Mathf.InverseLerp(_MoleShownLocation.y, _MoleHiddenLocation.y, transform.position.y);
         while (currentDisappearanceLerpAlpha < 1)
         {
             if (_IsDisappearancePaused)
@@ -145,6 +143,8 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         }
         yield return new WaitForSeconds(_PersistenceTime);
         if (!_IsWacked)
+        {
             MakeMoleDisappear();
+        }
     }
 }

@@ -36,7 +36,11 @@ public class PlayerControls : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);
+        if(_MoveInput.y == 0.1f ||_MoveInput.y == -0.1f)
+            _RBody.AddForce(new Vector2(_MoveInput.x,0) * _Speed * Time.fixedDeltaTime);
+        else
+            _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);
+
         _RBody.velocity = Vector2.ClampMagnitude(_RBody.velocity, 50);
 
     }
@@ -61,32 +65,43 @@ public class PlayerControls : MonoBehaviour
     {
         if (Time.timeScale == 1)
         {
-            _MoveInput = context.ReadValue<Vector2>();
-            if (_MoveInput.x < -0)
-            {
-                _SpriteRenderer.flipX = true;
-            }
-            else if (_MoveInput.x > 0)
-            {
-                _SpriteRenderer.flipX = false;
-            }
-
-            if (_MoveInput.x != 0.0f || _MoveInput.y != 0.0f)
-            {
-                _Animator.SetBool("isWalking", true);
-            }
-            else
-            {
-                _Animator.SetBool("isWalking", false);
-            }
+            var tempInput = context.ReadValue<Vector2>();
+            UpdatePlayerAnim(tempInput);
         }
     }
+    private void UpdatePlayerAnim(Vector2 movementInput)
+    {
+        if (movementInput.x < -0)
+        {
+            _SpriteRenderer.flipX = true;
+        }
+        else if (movementInput.x > 0)
+        {
+            _SpriteRenderer.flipX = false;
+        }
 
+
+        if (movementInput.y == 0 && movementInput.x == 0)
+        {
+            if (_MoveInput.y > 0)
+            {
+                movementInput.y = 0.1f;
+            }
+            else if (_MoveInput.y < 0)
+            {
+                movementInput.y = -0.1f;
+            }
+        }
+        _MoveInput = movementInput;
+        _Animator.SetFloat("X", _MoveInput.x);
+        _Animator.SetFloat("Y", _MoveInput.y);
+    }
 
     public void Pause(InputAction.CallbackContext context)
     {
         if (context.started && !PauseMenu.instance._IsPauseBlocked)
         {
+            UpdatePlayerAnim(new(0,0));
             if (Time.timeScale == 1)
             {
                 Time.timeScale = 0;
@@ -131,12 +146,10 @@ public class PlayerControls : MonoBehaviour
         {
             if (_CurrentInteractable)
             {
-                if (_CurrentInteractable.CanInteract())
-                {
-                    _PlayerInput.SwitchCurrentActionMap("Menus");
-                    if (_CurrentInteractable._Dialogue) _CurrentDialogue = _CurrentInteractable._Dialogue;
-                }
                 _CurrentInteractable.Interact();
+                _PlayerInput.SwitchCurrentActionMap("Menus");
+                if (_CurrentInteractable._CurrentDialogue) _CurrentDialogue = _CurrentInteractable._CurrentDialogue;
+
             }
         }
     }

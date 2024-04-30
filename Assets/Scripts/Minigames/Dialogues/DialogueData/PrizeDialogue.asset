@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PrizeDialogue
   m_EditorClassIdentifier: 
   _Texts:
-  - On viens voir les recompenses ? Dis moi combien tu as de tickets que je voie
-    ce que tu peux avoir.
+  - "On vient voir les r\xE9compenses ? Dis moi combien tu as de tickets que je voie
+    ce que tu peux avoir."

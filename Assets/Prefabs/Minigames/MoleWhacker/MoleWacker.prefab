@@ -302,6 +302,7 @@ MonoBehaviour:
   _WinCount: 0
   _LoseCount: 0
   _MolePrefab: {fileID: 6952512965390301007, guid: e9fcdccb010e4db46aef338d6ed51b83, type: 3}
+  _GoldenMolePrefab: {fileID: 62909539816334713, guid: 6a6c58e0b3958d740b83ebe657cc72dd, type: 3}
   _BugMessagePrefab: {fileID: 3761772775732950927, guid: b445283a5fcdd4e48a41831ac52fcf6d, type: 3}
   _SpawnCooldownEvolution:
     serializedVersion: 2
@@ -309,15 +310,15 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -2.5509453
-      outSlope: -2.5509453
+      inSlope: -2.112107
+      outSlope: -2.112107
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.051973443
+      outWeight: 0.026938776
     - serializedVersion: 3
       time: 1
-      value: 0.2
+      value: 0.4
       inSlope: -0.10042758
       outSlope: -0.10042758
       tangentMode: 0
@@ -334,12 +335,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -2.5509453
-      outSlope: -2.5509453
+      inSlope: -2.140558
+      outSlope: -2.140558
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.051973443
+      outWeight: 0.026122445
     - serializedVersion: 3
       time: 1
       value: 0.2
@@ -358,29 +359,30 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.4
-      inSlope: 0
-      outSlope: 0
+      value: 1
+      inSlope: -1.4328971
+      outSlope: -1.4328971
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.035693225
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
+      value: 0.4
+      inSlope: -0.02824024
+      outSlope: -0.02824024
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.08474594
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _MoleMovementSpeedBase: 1
+  _MoleMovementSpeedBase: 0.67
   _TimerText: {fileID: 822639336310328917}
   _ScoreText: {fileID: 6589908841456993376}
   _MoleSpawnYOffset: 1.5
+  _GoldenMoleSpawnChance: 0.05
 --- !u!1 &1093309596337894360
 GameObject:
   m_ObjectHideFlags: 0

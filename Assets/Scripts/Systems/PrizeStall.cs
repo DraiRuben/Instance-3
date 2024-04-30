@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 public class PrizeStall : MonoBehaviour,IInteractable
 {
     [SerializeField] private DialogueTrigger _DialogueWindow;
+    [SerializeField] private ParticleSystem _ConfettiEffect;
+    [SerializeField] private GameObject _BearPlush;
+    [SerializeField] private GameObject _RabbitPlush;
+    [SerializeField] private GameObject _RatPlush;
     private int _FinalScore;
     private TypewriterByCharacter _TypeWriter;
     private bool _TextFullyDisplayed;
@@ -72,16 +76,22 @@ public class PrizeStall : MonoBehaviour,IInteractable
         CalculateScore(FishManager.Instance._StandResults._Medal);
         if (_FinalScore >= 160)
         {
+            _ConfettiEffect.transform.position = _BearPlush.transform.position;
+            _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Wow avec autant de tickets tu peux avoir cette ours en peluche");
             Debug.Log("you got the bear");
         }
         else if(_FinalScore >= 80)
         {
+            _ConfettiEffect.transform.position = _RabbitPlush.transform.position;
+            _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Avec ton nombre de tickets je peux te proposer ce lapin en peluche");
             Debug.Log("you got the rabbit");
         }
         else if(_FinalScore >=35)
         {
+            _ConfettiEffect.transform.position = _RatPlush.transform.position;
+            _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Avec si peu de ticket tu peux avoir cette peluche de rat");
             Debug.Log("you got the rat");
         }

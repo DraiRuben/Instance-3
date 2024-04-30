@@ -131,12 +131,10 @@ public class PlayerControls : MonoBehaviour
         {
             if (_CurrentInteractable)
             {
-                if (_CurrentInteractable.CanInteract())
-                {
-                    _PlayerInput.SwitchCurrentActionMap("Menus");
-                    if (_CurrentInteractable._Dialogue) _CurrentDialogue = _CurrentInteractable._Dialogue;
-                }
                 _CurrentInteractable.Interact();
+                _PlayerInput.SwitchCurrentActionMap("Menus");
+                if (_CurrentInteractable._CurrentDialogue) _CurrentDialogue = _CurrentInteractable._CurrentDialogue;
+
             }
         }
     }

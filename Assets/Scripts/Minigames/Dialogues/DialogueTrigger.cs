@@ -21,6 +21,7 @@ public class DialogueTrigger : MonoBehaviour
     private bool _TextFullyDisplayed;
     private int _CurrentTextIndex;
     private bool _IsClosing;
+    [SerializeField] private bool _EnableMapOnClose;
     private List<string> _UsedDialogues;
     // Start is called before the first frame update
     void Start()
@@ -91,7 +92,11 @@ public class DialogueTrigger : MonoBehaviour
         if(_Minigame)_Minigame.GetComponent<IInteractable>().Interact();
         if(PlayerControls.Instance._CurrentDialogue == this) PlayerControls.Instance._CurrentDialogue = null;
         transform.parent.gameObject.SetActive(false);
-
+        if (_EnableMapOnClose) 
+        {
+            StandInteractableTrigger.Map.SetActive(true);
+            PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+        }
     }
     public bool CanInteract()
     {

@@ -1,12 +1,13 @@
 using Sirenix.OdinInspector;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StandInteractableTrigger : MonoBehaviour, IInteractable
 {
     public static GameObject Map;
     public DialogueTrigger _Dialogue;
+    [SerializeField] private DialogueTrigger _FailDialogue;
+    public DialogueTrigger _CurrentDialogue;
     public GameObject _Minigame;
 
     [SerializeField] private bool _OpenPromptBefore;
@@ -15,9 +16,12 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
     private void Start()
     {
         if (!Map) Map = transform.parent.parent.gameObject;
+        _CurrentDialogue = _Dialogue;
+
     }
     public void Interact()
     {
+        _CurrentDialogue = _Dialogue;
         if (CanInteract())
         {
             if(_OpenPromptBefore)
@@ -40,12 +44,17 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
                 StartCoroutine(StandInteract());
             }
         }
+        else
+        {
+            _CurrentDialogue = _FailDialogue;
+            StartCoroutine(StandInteract());
+        }
     }
     public bool CanInteract()
     {
-        if (_Dialogue)
+        if (_CurrentDialogue)
         {
-            return _Dialogue.CanInteract();
+            return _CurrentDialogue.CanInteract();
         }
         else
         {
@@ -53,12 +62,14 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
         }
         
     }
+
+    
     private IEnumerator StandInteract()
     {
         yield return FadeInOut.Instance.FadeToBlack();
-        if (_Dialogue)
+        if (_CurrentDialogue)
         {
-            _Dialogue.TriggerDialogue();
+            _CurrentDialogue.TriggerDialogue();
         }
         else
         {

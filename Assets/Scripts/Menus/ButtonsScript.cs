@@ -37,31 +37,32 @@ public class ButtonsScript : Minigame
     }
     public void Quit()
     {
-        if (_FM.activeSelf)
+        if(SceneManager.GetActiveScene().buildIndex == 1)
         {
-            _FM.GetComponent<Minigame>().TriggerMinigameEnd(test);
+            if (_FM.activeSelf)
+            {
+                _FM.GetComponent<Minigame>().TriggerMinigameEnd(test);
+            }
+            else if (_CM.activeSelf)
+            {
+                _CM.GetComponent<Minigame>().TriggerMinigameEnd(test);
+            }
+            else if (_RM.activeSelf)
+            {
+                _RM.GetComponent<Minigame>().TriggerMinigameEnd(test);
+            }
+            else if (_MM.activeSelf)
+            {
+                _MM.GetComponent<Minigame>().TriggerMinigameEnd(test);
+            }
+            if (PauseMenu.instance.gameObject.activeSelf)
+            {
+                PauseMenu.instance.gameObject.SetActive(false);
+                Time.timeScale = 1;
+            }
         }
-        else if (_CM.activeSelf)
-        {
-            _CM.GetComponent<Minigame>().TriggerMinigameEnd(test);
-        }
-        else if(_RM.activeSelf)
-        {
-            _RM.GetComponent<Minigame>().TriggerMinigameEnd(test);
-        }
-        else if (_MM.activeSelf)
-        {
-            _MM.GetComponent<Minigame>().TriggerMinigameEnd(test);
-        }
-        else
-        {
-            Application.Quit();
-        }
-        if (PauseMenu.instance.gameObject.activeSelf)
-        {
-            PauseMenu.instance.gameObject.SetActive(false);
-            Time.timeScale = 1;
-        }
+        
+        Application.Quit(); 
     }
 
     public void Load()

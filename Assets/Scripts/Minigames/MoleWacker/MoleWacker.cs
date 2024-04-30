@@ -68,6 +68,7 @@ public class MoleWacker : Minigame
             JsonDataService dataService = new JsonDataService();
             _StandResults = dataService.LoadData<StandResults>("MoleSaveFile");
         }
+        
         gameObject.SetActive(false);
     }
 

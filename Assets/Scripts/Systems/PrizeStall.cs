@@ -7,16 +7,25 @@ using UnityEngine.SceneManagement;
 public class PrizeStall : MonoBehaviour,IInteractable
 {
     [SerializeField] private DialogueTrigger _DialogueWindow;
+    [SerializeField] private ParticleSystem _ConfettiEffect;
+    [SerializeField] private GameObject _BearPlush;
+    [SerializeField] private GameObject _RabbitPlush;
+    [SerializeField] private GameObject _RatPlush;
     private int _FinalScore;
     private TypewriterByCharacter _TypeWriter;
     private bool _TextFullyDisplayed;
+    private Vector3 _InitialOffset;
 
-
+    private void Awake()
+    {
+        _InitialOffset = transform.position - Camera.main.transform.position;
+        _InitialOffset.z = 0;
+    }
     private void Start()
     {
         _TypeWriter = GetComponent<TypewriterByCharacter>();
         _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
-
+        gameObject.SetActive(false);
     }
     private void CalculateScore(MedalType medal)
     {
@@ -67,16 +76,22 @@ public class PrizeStall : MonoBehaviour,IInteractable
         CalculateScore(FishManager.Instance._StandResults._Medal);
         if (_FinalScore >= 160)
         {
+            _ConfettiEffect.transform.position = _BearPlush.transform.position;
+            _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Wow avec autant de tickets tu peux avoir cette ours en peluche");
             Debug.Log("you got the bear");
         }
         else if(_FinalScore >= 80)
         {
+            _ConfettiEffect.transform.position = _RabbitPlush.transform.position;
+            _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Avec ton nombre de tickets je peux te proposer ce lapin en peluche");
             Debug.Log("you got the rabbit");
         }
         else if(_FinalScore >=35)
         {
+            _ConfettiEffect.transform.position = _RatPlush.transform.position;
+            _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Avec si peu de ticket tu peux avoir cette peluche de rat");
             Debug.Log("you got the rat");
         }
@@ -97,9 +112,10 @@ public class PrizeStall : MonoBehaviour,IInteractable
     [Button]
     public void Interact()
     {
-            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
-            gameObject.SetActive(true);
-            StandInteractableTrigger.Map.SetActive(false);
-            getReward();
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+        transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
+        gameObject.SetActive(true);
+        StandInteractableTrigger.Map.SetActive(false);
+        getReward();
     }
 }

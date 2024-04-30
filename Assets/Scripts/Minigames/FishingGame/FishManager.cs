@@ -35,12 +35,17 @@ public sealed class FishManager : Minigame
         else Instance = this;
         _InitialOffset = transform.position - Camera.main.transform.position;
         _InitialOffset.z = 0;
+        if (File.Exists(Application.persistentDataPath + "/FishSaveFile.json"))
+        {
+            JsonDataService FishSaveData = new JsonDataService();
+            _StandResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
+        }
     }
     private void Start()
     {
         MakeFakeGameFiles();
         gameObject.SetActive(false);
-
+        
     }
     protected override void MakeFakeGameFiles()
     {

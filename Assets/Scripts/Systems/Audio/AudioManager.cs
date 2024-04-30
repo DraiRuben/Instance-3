@@ -1,15 +1,34 @@
 using System;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
     public Sound[] _MusicSounds, _SfxSounds;
     public AudioSource _MusicSource, _SfxSource;
     public static AudioManager _Instance;
+    private float _GlobalVolume;
+    UnityEngine.SceneManagement.Scene _Scene;
     private void Awake()
     {
         if (_Instance) Destroy(gameObject);
         else _Instance = this;
+        _Scene = SceneManager.GetActiveScene();
+    }
+
+    private void Update()
+    {
+        if (_Scene.buildIndex == 0 && !_MusicSource.isPlaying)
+        {
+            //main screen audio
+            PlayMusic("mainScreenLoop");
+        }
+        else if (_Scene.buildIndex == 1 && !_MusicSource.isPlaying)
+        {
+            //funfair audio
+            PlayMusic("funfairLoop");
+        }
     }
 
     public void PlayMusic(string name)
@@ -54,14 +73,19 @@ public class AudioManager : MonoBehaviour
         _SfxSource.mute = ! _SfxSource.mute;
     }
 
+    public void GlobalVolume(float volume)
+    {
+        _GlobalVolume = volume;
+    }
+
     public void MusicVolume(float volume)
     {
-        _MusicSource.volume = volume;
+        _MusicSource.volume = volume * _GlobalVolume;
     }
 
     public void SfxVolume(float volume)
     {
-        _SfxSource.volume = volume;
+        _SfxSource.volume = volume * _GlobalVolume;
     }
 }
 

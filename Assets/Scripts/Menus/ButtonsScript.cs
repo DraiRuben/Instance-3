@@ -37,6 +37,7 @@ public class ButtonsScript : Minigame
     }
     public void Quit()
     {
+        AudioManager._Instance.PlaySFX("uiClick");
         if (_FM.activeSelf)
         {
             _FM.GetComponent<Minigame>().TriggerMinigameEnd(test);

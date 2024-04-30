@@ -17,6 +17,7 @@ public class StandTransitionOut : MonoBehaviour
     public IEnumerator TransitionOut()
     {
         PlayerControls.Instance._CurrentDialogue = _DialogueWindow;
+        _DialogueWindow._DialoguesTexts.Clear();
         if (FishManager.Instance.gameObject.activeSelf)
         {
             

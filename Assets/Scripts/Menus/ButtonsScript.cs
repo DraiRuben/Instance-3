@@ -97,7 +97,7 @@ public class ButtonsScript : Minigame
             {
                 _NewGamePrompt.ChangePromptState();
             }, 
-            "Si vous continuez, toute progression sera effac�e !");
+            "Si vous continuez, toute progression sera effacée !");
         }
         else
         {

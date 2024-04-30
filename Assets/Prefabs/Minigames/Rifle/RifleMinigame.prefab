@@ -567,7 +567,7 @@ Transform:
   m_GameObject: {fileID: 6002799348226526176}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.1, z: 0}
+  m_LocalPosition: {x: 0, y: -4.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -779,9 +779,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _YReach: 1.5
-  _GunYRange: {x: -4.598138, y: -2.01406}
-  _GunXRange: {x: -3.5284061, y: 1.1077356}
+  _SpriteOffset: {x: 0, y: -3.5}
+  _MouseYRange: {x: -1.3, y: 1.3}
+  _MouseXRange: {x: -1.6, y: 1.6}
 --- !u!1 &6575110042467889101
 GameObject:
   m_ObjectHideFlags: 0

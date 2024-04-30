@@ -30,9 +30,6 @@ public class Minigame : MonoBehaviour, IInteractable
     {
         StopAllCoroutines();
         Cursor.visible = true;
-        
-        
-
 
         if (!ClosePreEmptively)
         {

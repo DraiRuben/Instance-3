@@ -131,7 +131,7 @@ public class RifleMinigame : Minigame
                 _Points++;
                 target.DoDestructionFeedback();
                 _ScoreText.SetText(_Points.ToString());
-                AudioManager._Instance.PlaySFX("targetHit");
+                AudioManager._Instance.PlaySFX("targetHit", true);
                 this.Invoke(() => {
                     if (transform.GetChild(0).childCount <= 0) //targets child
                     {
@@ -156,8 +156,7 @@ public class RifleMinigame : Minigame
         while (true)
         {
             ReloadTimer();
-            if(Time.timeScale == 1)
-                Cursor.visible = false;
+                
             _elapsedTime += Time.deltaTime;
             _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration-_elapsedTime)}");
             if (_elapsedTime >= _MinigameDuration)
@@ -173,13 +172,13 @@ public class RifleMinigame : Minigame
 
     private IEnumerator Shoot()
     {
-        AudioManager._Instance.PlaySFX("shoot");
+        AudioManager._Instance.PlaySFX("shoot",true);
         BulletImpact();
         CameraShakeManager.Instance.ShakeCamera(_ShootShakeSource,_ShootShakeProfile);
         yield return null;
         _ReloadTime = _ReloadSound.length + _ShootSound.length;
         yield return new WaitForSeconds(_ShootSound.length);
-        AudioManager._Instance.PlaySFX("reload");
+        AudioManager._Instance.PlaySFX("reload", true);
     }
 
     private void ReloadTimer()

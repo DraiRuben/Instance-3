@@ -18,6 +18,7 @@ public class MoleWacker : Minigame
 
     [Header("Refs")]
     [SerializeField] private GameObject _MolePrefab;
+    [SerializeField] private GameObject _GoldenMolePrefab;
     [SerializeField] private GameObject _BugMessagePrefab;
 
     [Header("Spawn Interval")]
@@ -38,6 +39,7 @@ public class MoleWacker : Minigame
 
     [Header("Other")]
     [SerializeField] private float _MoleSpawnYOffset;
+    [SerializeField, Range(0.0f,1.0f)] private float _GoldenMoleSpawnChance;
 
     [System.NonSerialized] public List<int> _HolesTenants;
     private List<Vector3> _HolesPositions;
@@ -120,8 +122,9 @@ public class MoleWacker : Minigame
             if (currentSpawnTimer > currentSpawnCooldown && _HolesTenants.Count > 0)
             {
                 int chosenHole = _HolesTenants[Random.Range(0, _HolesTenants.Count)];
+                bool goldenMole = Random.Range(0.0f,1.0f)<=_GoldenMoleSpawnChance;
                 _HolesTenants.Remove(chosenHole);
-                GameObject mole = Instantiate(_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity,transform);
+                GameObject mole = Instantiate(goldenMole?_GoldenMolePrefab:_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity,transform);
                 mole.GetComponent<Mole>()._OccupiedHole = chosenHole;
                 mole.GetComponent<Mole>()._PersistenceTime = _MoleStayTimeEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleStayTimeBase;
                 mole.GetComponent<Mole>()._AppearanceDuration = _MoleMovementSpeedEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleMovementSpeedBase;

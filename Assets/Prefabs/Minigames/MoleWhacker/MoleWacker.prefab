@@ -302,6 +302,7 @@ MonoBehaviour:
   _WinCount: 0
   _LoseCount: 0
   _MolePrefab: {fileID: 6952512965390301007, guid: e9fcdccb010e4db46aef338d6ed51b83, type: 3}
+  _GoldenMolePrefab: {fileID: 62909539816334713, guid: 6a6c58e0b3958d740b83ebe657cc72dd, type: 3}
   _BugMessagePrefab: {fileID: 3761772775732950927, guid: b445283a5fcdd4e48a41831ac52fcf6d, type: 3}
   _SpawnCooldownEvolution:
     serializedVersion: 2
@@ -381,6 +382,7 @@ MonoBehaviour:
   _TimerText: {fileID: 822639336310328917}
   _ScoreText: {fileID: 6589908841456993376}
   _MoleSpawnYOffset: 1.5
+  _GoldenMoleSpawnChance: 0.05
 --- !u!1 &1093309596337894360
 GameObject:
   m_ObjectHideFlags: 0

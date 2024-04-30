@@ -11,9 +11,9 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     [System.NonSerialized] public float _PersistenceTime;
     [System.NonSerialized] public float _AppearanceDuration;
     [System.NonSerialized] public int _OccupiedHole;
+    [SerializeField] private int _ScoreGain;
 
     private float _MovementLerpAlpha;
-    private bool _IsDisappearing;
     private bool _IsWacked;
     private Animator _Animator;
 
@@ -69,13 +69,12 @@ public class Mole : MonoBehaviour, IPointerClickHandler
     private void MakeMoleDisappear(bool _KillMole = false)
     {
         _IsWacked = _KillMole;
-        _IsDisappearing = true;
         StopAllCoroutines();
         if (_IsWacked)
         {
             AudioManager._Instance.PlaySFX("moleHit", true);
             _Animator.SetTrigger("Dead");
-            MoleWacker.Instance._WinCount++;
+            MoleWacker.Instance._WinCount += _ScoreGain;
             MoleWacker.Instance._ScoreText.SetText(MoleWacker.Instance._WinCount.ToString());
             MoleWacker.Instance.OnMoleWacked.Invoke();
             _IsDisappearancePaused = true;

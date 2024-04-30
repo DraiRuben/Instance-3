@@ -71,13 +71,17 @@ public class PlayerControls : MonoBehaviour
                 _SpriteRenderer.flipX = false;
             }
 
-            if (_MoveInput.x != 0.0f || _MoveInput.y != 0.0f)
+            if (_MoveInput.x != 0.0f)
             {
-                _Animator.SetBool("isWalking", true);
+                _Animator.SetInteger("State", 1);
             }
-            else
+            else if (_MoveInput.y < 0.0f)
             {
-                _Animator.SetBool("isWalking", false);
+                _Animator.SetInteger("State", 2);
+            }
+            else if(_MoveInput.y > 0.0f)
+            {
+                _Animator.SetInteger("State", 3);
             }
         }
     }

@@ -7,6 +7,7 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
     public static GameObject Map;
     public DialogueTrigger _Dialogue;
     [SerializeField] private DialogueTrigger _FailDialogue;
+    public GameObject _Highlight;
     public DialogueTrigger _CurrentDialogue;
     public GameObject _Minigame;
 

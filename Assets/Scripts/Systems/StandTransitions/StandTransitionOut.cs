@@ -88,6 +88,7 @@ public class StandTransitionOut : MonoBehaviour
         PlayerControls.Instance._CurrentDialogue = null;
         yield return FadeInOut.Instance.FadeToBlack();
         PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
         StandInteractableTrigger.Map.SetActive(true);
 
     }

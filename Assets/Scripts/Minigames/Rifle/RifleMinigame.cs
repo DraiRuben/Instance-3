@@ -187,9 +187,9 @@ public class RifleMinigame : Minigame
         {
             _IsBugged = IsBugged();
             transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
-
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.SetActive(true);
+            RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements, _PointsImage);
             StartCoroutine(RunMinigame());
         }
     }

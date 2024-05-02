@@ -946,6 +946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MinigameDuration: 40
   _MedalRequirements: {fileID: 11400000, guid: 715ac4558ad974f459bf654572df246a, type: 2}
+  _PointsImage: {fileID: 21300000, guid: 044081e06ab22cb4b87c5cca5d554b9d, type: 3}
   _ReloadSound: {fileID: 8300000, guid: b214aceb72fd36248be2fda0326eac04, type: 3}
   _ShootSound: {fileID: 8300000, guid: d3629d542462d9b4098b5bc5b70ba639, type: 3}
   _IsBugged: 0

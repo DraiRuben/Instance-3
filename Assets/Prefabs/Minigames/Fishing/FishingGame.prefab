@@ -220,6 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MinigameDuration: 30
   _MedalRequirements: {fileID: 11400000, guid: 801178562fdd6294a815b28f4d857f62, type: 2}
+  _PointsImage: {fileID: 21300000, guid: f92385b81dd224b4282dcc3df434eb5d, type: 3}
   _ScoreText: {fileID: 851097798311220735}
   _TimerText: {fileID: 2319829575472323751}
   _Fish: {fileID: 5439272752004318542, guid: be1e48aa67110b84eaa3664d77839e0e, type: 3}

@@ -41,7 +41,7 @@ public class Gun : MonoBehaviour
             _CameraShakeOffset.z = 0;
             _MousePosition = Mouse.current.position.ReadValue();
             _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
-            if (_CameraShakeOffset.magnitude == 0)
+            if (_CameraShakeOffset.magnitude <= 0.002f)
             {
                 _OffsetXTimer += Time.deltaTime / _OffsetXDuration;
                 _OffsetYTimer += Time.deltaTime / _OffsetYDuration;

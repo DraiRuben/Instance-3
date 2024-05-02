@@ -344,6 +344,7 @@ public class Cups : Minigame
         {
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.SetActive(true);
+            RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements,_PointsImage);
             StartCoroutine(ShuffleCupsRoutine());
         }
     }

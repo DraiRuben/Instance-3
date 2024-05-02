@@ -11,19 +11,21 @@ public class RequiredMedalsDisplay : MonoBehaviour
     {
         if (Instance) Destroy(gameObject);
         else Instance = this;
+        gameObject.SetActive(false);
     }
 
-    public void DisplayRequiredMedals(int bronzeMin, int silverMin, int goldMin, Sprite pointsImage)
+    public void DisplayRequiredMedals(MedalRequirements requirements, Sprite pointsImage)
     {
+        gameObject.SetActive(true);
         //set points img
         transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = pointsImage;
 
         //set bronze info
-        transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = bronzeMin.ToString();
+        transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = requirements.MinRequiredForMedal[MedalType.Bronze].ToString();
         //set silver info
-        transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = silverMin.ToString();
+        transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = requirements.MinRequiredForMedal[MedalType.Silver].ToString();
         //set gold info
-        transform.GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>().text = goldMin.ToString();
+        transform.GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>().text = requirements.MinRequiredForMedal[MedalType.Gold].ToString();
     }
     public void StopDisplay()
     {

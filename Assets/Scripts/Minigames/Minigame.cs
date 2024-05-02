@@ -7,6 +7,7 @@ public class Minigame : MonoBehaviour, IInteractable
 {
     public StandResults _StandResults;
     public float _MinigameDuration;
+    
     protected virtual bool IsBugged()
     {
         return true;
@@ -34,6 +35,7 @@ public class Minigame : MonoBehaviour, IInteractable
         if (!ClosePreEmptively)
         {
             SaveStats();
+            
             StandTransitionOut.Instance.StartCoroutine(StandTransitionOut.Instance.TransitionOut());
             StandInteractableTrigger.Map.SetActive(true);
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;

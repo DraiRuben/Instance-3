@@ -451,6 +451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MinigameDuration: 3
+  _StandSprite: {fileID: 21300000, guid: 63b495f0199495149bf6008a74d3b212, type: 3}
   _WinCount: 0
   _LoseCount: 0
   _Ball: {fileID: 1657140520275053405}

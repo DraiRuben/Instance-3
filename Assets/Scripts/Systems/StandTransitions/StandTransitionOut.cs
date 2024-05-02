@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class StandTransitionOut : MonoBehaviour
 {
-    [SerializeField] private DialogueTrigger _DialogueWindow;
+    public DialogueTrigger _DialogueWindow;
     private readonly string[] _TranslationList = {"None"," médaille de Bronze","médaille d'argent", "médaille d'or"};
     public static StandTransitionOut Instance;
     private void Start()

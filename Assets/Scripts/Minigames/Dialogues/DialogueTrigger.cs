@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,6 +24,7 @@ public class DialogueTrigger : MonoBehaviour
     private bool _IsClosing;
     [SerializeField] private bool _EnableMapOnClose;
     private List<string> _UsedDialogues;
+    public Sprite _Image;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,7 @@ public class DialogueTrigger : MonoBehaviour
     [Button]
     public void TriggerDialogue()
     {
+        AssignImage();
         transform.parent.gameObject.SetActive(true);
         //need to change input map to prevent player from moving
         if (_DialogueData)
@@ -50,8 +53,21 @@ public class DialogueTrigger : MonoBehaviour
         if (_CurrentTextIndex < _UsedDialogues.Count)
         {
             _IsClosing = false;
-            transform.parent.GetComponent<Image>().enabled = true;
+            transform.parent.GetChild(1).GetComponent<Image>().enabled = true;
             _TypeWriter.ShowText(_UsedDialogues[_CurrentTextIndex++]);
+        }
+    }
+
+    private void AssignImage()
+    {
+        if(_Image)
+        {
+            transform.parent.GetChild(0).GetComponent<Image>().color = Color.white;
+            transform.parent.GetChild(0).GetComponent<Image>().sprite = _Image;
+        }
+        else
+        {
+            transform.parent.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
         }
     }
     [Button]

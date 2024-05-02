@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MinigameDuration: 30
+  _MedalRequirements: {fileID: 11400000, guid: 0344be1aa26a278479ad3a5e22da9c66, type: 2}
   _WinCount: 0
   _LoseCount: 0
   _MolePrefab: {fileID: 6952512965390301007, guid: e9fcdccb010e4db46aef338d6ed51b83, type: 3}

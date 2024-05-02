@@ -451,6 +451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MinigameDuration: 3
+  _MedalRequirements: {fileID: 11400000, guid: c4ae79abecd209e46bc23c5baf28478c, type: 2}
   _WinCount: 0
   _LoseCount: 0
   _Ball: {fileID: 1657140520275053405}

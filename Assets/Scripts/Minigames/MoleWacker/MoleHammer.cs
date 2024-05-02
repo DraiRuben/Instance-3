@@ -15,7 +15,7 @@ public class MoleHammer : MonoBehaviour
     {
         PlayerControls.Instance?.OnSelect.AddListener(() =>
         {
-            if(Time.time- _LastWackTime > 0.2f && Time.timeScale == 1)
+            if (Time.time - _LastWackTime > 0.2f && Time.timeScale == 1)
             {
                 _LastWackTime = Time.time;
                 _Animator.SetTrigger("Wack");
@@ -28,7 +28,7 @@ public class MoleHammer : MonoBehaviour
     }
     public void Update()
     {
-        if(Time.timeScale == 1)
+        if (Time.timeScale == 1)
         {
             _MousePosition = Mouse.current.position.ReadValue();
             _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);

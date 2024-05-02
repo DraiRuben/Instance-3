@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CupsDialogue
   m_EditorClassIdentifier: 
   _Texts:
-  - "Jeu facile les gamins ! Gardez bien \xE0 l'\u0153il le gobelet avec la balle
-    et vous gagnerez facilement votre m\xE9daille."
+  - "Jeu facile gamin ! Gardes bien \xE0 l'\u0153il le gobelet avec la balle et tu
+    gagnera facilement ta m\xE9daille."

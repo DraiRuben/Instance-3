@@ -30,14 +30,14 @@ public class PlayerControls : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + "/PlayerPosition.json"))
         {
             JsonDataService dataService = new JsonDataService();
-            var position = dataService.LoadData<Vector3Json>("PlayerPosition");
+            Vector3Json position = dataService.LoadData<Vector3Json>("PlayerPosition");
             transform.position = new Vector3(position.x, position.y, position.z);
         }
     }
     private void FixedUpdate()
     {
-        if(_MoveInput.y == 0.1f ||_MoveInput.y == -0.1f)
-            _RBody.AddForce(new Vector2(_MoveInput.x,0) * _Speed * Time.fixedDeltaTime);
+        if (_MoveInput.y == 0.1f || _MoveInput.y == -0.1f)
+            _RBody.AddForce(new Vector2(_MoveInput.x, 0) * _Speed * Time.fixedDeltaTime);
         else
             _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);
 
@@ -46,7 +46,7 @@ public class PlayerControls : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
+        StandInteractableTrigger interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
         if (interactable)
         {
             _CurrentInteractable = interactable;
@@ -54,7 +54,7 @@ public class PlayerControls : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        var interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
+        StandInteractableTrigger interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
         if (_CurrentInteractable == interactable)
         {
             _CurrentInteractable = null;
@@ -65,7 +65,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (Time.timeScale == 1)
         {
-            var tempInput = context.ReadValue<Vector2>();
+            Vector2 tempInput = context.ReadValue<Vector2>();
             UpdatePlayerAnim(tempInput);
         }
     }
@@ -101,7 +101,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (context.started && !PauseMenu.instance._IsPauseBlocked)
         {
-            UpdatePlayerAnim(new(0,0));
+            UpdatePlayerAnim(new(0, 0));
             if (Time.timeScale == 1)
             {
                 Time.timeScale = 0;

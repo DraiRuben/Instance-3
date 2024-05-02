@@ -1,9 +1,6 @@
-using Sirenix.OdinInspector;
 using System;
 using System.Collections;
-using System.IO;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -40,6 +37,7 @@ public class PoleManager : MonoBehaviour
 
 
     private bool _IsFishing;
+    private bool _IsInFishAnim;
 
     [System.NonSerialized] public int _CurrentFishingCount;
     private Animator _Animator;
@@ -53,6 +51,10 @@ public class PoleManager : MonoBehaviour
     private void Awake()
     {
         _Animator = GetComponent<Animator>();
+    }
+    private void OnEnable()
+    {
+        _FishingCountText.text = "Tentatives :" + (_FishingMaxCount - _CurrentFishingCount).ToString();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -92,7 +94,7 @@ public class PoleManager : MonoBehaviour
         //follow mouse and constrain mouse to defined zone
         if (Time.timeScale == 1)
         {
-            if (!_IsFishing)
+            if (!_IsInFishAnim)
             {
                 Cursor.visible = false;
                 _MousePosition = Mouse.current.position.ReadValue();
@@ -114,7 +116,7 @@ public class PoleManager : MonoBehaviour
                 _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
 
                 transform.parent.position = new Vector3(_WorldMousePosition.x + _OffsetX + _SpriteOffset.x, _WorldMousePosition.y - _OffsetY + _SpriteOffset.y);
-                var screenPoint = new Vector2();
+                Vector2 screenPoint = new Vector2();
 
                 //constrains cursor in the Y axis to the shootable zone
                 screenPoint.y = Mathf.Clamp(_MousePosition.y,
@@ -137,13 +139,13 @@ public class PoleManager : MonoBehaviour
     }
     public void Fishing(InputAction.CallbackContext context)
     {
-        if (context.started && !_IsFishing && _CurrentFishingCount<_FishingMaxCount)
+        if (context.started && !_IsFishing && _CurrentFishingCount < _FishingMaxCount)
         {
             if (Time.time - _LastFishTime > _FishingCooldown)
             {
                 _LastFishTime = Time.time;
                 _CurrentFishingCount++;
-                _FishingCountText.text = "Tentatives :" +(_FishingMaxCount -_CurrentFishingCount).ToString();
+                _FishingCountText.text = "Tentatives :" + (_FishingMaxCount - _CurrentFishingCount).ToString();
                 StartCoroutine(Tofish());
             }
         }
@@ -161,18 +163,20 @@ public class PoleManager : MonoBehaviour
     {
         //time for hook to be down
         _Animator.SetTrigger("Reel");
+        _IsInFishAnim = true;
         yield return WaitUntilEvent(OnHookDown);
         _IsFishing = true;
         yield return WaitUntilEvent(OnHookReel);
         _IsFishing = false;
-        if(_CurrentFishingCount >= _FishingMaxCount)
+        _IsInFishAnim = false;
+        if (_CurrentFishingCount >= _FishingMaxCount)
         {
             FishManager.Instance._ElapsedTime = 9999999;
         }
     }
     private IEnumerator WaitUntilEvent(UnityEvent unityEvent)
     {
-        var trigger = false;
+        bool trigger = false;
         Action action = () => trigger = true;
         unityEvent.AddListener(action.Invoke);
         yield return new WaitUntil(() => trigger);

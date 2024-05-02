@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,10 +32,12 @@ public class AudioManager : MonoBehaviour
     public void PlayMusic(string name)
     {
         Sound s = Array.Find(_MusicSounds, x => x._Name == name);
-        if (s == null){
+        if (s == null)
+        {
             print("music not found");
         }
-        else{
+        else
+        {
             _MusicSource.clip = s._AudioClip;
             _MusicSource.Play();
         }
@@ -45,10 +46,12 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX(string name, bool overlapSounds = false)
     {
         Sound s = Array.Find(_SfxSounds, x => x._Name == name);
-        if (s == null){
+        if (s == null)
+        {
             print("SFX not found");
         }
-        else{
+        else
+        {
             if (overlapSounds)
             {
                 _SfxSource.PlayOneShot(s._AudioClip);
@@ -58,18 +61,18 @@ public class AudioManager : MonoBehaviour
                 _SfxSource.clip = s._AudioClip;
 
                 _SfxSource.Play();
-            }   
+            }
         }
     }
 
     public void ToggleMusic()
     {
-        _MusicSource.mute = ! _MusicSource.mute;
+        _MusicSource.mute = !_MusicSource.mute;
     }
 
     public void ToggleSFX()
     {
-        _SfxSource.mute = ! _SfxSource.mute;
+        _SfxSource.mute = !_SfxSource.mute;
     }
 
 

@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PrizeStall : MonoBehaviour,IInteractable
+public class PrizeStall : MonoBehaviour, IInteractable
 {
     [SerializeField] private DialogueTrigger _DialogueWindow;
     [SerializeField] private ParticleSystem _ConfettiEffect;
@@ -12,8 +12,7 @@ public class PrizeStall : MonoBehaviour,IInteractable
     [SerializeField] private GameObject _RabbitPlush;
     [SerializeField] private GameObject _RatPlush;
     private int _FinalScore;
-    private TypewriterByCharacter _TypeWriter;
-    private bool _TextFullyDisplayed;
+    [SerializeField] private TypewriterByCharacter _TypeWriter;
     private Vector3 _InitialOffset;
 
     private void Awake()
@@ -23,13 +22,12 @@ public class PrizeStall : MonoBehaviour,IInteractable
     }
     private void Start()
     {
-        _TypeWriter = GetComponent<TypewriterByCharacter>();
-        _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
+        _TypeWriter.onTextShowed.AddListener(() => { this.Invoke(() => SceneManager.LoadSceneAsync(0), 3f); Debug.Log("test"); });
         gameObject.SetActive(false);
     }
     private void CalculateScore(MedalType medal)
     {
-        switch(medal)
+        switch (medal)
         {
             case MedalType.Gold:
                 {
@@ -53,19 +51,6 @@ public class PrizeStall : MonoBehaviour,IInteractable
         }
     }
 
-    private void Update()
-    {
-        if (_TextFullyDisplayed)
-        {
-            StartCoroutine(Delay());
-        }
-    }
-
-    private IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(3);
-        SceneManager.LoadSceneAsync(0);
-    }
 
     public void getReward()
     {
@@ -81,14 +66,14 @@ public class PrizeStall : MonoBehaviour,IInteractable
             _DialogueWindow._DialoguesTexts.Add("Wow avec autant de tickets tu peux avoir cette ours en peluche");
             Debug.Log("you got the bear");
         }
-        else if(_FinalScore >= 80)
+        else if (_FinalScore >= 80)
         {
             _ConfettiEffect.transform.position = _RabbitPlush.transform.position;
             _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Avec ton nombre de tickets je peux te proposer ce lapin en peluche");
             Debug.Log("you got the rabbit");
         }
-        else if(_FinalScore >=35)
+        else if (_FinalScore >= 35)
         {
             _ConfettiEffect.transform.position = _RatPlush.transform.position;
             _ConfettiEffect.Play();

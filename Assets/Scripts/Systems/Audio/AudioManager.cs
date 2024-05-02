@@ -8,7 +8,6 @@ public class AudioManager : MonoBehaviour
     public Sound[] _MusicSounds, _SfxSounds;
     public AudioSource _MusicSource, _SfxSource;
     public static AudioManager _Instance;
-    private float _GlobalVolume;
     UnityEngine.SceneManagement.Scene _Scene;
     private void Awake()
     {
@@ -73,20 +72,7 @@ public class AudioManager : MonoBehaviour
         _SfxSource.mute = ! _SfxSource.mute;
     }
 
-    public void GlobalVolume(float volume)
-    {
-        _GlobalVolume = volume;
-    }
 
-    public void MusicVolume(float volume)
-    {
-        _MusicSource.volume = volume * _GlobalVolume;
-    }
-
-    public void SfxVolume(float volume)
-    {
-        _SfxSource.volume = volume * _GlobalVolume;
-    }
 }
 
 /* Type "AudioManager._Instance.X( );" 

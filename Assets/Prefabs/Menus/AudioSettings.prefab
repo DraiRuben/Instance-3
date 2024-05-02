@@ -842,10 +842,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 793495965160143535}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1611,10 +1611,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 7343137305371533411}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1670,6 +1670,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6ddd39b99f3864f9551e507362fd3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _MinigameDuration: 0
+  _NewGamePrompt: {fileID: 0}
 --- !u!1 &5673504050033975555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,10 +1942,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1480024162599680151}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1960,6 +1962,7 @@ GameObject:
   - component: {fileID: 6101804041302701459}
   - component: {fileID: 1056455700507921449}
   - component: {fileID: 437803039502451127}
+  - component: {fileID: 1882573428488588738}
   m_Layer: 5
   m_Name: AudioSettings
   m_TagString: Untagged
@@ -2064,6 +2067,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a58b823d43a0764b804e555f1434499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1882573428488588738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7015798810116220632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d107c2644a755de44838b286a6012419, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _GlobalVolumeSlider: {fileID: 2995648649677415679}
+  _MusicSlider: {fileID: 6241042338952397198}
+  _SfxSlider: {fileID: 286693451620108783}
+  _Mixer: {fileID: 24100000, guid: c0ec5449490823344b97d2be5b94b5c3, type: 2}
 --- !u!1 &7452481414274274793
 GameObject:
   m_ObjectHideFlags: 0

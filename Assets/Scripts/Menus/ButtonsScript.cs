@@ -39,6 +39,7 @@ public class ButtonsScript : Minigame
     {
         if(SceneManager.GetActiveScene().buildIndex == 1)
         {
+            AudioManager._Instance.PlaySFX("uiClick");
             if (_FM.activeSelf)
             {
                 _FM.GetComponent<Minigame>().TriggerMinigameEnd(test);
@@ -61,12 +62,12 @@ public class ButtonsScript : Minigame
                 Time.timeScale = 1;
             }
         }
-        
         Application.Quit(); 
     }
 
     public void Load()
     {
+        AudioManager._Instance.PlaySFX("uiClick");
         if (_HasSave)
         {
             SceneManager.LoadSceneAsync(1);
@@ -75,6 +76,7 @@ public class ButtonsScript : Minigame
     }
     public void Begin()
     {
+        AudioManager._Instance.PlaySFX("uiClick");
         //shows confirmation prompt in case the user already has a save file
         if (_HasSave)
         {
@@ -107,11 +109,13 @@ public class ButtonsScript : Minigame
     }
     public void Settings()
     {
+        AudioManager._Instance.PlaySFX("uiClick");
         SettingsMenu.instance.gameObject.SetActive(true);
     }
 
     public void Sound()
     {
+        AudioManager._Instance.PlaySFX("uiClick");
         AudioMenu.instance.gameObject.SetActive(true);
     }
     public void Controls()
@@ -120,6 +124,7 @@ public class ButtonsScript : Minigame
     }
     public void Resume()
     {
+        AudioManager._Instance.PlaySFX("uiClick");
         if (transform.parent.name == "PauseMenu")
         {
             Time.timeScale = 1;

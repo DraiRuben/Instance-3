@@ -54,14 +54,6 @@ public class PoleManager : MonoBehaviour
     {
         _Animator = GetComponent<Animator>();
     }
-    private void Start()
-    {
-        if (File.Exists(Application.persistentDataPath + "/FishSaveFile.json"))
-        {
-            JsonDataService FishSaveData = new JsonDataService();
-            FishManager.Instance._StandResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
-        }
-    }
     private void OnTriggerEnter2D(Collider2D other)
     {
 

@@ -6,7 +6,9 @@ using UnityEngine.Events;
 public class StandTransitionOut : MonoBehaviour
 {
     [SerializeField] private DialogueTrigger _DialogueWindow;
-    private readonly string[] _TranslationList = { "None", " médaille de Bronze", " médaille d'argent", " médaille d'or" };
+    private readonly string[] _TranslationList = { "None", " mï¿½daille de Bronze", " mï¿½daille d'argent", " mï¿½daille d'or" };
+    public DialogueTrigger _DialogueWindow;
+    private readonly string[] _TranslationList = {"None"," mï¿½daille de Bronze","mï¿½daille d'argent", "mï¿½daille d'or"};
     public static StandTransitionOut Instance;
     private void Start()
     {
@@ -24,15 +26,15 @@ public class StandTransitionOut : MonoBehaviour
             if (FishManager.Instance._StandResults._Medal != MedalType.None)
             {
                 _DialogueWindow._DialoguesTexts.Add
-                ("Avec un score de " + FishManager.Instance._StandResults._Points + ", tu mérites la" +
+                ("Avec un score de " + FishManager.Instance._StandResults._Points + ", tu mï¿½rites la" +
                 _TranslationList[(int)FishManager.Instance._StandResults._Medal] +
-                    ". Félicitations garçon ! Tu en auras besoin pour faire un cadeau à ta petite soeur." +
-                    " Utilises la au stand de récompenses plus tard.");
+                    ". Fï¿½licitations garï¿½on ! Tu en auras besoin pour faire un cadeau ï¿½ ta petite soeur." +
+                    " Utilises la au stand de rï¿½compenses plus tard.");
             }
             else
             {
-                _DialogueWindow._DialoguesTexts.Add("Mince alors…" +
-                    " Tu n’as pas pêché assez de poissons pour obtenir une médaille… Peut-être devrais-tu réessayer ?");
+                _DialogueWindow._DialoguesTexts.Add("Mince alorsï¿½" +
+                    " Tu nï¿½as pas pï¿½chï¿½ assez de poissons pour obtenir une mï¿½dailleï¿½ Peut-ï¿½tre devrais-tu rï¿½essayer ?");
             }
         }
         else if (MoleWacker.Instance.gameObject.activeSelf)
@@ -41,14 +43,14 @@ public class StandTransitionOut : MonoBehaviour
             {
                 _DialogueWindow._DialoguesTexts.Add
                     ("Wow, tu as battu le record du jour ! " + MoleWacker.Instance._StandResults._Points +
-                    " taupes frappées. Tu mérite amplement la " + _TranslationList[(int)MoleWacker.Instance._StandResults._Medal] +
-                    " ! A la fin de ta journée, n'hésites pas à t'en servir au stand de récompenses.");
+                    " taupes frappï¿½es. Tu mï¿½rite amplement la " + _TranslationList[(int)MoleWacker.Instance._StandResults._Medal] +
+                    " ! A la fin de ta journï¿½e, n'hï¿½sites pas ï¿½ t'en servir au stand de rï¿½compenses.");
             }
             else
             {
                 _DialogueWindow._DialoguesTexts.Add
-                    ("Dommage garçon, mais tu n’as pas atteint le score minimal pour avoir une médaille." +
-                    " N’hésites pas à repasser pour tenter d’en gagner une.");
+                    ("Dommage garï¿½on, mais tu nï¿½as pas atteint le score minimal pour avoir une mï¿½daille." +
+                    " Nï¿½hï¿½sites pas ï¿½ repasser pour tenter dï¿½en gagner une.");
             }
         }
         else if (RifleMinigame.Instance.gameObject.activeSelf)
@@ -56,14 +58,14 @@ public class StandTransitionOut : MonoBehaviour
             if (RifleMinigame.Instance._StandResults._Medal != MedalType.None)
             {
                 _DialogueWindow._DialoguesTexts.Add(RifleMinigame.Instance._StandResults._Points +
-                    " cibles abattues ?! Voilà ta " + _TranslationList[(int)RifleMinigame.Instance._StandResults._Medal] +
-                    ". A croire que tu t'entraines quelque part. Elle te sera utile au stand récompenses");
+                    " cibles abattues ?! Voilï¿½ ta " + _TranslationList[(int)RifleMinigame.Instance._StandResults._Medal] +
+                    ". A croire que tu t'entraines quelque part. Elle te sera utile au stand rï¿½compenses");
             }
             else
             {
                 _DialogueWindow._DialoguesTexts.Add(RifleMinigame.Instance._StandResults._Points +
-                    " cibles abattues. Ce n'est pas assez du tout. N'hésites pas à revenir quand tu te sens prêt à retenter le coup." +
-                    " Cette fois-ci tu obtiendras peut-être une médaille.");
+                    " cibles abattues. Ce n'est pas assez du tout. N'hï¿½sites pas ï¿½ revenir quand tu te sens prï¿½t ï¿½ retenter le coup." +
+                    " Cette fois-ci tu obtiendras peut-ï¿½tre une mï¿½daille.");
             }
         }
         else if (Cups.Instance.gameObject.activeSelf)
@@ -71,15 +73,15 @@ public class StandTransitionOut : MonoBehaviour
             if (Cups.Instance._StandResults._Medal != MedalType.None)
             {
                 _DialogueWindow._DialoguesTexts.Add
-                    ("Tu as les yeux vifs gamin, tu as trouvé " + Cups.Instance._StandResults._Points +
-                    " balles. Viens donc récupérer ta" + _TranslationList[(int)Cups.Instance._StandResults._Medal] +
-                    ". Tu pourras l'échanger plus tard au stand de récompenses.");
+                    ("Tu as les yeux vifs gamin, tu as trouvï¿½ " + Cups.Instance._StandResults._Points +
+                    " balles. Viens donc rï¿½cupï¿½rer ta" + _TranslationList[(int)Cups.Instance._StandResults._Medal] +
+                    ". Tu pourras l'ï¿½changer plus tard au stand de rï¿½compenses.");
             }
             else
             {
                 _DialogueWindow._DialoguesTexts.Add
-                    ("Ce n’est pas possible d’avoir un score aussi bas… Je ne peux pas te donner de médaille avec ce score." +
-                    " Prochaine fois que tu repasses, essayes de rester concentré gamin, tu peux le faire !");
+                    ("Ce nï¿½est pas possible dï¿½avoir un score aussi basï¿½ Je ne peux pas te donner de mï¿½daille avec ce score." +
+                    " Prochaine fois que tu repasses, essayes de rester concentrï¿½ gamin, tu peux le faire !");
             }
         }
         yield return FadeInOut.Instance.FadeToBlack();

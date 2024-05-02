@@ -8,6 +8,7 @@ public class Minigame : MonoBehaviour, IInteractable
     public float _MinigameDuration;
     [SerializeField] protected MedalRequirements _MedalRequirements;
     [SerializeField] protected Sprite _PointsImage;
+    
     protected virtual bool IsBugged()
     {
         return true;
@@ -36,6 +37,7 @@ public class Minigame : MonoBehaviour, IInteractable
         if (!ClosePreEmptively)
         {
             SaveStats();
+            
             StandTransitionOut.Instance.StartCoroutine(StandTransitionOut.Instance.TransitionOut());
         }
         else

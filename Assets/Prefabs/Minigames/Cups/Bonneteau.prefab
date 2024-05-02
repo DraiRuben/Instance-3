@@ -453,6 +453,7 @@ MonoBehaviour:
   _MinigameDuration: 3
   _MedalRequirements: {fileID: 11400000, guid: c4ae79abecd209e46bc23c5baf28478c, type: 2}
   _PointsImage: {fileID: 21300000, guid: eb13dfe6ff8a7e145846f52771dcd81c, type: 3}
+  _StandSprite: {fileID: 21300000, guid: 63b495f0199495149bf6008a74d3b212, type: 3}
   _WinCount: 0
   _LoseCount: 0
   _Ball: {fileID: 1657140520275053405}

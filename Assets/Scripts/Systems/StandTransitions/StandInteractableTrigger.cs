@@ -10,6 +10,7 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
     public GameObject _Highlight;
     public DialogueTrigger _CurrentDialogue;
     public GameObject _Minigame;
+    [SerializeField] private Sprite _StandSprite;
 
     [SerializeField] private bool _OpenPromptBefore;
     [ShowIf(nameof(_OpenPromptBefore)), SerializeField] private ConfirmationPrompt _ConfirmationPrompt;
@@ -25,6 +26,7 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
         _CurrentDialogue = _Dialogue;
         if (CanInteract())
         {
+            StandTransitionOut.Instance._DialogueWindow._Image = _StandSprite;
             if (_OpenPromptBefore)
             {
                 _ConfirmationPrompt.OpenConfirmationPrompt(
@@ -48,7 +50,9 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
         }
         else
         {
+
             _CurrentDialogue = _FailDialogue;
+            _CurrentDialogue._Image = _StandSprite;
             StartCoroutine(StandInteract());
         }
     }

@@ -221,6 +221,7 @@ MonoBehaviour:
   _MinigameDuration: 30
   _MedalRequirements: {fileID: 11400000, guid: 801178562fdd6294a815b28f4d857f62, type: 2}
   _PointsImage: {fileID: 21300000, guid: f92385b81dd224b4282dcc3df434eb5d, type: 3}
+  _StandSprite: {fileID: 21300000, guid: db674094d6f0c6445aa3d0c0c6ed2116, type: 3}
   _ScoreText: {fileID: 851097798311220735}
   _TimerText: {fileID: 2319829575472323751}
   _Fish: {fileID: 5439272752004318542, guid: be1e48aa67110b84eaa3664d77839e0e, type: 3}
@@ -659,7 +660,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3452964490274248166}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -830,7 +831,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5753880906695741381}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -1247,7 +1248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8929920251263829626
 Transform:
   m_ObjectHideFlags: 0
@@ -1685,7 +1686,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7951889683455362834}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2243,7 +2244,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8864470071245088068}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: RifleDialogue
   m_EditorClassIdentifier: 
   _Texts:
-  - "Abattez toutes les cibles dans le temps imparti pour gagner une belle m\xE9daille
-    ! Attention o\xF9 vous visez par contre."
+  - "Abats toutes les cibles dans le temps imparti pour gagner une belle m\xE9daille
+    ! Attention o\xF9 tu vises par contre."

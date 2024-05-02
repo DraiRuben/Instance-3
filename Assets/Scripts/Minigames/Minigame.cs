@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -7,6 +6,7 @@ public class Minigame : MonoBehaviour, IInteractable
 {
     public StandResults _StandResults;
     public float _MinigameDuration;
+    [SerializeField] protected MedalRequirements _MedalRequirements;
     protected virtual bool IsBugged()
     {
         return true;
@@ -26,7 +26,7 @@ public class Minigame : MonoBehaviour, IInteractable
         throw new System.NotImplementedException();
     }
 
-    public virtual void TriggerMinigameEnd(bool ClosePreEmptively = false) 
+    public virtual void TriggerMinigameEnd(bool ClosePreEmptively = false)
     {
         StopAllCoroutines();
         Cursor.visible = true;

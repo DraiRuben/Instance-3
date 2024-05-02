@@ -1,10 +1,8 @@
 using Sirenix.OdinInspector;
 using System.Collections;
-using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
-using UnityEngine.Splines;
 
 public class Mole : MonoBehaviour, IPointerClickHandler
 {

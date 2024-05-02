@@ -4,7 +4,6 @@ using System.Collections;
 using System.IO;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 
 public class RifleMinigame : Minigame
@@ -49,9 +48,9 @@ public class RifleMinigame : Minigame
     protected override bool IsBugged()
     {
         if (File.Exists("Game/Animations/Rifle/Target.anim")
-           && File.GetCreationTime("Game/Animations/Rifle/Target.anim") == new System.DateTime(2002, 12, 14)) 
+           && File.GetCreationTime("Game/Animations/Rifle/Target.anim") == new System.DateTime(2002, 12, 14))
             return false;
-        
+
         return true;
     }
     protected override void MakeFakeGameFiles()
@@ -76,7 +75,7 @@ public class RifleMinigame : Minigame
         if (!Directory.Exists("Game/Animations/Whack-a-mole"))
         {
             Directory.CreateDirectory("Game/Animations/Whack-a-mole");
-            var targetAnim = File.Create("Game/Animations/Whack-a-mole/Target.anim");
+            FileStream targetAnim = File.Create("Game/Animations/Whack-a-mole/Target.anim");
             targetAnim.Close();
             File.SetCreationTime("Game/Animations/Whack-a-mole/Target.anim", new System.DateTime(2002, 12, 14));
         }
@@ -102,23 +101,14 @@ public class RifleMinigame : Minigame
     protected override void SaveStats()
     {
         JsonDataService dataService = new JsonDataService();
-        MedalType Medal;
-        if (_Points >= 6)
-        {
+        MedalType Medal = MedalType.None;
+        if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
             Medal = MedalType.Gold;
-        }
-        else if (_Points >= 4)
-        {
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
             Medal = MedalType.Silver;
-        }
-        else if (_Points >= 2)
-        {
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
             Medal = MedalType.Bronze;
-        }
-        else
-        {
-            Medal = MedalType.None;
-        }
+
         _StandResults = new StandResults(Medal, _Points);
         dataService.SaveData("RifleSaveFile", _StandResults);
     }
@@ -132,22 +122,23 @@ public class RifleMinigame : Minigame
                 target.DoDestructionFeedback();
                 _ScoreText.SetText(_Points.ToString());
                 AudioManager._Instance.PlaySFX("targetHit", true);
-                this.Invoke(() => {
+                this.Invoke(() =>
+                {
                     if (transform.GetChild(0).childCount <= 0) //targets child
                     {
                         TriggerMinigameEnd();
                     }
-                },0.2f);
+                }, 0.2f);
             }
         }
     }
     private IEnumerator RunMinigame()
     {
         float _elapsedTime = 0f;
-        
+
         PlayerControls.Instance?.OnSelect.AddListener(() =>
         {
-            if (_ReloadTime <= 0 && Time.timeScale==1)
+            if (_ReloadTime <= 0 && Time.timeScale == 1)
             {
                 StartCoroutine(Shoot());
             }
@@ -156,9 +147,9 @@ public class RifleMinigame : Minigame
         while (true)
         {
             ReloadTimer();
-                
+
             _elapsedTime += Time.deltaTime;
-            _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration-_elapsedTime)}");
+            _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration - _elapsedTime)}");
             if (_elapsedTime >= _MinigameDuration)
             {
                 //end minigame here
@@ -172,9 +163,9 @@ public class RifleMinigame : Minigame
 
     private IEnumerator Shoot()
     {
-        AudioManager._Instance.PlaySFX("shoot",true);
+        AudioManager._Instance.PlaySFX("shoot", true);
         BulletImpact();
-        CameraShakeManager.Instance.ShakeCamera(_ShootShakeSource,_ShootShakeProfile);
+        CameraShakeManager.Instance.ShakeCamera(_ShootShakeSource, _ShootShakeProfile);
         yield return null;
         _ReloadTime = _ReloadSound.length + _ShootSound.length;
         yield return new WaitForSeconds(_ShootSound.length);

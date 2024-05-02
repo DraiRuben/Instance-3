@@ -39,7 +39,7 @@ public class MoleWacker : Minigame
 
     [Header("Other")]
     [SerializeField] private float _MoleSpawnYOffset;
-    [SerializeField, Range(0.0f,1.0f)] private float _GoldenMoleSpawnChance;
+    [SerializeField, Range(0.0f, 1.0f)] private float _GoldenMoleSpawnChance;
 
     [System.NonSerialized] public List<int> _HolesTenants;
     private List<Vector3> _HolesPositions;
@@ -57,20 +57,20 @@ public class MoleWacker : Minigame
         {
             _HolesTenants.Add(i);
         }
-        _InitialOffset = transform.position- Camera.main.transform.position;
+        _InitialOffset = transform.position - Camera.main.transform.position;
         _InitialOffset.z = 0;
 
     }
     private void Start()
     {
-       MakeFakeGameFiles();
+        MakeFakeGameFiles();
         _IsBugResolved = IsBugged();
         if (File.Exists(Application.persistentDataPath + "/MoleSaveFile.json"))
         {
             JsonDataService dataService = new JsonDataService();
             _StandResults = dataService.LoadData<StandResults>("MoleSaveFile");
         }
-        
+
         gameObject.SetActive(false);
     }
 
@@ -90,23 +90,14 @@ public class MoleWacker : Minigame
     protected override void SaveStats()
     {
         JsonDataService dataService = new JsonDataService();
-        MedalType Medal;
-        if (_WinCount >= 17)
-        {
+        MedalType Medal = MedalType.None;
+        if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
             Medal = MedalType.Gold;
-        }
-        else if (_WinCount >= 11)
-        {
+        else if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
             Medal = MedalType.Silver;
-        }
-        else if (_WinCount >= 6)
-        {
+        else if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
             Medal = MedalType.Bronze;
-        }
-        else
-        {
-            Medal = MedalType.None;
-        }
+
         _StandResults = new StandResults(Medal, _WinCount);
         dataService.SaveData("MoleSaveFile", _StandResults);
     }
@@ -122,9 +113,9 @@ public class MoleWacker : Minigame
             if (currentSpawnTimer > currentSpawnCooldown && _HolesTenants.Count > 0)
             {
                 int chosenHole = _HolesTenants[Random.Range(0, _HolesTenants.Count)];
-                bool goldenMole = Random.Range(0.0f,1.0f)<=_GoldenMoleSpawnChance;
+                bool goldenMole = Random.Range(0.0f, 1.0f) <= _GoldenMoleSpawnChance;
                 _HolesTenants.Remove(chosenHole);
-                GameObject mole = Instantiate(goldenMole?_GoldenMolePrefab:_MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity,transform);
+                GameObject mole = Instantiate(goldenMole ? _GoldenMolePrefab : _MolePrefab, _HolesPositions[chosenHole] - new Vector3(0, _MoleSpawnYOffset), Quaternion.identity, transform);
                 mole.GetComponent<Mole>()._OccupiedHole = chosenHole;
                 mole.GetComponent<Mole>()._PersistenceTime = _MoleStayTimeEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleStayTimeBase;
                 mole.GetComponent<Mole>()._AppearanceDuration = _MoleMovementSpeedEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleMovementSpeedBase;
@@ -173,7 +164,7 @@ public class MoleWacker : Minigame
                 this.Invoke(() =>
                 {
                     GameObject _BugMsg = Instantiate(_BugMessagePrefab);
-                    _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la taupe est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
+                    _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la taupe est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu. Si le problème persiste, veuillez vous référer à notre serveur discord.");
                 }, 1.0f, true);
                 this.Invoke(() => Application.Quit(), 10f, true);
             }

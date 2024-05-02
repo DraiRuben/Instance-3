@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MinigameDuration: 30
+  _MedalRequirements: {fileID: 11400000, guid: 801178562fdd6294a815b28f4d857f62, type: 2}
   _ScoreText: {fileID: 851097798311220735}
   _TimerText: {fileID: 2319829575472323751}
   _Fish: {fileID: 5439272752004318542, guid: be1e48aa67110b84eaa3664d77839e0e, type: 3}
@@ -1992,7 +1993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _FishingCountText: {fileID: 6378451150339308203}
   _FishingCooldown: 0.55
-  _FishingMaxCount: 13
+  _FishingMaxCount: 15
   _OffsetXBase: 0.34
   _OffsetYBase: 0.34
   _OffsetXDuration: 4

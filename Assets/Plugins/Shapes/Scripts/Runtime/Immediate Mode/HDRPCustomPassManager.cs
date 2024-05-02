@@ -8,9 +8,10 @@ using UnityEngine.Rendering.HighDefinition;
 
 // Shapes © Freya Holmér - https://twitter.com/FreyaHolmer/
 // Website & Documentation - https://acegikmo.com/shapes/
-namespace Shapes {
+namespace Shapes
+{
 
-	#if SHAPES_HDRP
+#if SHAPES_HDRP
 	[ExecuteAlways]
 	public class HDRPCustomPassManager : MonoBehaviour {
 
@@ -53,9 +54,9 @@ namespace Shapes {
 				volume = gameObject.AddComponent<CustomPassVolume>();
 				volume.injectionPoint = injPt;
 				volume.hideFlags = HideFlags.DontSave; // don't serialize this pls
-					#if UNITY_EDITOR
+#if UNITY_EDITOR
 				volume.runInEditMode = true;
-					#endif
+#endif
 
 				volume.AddPassOfType( typeof(ShapesRenderPass) ); // this pass branches internally
 			}
@@ -64,6 +65,6 @@ namespace Shapes {
 		}
 
 	}
-	#endif
+#endif
 
 }

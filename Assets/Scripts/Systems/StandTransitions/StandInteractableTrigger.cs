@@ -24,19 +24,20 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
         _CurrentDialogue = _Dialogue;
         if (CanInteract())
         {
-            if(_OpenPromptBefore)
+            if (_OpenPromptBefore)
             {
                 _ConfirmationPrompt.OpenConfirmationPrompt(
                     () =>
                     {
                         _ConfirmationPrompt.ChangePromptState();
                         StartCoroutine(StandInteract());
-                    }, 
-                    () => {
+                    },
+                    () =>
+                    {
                         _ConfirmationPrompt.ChangePromptState();
-                        PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+                        this.Invoke(()=>PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player"),0.4f/0.6f);
 
-                    }, 
+                    },
                     _PromptDescription);
             }
             else
@@ -60,10 +61,10 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
         {
             return _Minigame.GetComponent<IInteractable>().CanInteract();
         }
-        
+
     }
 
-    
+
     private IEnumerator StandInteract()
     {
         yield return FadeInOut.Instance.FadeToBlack();

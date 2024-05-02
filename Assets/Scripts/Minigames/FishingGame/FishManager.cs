@@ -45,7 +45,7 @@ public sealed class FishManager : Minigame
     {
         MakeFakeGameFiles();
         gameObject.SetActive(false);
-        
+
     }
     protected override void MakeFakeGameFiles()
     {
@@ -56,7 +56,7 @@ public sealed class FishManager : Minigame
     {
         if (!File.Exists("Game/Minigames/FishingGame/FishBehavior.txt"))
         {
-            var file = File.Create("Game/Minigames/FishingGame/FishBehavior.txt");
+            FileStream file = File.Create("Game/Minigames/FishingGame/FishBehavior.txt");
             StreamWriter writer = new StreamWriter(file);
             writer.Write("Enabled = false;");
             writer.Close();
@@ -76,9 +76,9 @@ public sealed class FishManager : Minigame
         float spawnTimer = 0f;
         while (_ElapsedTime < _MinigameDuration)
         {
-            if (_FishList.Count < _MaxConcurrentFishCount && spawnTimer>= _FishSpawnFrequency)
+            if (_FishList.Count < _MaxConcurrentFishCount && spawnTimer >= _FishSpawnFrequency)
             {
-                _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity,transform));
+                _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity, transform));
                 _FishList[_FishList.Count - 1].transform.GetChild(0).GetComponent<Fish>()._Spline = _Splines;
                 spawnTimer = 0f;
             }
@@ -100,7 +100,7 @@ public sealed class FishManager : Minigame
     {
         base.TriggerMinigameEnd(ClosePreEmptively);
         _PoleManager._CurrentFishingCount = 0;
-        foreach (var fish in _FishList)
+        foreach (GameObject fish in _FishList)
         {
             Destroy(fish);
         }
@@ -109,24 +109,16 @@ public sealed class FishManager : Minigame
     protected override void SaveStats()
     {
         JsonDataService FishSaveData = new JsonDataService();
-        MedalType FishMedal;
-        if (_FishingScore >= 12)
-        {
-            FishMedal = MedalType.Gold;
-        }
-        else if (_FishingScore >= 8)
-        {
-            FishMedal = MedalType.Silver;
-        }
-        else if (_FishingScore >= 4)
-        {
-            FishMedal = MedalType.Bronze;
-        }
-        else
-        {
-            FishMedal = MedalType.None;
-        }
-        FishManager.Instance._StandResults = new StandResults(FishMedal, _FishingScore);
+
+        MedalType Medal = MedalType.None;
+        if (_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
+            Medal = MedalType.Gold;
+        else if(_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
+            Medal = MedalType.Silver;
+        else if(_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
+            Medal = MedalType.Bronze;
+
+        _StandResults = new StandResults(Medal, _FishingScore);
         FishSaveData.SaveData("FishSaveFile", _StandResults);
     }
     [Button]

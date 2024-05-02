@@ -1,8 +1,4 @@
-using Sirenix.OdinInspector;
-using System.Drawing;
-using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 
@@ -38,14 +34,14 @@ public class Gun : MonoBehaviour
     }
     private void Update()
     {
-        if(Time.timeScale == 1)
+        if (Time.timeScale == 1)
         {
             Cursor.visible = false;
             _CameraShakeOffset = _InitialCamPos - Camera.main.transform.position;
             _CameraShakeOffset.z = 0;
             _MousePosition = Mouse.current.position.ReadValue();
             _WorldMousePosition = Camera.main.ScreenToWorldPoint(_MousePosition);
-            if(_CameraShakeOffset.magnitude==0)
+            if (_CameraShakeOffset.magnitude == 0)
             {
                 _OffsetXTimer += Time.deltaTime / _OffsetXDuration;
                 _OffsetYTimer += Time.deltaTime / _OffsetYDuration;
@@ -62,7 +58,7 @@ public class Gun : MonoBehaviour
                 _OffsetY = _OffsetYBase * _OffsetYEvolution.Evaluate(_OffsetYTimer);
             }
             transform.position = new Vector3(_WorldMousePosition.x + _OffsetX + _SpriteOffset.x, _WorldMousePosition.y - _OffsetY + _SpriteOffset.y) + _CameraShakeOffset;
-            var screenPoint = new Vector2();
+            Vector2 screenPoint = new Vector2();
 
             //constrains cursor in the Y axis to the shootable zone
             screenPoint.y = Mathf.Clamp(_MousePosition.y,

@@ -77,7 +77,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 _TypeWriter.SkipTypewriter();
             }
-        } 
+        }
     }
     private IEnumerator CloseRoutine()
     {
@@ -89,10 +89,10 @@ public class DialogueTrigger : MonoBehaviour
         StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
         yield return FadeInOut.Instance.FadeToBlack();
-        if(_Minigame)_Minigame.GetComponent<IInteractable>().Interact();
-        if(PlayerControls.Instance._CurrentDialogue == this) PlayerControls.Instance._CurrentDialogue = null;
+        if (_Minigame) _Minigame.GetComponent<IInteractable>().Interact();
+        if (PlayerControls.Instance._CurrentDialogue == this) PlayerControls.Instance._CurrentDialogue = null;
         transform.parent.gameObject.SetActive(false);
-        if (_EnableMapOnClose) 
+        if (_EnableMapOnClose)
         {
             StandInteractableTrigger.Map.SetActive(true);
             PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
@@ -104,7 +104,7 @@ public class DialogueTrigger : MonoBehaviour
     }
     private IEnumerator WaitUntilEvent(UnityEvent unityEvent)
     {
-        var trigger = false;
+        bool trigger = false;
         Action action = () => trigger = true;
         unityEvent.AddListener(action.Invoke);
         yield return new WaitUntil(() => trigger);

@@ -25,7 +25,7 @@ public class Fish : MonoBehaviour
         _IsDying = true;
         //play anim
         _Animator.SetTrigger("Fish");
-        this.Invoke(() => 
+        this.Invoke(() =>
         {
             FishManager.Instance._FishList.Remove(transform.parent.gameObject);
             Destroy(transform.parent.gameObject);
@@ -34,7 +34,7 @@ public class Fish : MonoBehaviour
     }
     private void Update()
     {
-        if(!_IsDying)
+        if (!_IsDying)
         {
             _DistPercent += _Speed * Time.deltaTime / _SplineLength;
             Vector3 currentPosition = _Spline[FishManager.Instance._BugValue].EvaluatePosition(_DistPercent);
@@ -52,6 +52,6 @@ public class Fish : MonoBehaviour
                 _DistPercent = 0f;
             }
         }
-        
+
     }
 }

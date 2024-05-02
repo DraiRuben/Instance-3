@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,11 +19,11 @@ public class MedalDisplayer : MonoBehaviour
         {
             _MoleMedal.sprite = GetMedalSprite(MoleWacker.Instance._StandResults._Medal);
         }
-        if(FishManager.Instance)
+        if (FishManager.Instance)
         {
             _FishMedal.sprite = GetMedalSprite(FishManager.Instance._StandResults._Medal);
         }
-        if(RifleMinigame.Instance)
+        if (RifleMinigame.Instance)
         {
             _RifleMedal.sprite = GetMedalSprite(RifleMinigame.Instance._StandResults._Medal);
         }
@@ -37,11 +35,11 @@ public class MedalDisplayer : MonoBehaviour
 
     private Sprite GetMedalSprite(MedalType Medal)
     {
-        switch(Medal)
+        switch (Medal)
         {
             case MedalType.None:
                 return _EmptyMedal;
-            case MedalType.Bronze: 
+            case MedalType.Bronze:
                 return _BronzeMedal;
             case MedalType.Silver:
                 return _SilverMedal;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,8 +18,8 @@ public class ConfirmationPrompt : MonoBehaviour
         gameObject.SetActive(false);
     }
     public void OpenConfirmationPrompt(
-        UnityEngine.Events.UnityAction confirmAction, 
-        UnityEngine.Events.UnityAction denyAction, 
+        UnityEngine.Events.UnityAction confirmAction,
+        UnityEngine.Events.UnityAction denyAction,
         string confirmationText)
     {
         gameObject.SetActive(true);

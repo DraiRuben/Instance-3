@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -9,21 +7,21 @@ public class MusicUiControler : MonoBehaviour
     public Slider _GlobalVolumeSlider, _MusicSlider, _SfxSlider;
     [SerializeField] private AudioMixer _Mixer;
     private static float _GlobalSliderValue = 1;
-    private static float _MusicSliderValue = 1;
+    private static float _MusicSliderValue = 0.5f;
     private static float _SfxSliderValue = 1;
     private void Start()
     {
-        if(PlayerPrefs.HasKey(nameof(_GlobalSliderValue))) _GlobalSliderValue = PlayerPrefs.GetFloat(nameof(_GlobalSliderValue));
-        if(PlayerPrefs.HasKey(nameof(_MusicSliderValue))) _MusicSliderValue = PlayerPrefs.GetFloat(nameof(_MusicSliderValue));
-        if(PlayerPrefs.HasKey(nameof(_SfxSliderValue))) _SfxSliderValue = PlayerPrefs.GetFloat(nameof(_SfxSliderValue));
-                
+        if (PlayerPrefs.HasKey(nameof(_GlobalSliderValue))) _GlobalSliderValue = PlayerPrefs.GetFloat(nameof(_GlobalSliderValue));
+        if (PlayerPrefs.HasKey(nameof(_MusicSliderValue))) _MusicSliderValue = PlayerPrefs.GetFloat(nameof(_MusicSliderValue));
+        if (PlayerPrefs.HasKey(nameof(_SfxSliderValue))) _SfxSliderValue = PlayerPrefs.GetFloat(nameof(_SfxSliderValue));
+
         _GlobalVolumeSlider.value = _GlobalSliderValue;
         _MusicSlider.value = _MusicSliderValue;
         _SfxSlider.value = _SfxSliderValue;
 
-        _GlobalVolumeSlider.onValueChanged.AddListener(x=>GlobalVolume());
-        _MusicSlider.onValueChanged.AddListener(x=>MusicVolume());
-        _SfxSlider.onValueChanged.AddListener(x=> SfxVolume());
+        _GlobalVolumeSlider.onValueChanged.AddListener(x => GlobalVolume());
+        _MusicSlider.onValueChanged.AddListener(x => MusicVolume());
+        _SfxSlider.onValueChanged.AddListener(x => SfxVolume());
         GlobalVolume();
         MusicVolume();
         SfxVolume();

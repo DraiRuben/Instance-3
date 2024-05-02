@@ -16,7 +16,7 @@ public class Target : MonoBehaviour, IPointerDownHandler
     {
         //play anim
         _Animator.SetTrigger("ChangeState");
-        this.Invoke(()=>Destroy(transform.parent.gameObject), 0.15f);
+        this.Invoke(() => Destroy(transform.parent.gameObject), 0.15f);
         //TODO: play sound
     }
 }

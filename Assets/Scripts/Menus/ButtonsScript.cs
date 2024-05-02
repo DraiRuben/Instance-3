@@ -1,14 +1,15 @@
-using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ButtonsScript : Minigame
 {
     private string root;
     private bool _HasSave;
     [SerializeField] private ConfirmationPrompt _NewGamePrompt;
+    [SerializeField] private Button _LoadButton;
     private GameObject _FM;
     private GameObject _RM;
     private GameObject _CM;
@@ -16,16 +17,16 @@ public class ButtonsScript : Minigame
     private bool test = true;
     private void Start()
     {
-       
-        root = Application.persistentDataPath;
-        _FM = FishManager.Instance?.gameObject;
-        _RM = RifleMinigame.Instance?.gameObject;
-        _CM = Cups.Instance?.gameObject;
-        _MM = MoleWacker.Instance?.gameObject;
 
         root = Application.persistentDataPath;
-        var files = from file in Directory.EnumerateFiles(root) select file;
-        foreach (var file in files)
+        _FM = FishManager.Instance != null ? FishManager.Instance.gameObject : null;
+        _RM = RifleMinigame.Instance != null ? RifleMinigame.Instance.gameObject : null;
+        _CM = Cups.Instance != null ? Cups.Instance.gameObject : null;
+        _MM = MoleWacker.Instance != null ? MoleWacker.Instance.gameObject : null;
+
+        root = Application.persistentDataPath;
+        System.Collections.Generic.IEnumerable<string> files = from file in Directory.EnumerateFiles(root) select file;
+        foreach (string file in files)
         {
             if (file.EndsWith(".json"))
             {
@@ -34,10 +35,11 @@ public class ButtonsScript : Minigame
             }
         }
         _HasSave = false;
+        if (!_HasSave && _LoadButton) _LoadButton.interactable = false;
     }
     public void Quit()
     {
-        if(SceneManager.GetActiveScene().buildIndex == 1)
+        if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             AudioManager._Instance.PlaySFX("uiClick");
             if (_FM.activeSelf)
@@ -62,7 +64,7 @@ public class ButtonsScript : Minigame
                 Time.timeScale = 1;
             }
         }
-        Application.Quit(); 
+        Application.Quit();
     }
 
     public void Load()
@@ -83,23 +85,23 @@ public class ButtonsScript : Minigame
             _NewGamePrompt.OpenConfirmationPrompt(
             () =>
             {
-                var files = from file in Directory.EnumerateFiles(root) select file;
+                System.Collections.Generic.IEnumerable<string> files = from file in Directory.EnumerateFiles(root) select file;
                 if (files.Count() > 0)
                 {
-                    foreach (var file in files)
+                    foreach (string file in files)
                     {
                         if (!file.EndsWith(".log"))
                             File.Delete(file);
                     }
                 }
                 if (Directory.Exists("Game")) Directory.Delete("Game", true);
-                SceneManager.LoadSceneAsync(1);
+                this.Invoke(()=>SceneManager.LoadSceneAsync(1),0.4f/0.6f);
                 _NewGamePrompt.ChangePromptState();
-            }, 
-            () => 
+            },
+            () =>
             {
                 _NewGamePrompt.ChangePromptState();
-            }, 
+            },
             "Si vous continuez, toute progression sera effacée !");
         }
         else

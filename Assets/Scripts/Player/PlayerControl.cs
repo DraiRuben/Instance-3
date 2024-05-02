@@ -56,9 +56,9 @@ public class PlayerControls : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         StandInteractableTrigger interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
-        if (_CurrentInteractable == interactable)
+        if (_CurrentInteractable == interactable && interactable)
         {
-            _CurrentInteractable._Highlight.SetActive(false);
+            _CurrentInteractable?._Highlight.SetActive(false);
 
             _CurrentInteractable = null;
         }

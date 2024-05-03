@@ -22566,6 +22566,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6517162268475846894, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.226
+      objectReference: {fileID: 0}
     - target: {fileID: 8023200167836772590, guid: e4a28af3f2754834c8a192101a200ea6, type: 3}
       propertyPath: m_Name
       value: RifleMinigame

@@ -11,8 +11,8 @@ public class NPCPathFind : MonoBehaviour
     private float _PathLength;
     private Vector3 _StartNode;
     private Vector3 _EndNode;
-    [SerializeField, MinMaxSlider(0,10)] private Vector2 _WaitTime;
-    [SerializeField, MinMaxSlider(0,10)] private Vector2 _Speed;
+    [SerializeField, MinMaxSlider(0, 10)] private Vector2 _WaitTime;
+    [SerializeField, MinMaxSlider(0, 10)] private Vector2 _Speed;
 
     private void Start()
     {
@@ -20,7 +20,11 @@ public class NPCPathFind : MonoBehaviour
         _StartNode = _Node[_RandomNode].transform.position;
         transform.position = _StartNode;
         _EndNode = _StartNode;
+    }
+    private void OnEnable()
+    {
         StartCoroutine(CheckDistance());
+
     }
     private void Update()
     {
@@ -45,12 +49,12 @@ public class NPCPathFind : MonoBehaviour
             }
             yield return new WaitForFixedUpdate();
         }
-       
+
     }
 
     private void LerpTo()
     {
-        _ElapsedTime += Time.deltaTime* _MovementSpeed /  _PathLength;
+        _ElapsedTime += Time.deltaTime * _MovementSpeed / _PathLength;
         transform.position = Vector3.Lerp(_StartNode, _EndNode, Mathf.SmoothStep(0, 1, _ElapsedTime));
     }
 }

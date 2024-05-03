@@ -95,7 +95,7 @@ public class ButtonsScript : Minigame
                     }
                 }
                 if (Directory.Exists("Game")) Directory.Delete("Game", true);
-                this.Invoke(()=>SceneManager.LoadSceneAsync(1),0.4f/0.6f);
+                this.Invoke(() => SceneManager.LoadSceneAsync(1), 0.4f / 0.6f);
                 _NewGamePrompt.ChangePromptState();
             },
             () =>

@@ -5,8 +5,8 @@ using UnityEngine.Events;
 
 public class StandTransitionOut : MonoBehaviour
 {
-    [SerializeField] private DialogueTrigger _DialogueWindow;
-    private readonly string[] _TranslationList = { "None", " médaille de Bronze", " médaille d'argent", " médaille d'or" };
+    public DialogueTrigger _DialogueWindow;
+    private readonly string[] _TranslationList = { "None", " mÃ©daille de Bronze", " mÃ©daille d'argent", " mÃ©daille d'or" };
     public static StandTransitionOut Instance;
     private void Start()
     {
@@ -24,15 +24,15 @@ public class StandTransitionOut : MonoBehaviour
             if (FishManager.Instance._StandResults._Medal != MedalType.None)
             {
                 _DialogueWindow._DialoguesTexts.Add
-                ("Avec un score de " + FishManager.Instance._StandResults._Points + ", tu mérites la" +
+                ("Avec un score de " + FishManager.Instance._StandResults._Points + ", tu mÃ©rites la" +
                 _TranslationList[(int)FishManager.Instance._StandResults._Medal] +
-                    ". Félicitations garçon ! Tu en auras besoin pour faire un cadeau à ta petite soeur." +
-                    " Utilises la au stand de récompenses plus tard.");
+                    ". FÃ©licitations garÃ§on ! Tu en auras besoin pour faire un cadeau Ã  ta petite soeur." +
+                    " Utilises la au stand de rÃ©compenses plus tard.");
             }
             else
             {
-                _DialogueWindow._DialoguesTexts.Add("Mince alors…" +
-                    " Tu n’as pas pêché assez de poissons pour obtenir une médaille… Peut-être devrais-tu réessayer ?");
+                _DialogueWindow._DialoguesTexts.Add("Mince alors !" +
+                    " Tu n'as pas pÃªchÃ© assez de poissons pour obtenir une mÃ©daille ! Peut-Ãªtre devrais-tu rÃ©essayer ?");
             }
         }
         else if (MoleWacker.Instance.gameObject.activeSelf)
@@ -41,14 +41,14 @@ public class StandTransitionOut : MonoBehaviour
             {
                 _DialogueWindow._DialoguesTexts.Add
                     ("Wow, tu as battu le record du jour ! " + MoleWacker.Instance._StandResults._Points +
-                    " taupes frappées. Tu mérite amplement la " + _TranslationList[(int)MoleWacker.Instance._StandResults._Medal] +
-                    " ! A la fin de ta journée, n'hésites pas à t'en servir au stand de récompenses.");
+                    " taupes frappÃ©es. Tu mÃ©rite amplement la " + _TranslationList[(int)MoleWacker.Instance._StandResults._Medal] +
+                    " ! A la fin de ta journÃ©e, n'hÃ©sites pas Ã  t'en servir au stand de rÃ©compenses.");
             }
             else
             {
                 _DialogueWindow._DialoguesTexts.Add
-                    ("Dommage garçon, mais tu n’as pas atteint le score minimal pour avoir une médaille." +
-                    " N’hésites pas à repasser pour tenter d’en gagner une.");
+                    ("Dommage garÃ§on, mais tu n'as pas atteint le score minimal pour avoir une mÃ©daille." +
+                    " N'hÃ©sites pas Ã  repasser pour tenter d'en gagner une.");
             }
         }
         else if (RifleMinigame.Instance.gameObject.activeSelf)
@@ -56,14 +56,14 @@ public class StandTransitionOut : MonoBehaviour
             if (RifleMinigame.Instance._StandResults._Medal != MedalType.None)
             {
                 _DialogueWindow._DialoguesTexts.Add(RifleMinigame.Instance._StandResults._Points +
-                    " cibles abattues ?! Voilà ta " + _TranslationList[(int)RifleMinigame.Instance._StandResults._Medal] +
-                    ". A croire que tu t'entraines quelque part. Elle te sera utile au stand récompenses");
+                    " cibles abattues ?! VoilÃ  ta " + _TranslationList[(int)RifleMinigame.Instance._StandResults._Medal] +
+                    ". A croire que tu t'entraines quelque part. Elle te sera utile au stand rÃ©compenses");
             }
             else
             {
                 _DialogueWindow._DialoguesTexts.Add(RifleMinigame.Instance._StandResults._Points +
-                    " cibles abattues. Ce n'est pas assez du tout. N'hésites pas à revenir quand tu te sens prêt à retenter le coup." +
-                    " Cette fois-ci tu obtiendras peut-être une médaille.");
+                    " cibles abattues. Ce n'est pas assez du tout. N'hÃ©sites pas Ã  revenir quand tu te sens prÃªt Ã  retenter le coup." +
+                    " Cette fois-ci tu obtiendras peut-Ãªtre une mÃ©daille.");
             }
         }
         else if (Cups.Instance.gameObject.activeSelf)
@@ -71,15 +71,15 @@ public class StandTransitionOut : MonoBehaviour
             if (Cups.Instance._StandResults._Medal != MedalType.None)
             {
                 _DialogueWindow._DialoguesTexts.Add
-                    ("Tu as les yeux vifs gamin, tu as trouvé " + Cups.Instance._StandResults._Points +
-                    " balles. Viens donc récupérer ta" + _TranslationList[(int)Cups.Instance._StandResults._Medal] +
-                    ". Tu pourras l'échanger plus tard au stand de récompenses.");
+                    ("Tu as les yeux vifs gamin, tu as trouvÃ© " + Cups.Instance._StandResults._Points +
+                    " balles. Viens donc rÃ©cupÃ©rer ta" + _TranslationList[(int)Cups.Instance._StandResults._Medal] +
+                    ". Tu pourras l'Ã©changer plus tard au stand de rÃ©compenses.");
             }
             else
             {
                 _DialogueWindow._DialoguesTexts.Add
-                    ("Ce n’est pas possible d’avoir un score aussi bas… Je ne peux pas te donner de médaille avec ce score." +
-                    " Prochaine fois que tu repasses, essayes de rester concentré gamin, tu peux le faire !");
+                    ("Ce n'est pas possible d'avoir un score aussi bas ! Je ne peux pas te donner de mÃ©daille avec ce score." +
+                    " Prochaine fois que tu repasses, essayes de rester concentrÃ© gamin, tu peux le faire !");
             }
         }
         yield return FadeInOut.Instance.FadeToBlack();

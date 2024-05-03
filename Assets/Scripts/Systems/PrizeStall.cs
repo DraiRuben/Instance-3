@@ -1,6 +1,5 @@
 using Febucci.UI;
 using Sirenix.OdinInspector;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,7 +21,7 @@ public class PrizeStall : MonoBehaviour, IInteractable
     }
     private void Start()
     {
-        _TypeWriter.onTextShowed.AddListener(() => { this.Invoke(() => SceneManager.LoadSceneAsync(0), 3f); Debug.Log("test"); });
+        _TypeWriter.onTextShowed.AddListener(() => this.Invoke(() => SceneManager.LoadSceneAsync(0), 3f));
         gameObject.SetActive(false);
     }
     private void CalculateScore(MedalType medal)

@@ -25,14 +25,17 @@ public class DialogueTrigger : MonoBehaviour
     private List<string> _UsedDialogues;
     public Sprite _Image;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _TypeWriter = GetComponent<TypewriterByCharacter>();
         _TMP = GetComponent<TextMeshProUGUI>();
-        _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
-        transform.parent.parent.gameObject.SetActive(false);
+        _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);   
     }
 
+    private void Start()
+    {
+        transform.parent.parent.gameObject.SetActive(false);
+    }
     [Button]
     public void TriggerDialogue()
     {

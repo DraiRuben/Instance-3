@@ -165,7 +165,7 @@ public class Cups : Minigame
                 for (int i = _Cups.Count; i < cupCount; i++)
                 {
                     GameObject cup = Instantiate(_CupPrefab, transform.GetChild(1));
-                    (cup.transform as RectTransform).anchoredPosition = new Vector2(0, -205);
+                    (cup.transform as RectTransform).anchoredPosition = new Vector2(0, -265);
                     cup.GetComponent<Button>().onClick.AddListener(() => SelectCup(cup));
                     _Cups.Add(cup);
                 }

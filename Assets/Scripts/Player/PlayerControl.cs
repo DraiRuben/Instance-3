@@ -12,7 +12,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private DialogueTrigger _DialogueWindow;
     private Rigidbody2D _RBody;
     private Animator _Animator;
-    private SpriteRenderer _SpriteRenderer;
+    public SpriteRenderer _SpriteRenderer;
     private Vector2 _MoveInput;
     [System.NonSerialized] public DialogueTrigger _CurrentDialogue;
     private StandInteractableTrigger _CurrentInteractable;
@@ -44,6 +44,7 @@ public class PlayerControls : MonoBehaviour
 
     private IEnumerator LoreDialogue()
     {
+        FadeInOut.Instance.gameObject.SetActive(true);
         _DialogueWindow.TriggerDialogue();
         yield return WaitUntilEvent(_DialogueWindow._TypeWriter.onTextDisappeared);
         yield return FadeInOut.Instance.FadeToBlack();

@@ -21,7 +21,7 @@ public class PrizeStall : MonoBehaviour, IInteractable
     }
     private void Start()
     {
-        _TypeWriter.onTextShowed.AddListener(() => this.Invoke(() => SceneManager.LoadSceneAsync(0), 3f));
+        _TypeWriter.onTextDisappeared.AddListener(() => this.Invoke(() => SceneManager.LoadSceneAsync(0), 3f));
         gameObject.SetActive(false);
     }
     private void CalculateScore(MedalType medal)
@@ -62,27 +62,23 @@ public class PrizeStall : MonoBehaviour, IInteractable
         {
             _ConfettiEffect.transform.position = _BearPlush.transform.position;
             _ConfettiEffect.Play();
-            _DialogueWindow._DialoguesTexts.Add("Wow avec autant de tickets tu peux avoir cette ours en peluche");
-            Debug.Log("you got the bear");
+            _DialogueWindow._DialoguesTexts.Add("Wow avec autant de tickets tu peux avoir cet ours en peluche");
         }
         else if (_FinalScore >= 80)
         {
             _ConfettiEffect.transform.position = _RabbitPlush.transform.position;
             _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Avec ton nombre de tickets je peux te proposer ce lapin en peluche");
-            Debug.Log("you got the rabbit");
         }
         else if (_FinalScore >= 35)
         {
             _ConfettiEffect.transform.position = _RatPlush.transform.position;
             _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Avec si peu de tickets tu peux avoir cette peluche de rat");
-            Debug.Log("you got the rat");
         }
         else
         {
             _DialogueWindow._DialoguesTexts.Add("Je suis désolé mais tu n'as passez de tickets pour avoir quoi que ce soit");
-            Debug.Log("you can't get anything");
         }
         _DialogueWindow.TriggerDialogue();
         _FinalScore = 0;

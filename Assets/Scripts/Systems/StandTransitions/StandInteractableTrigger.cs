@@ -69,6 +69,9 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
     }
     private IEnumerator StandInteract()
     {
+        if(_Minigame.GetComponent<Minigame>()!=null)
+            _CurrentDialogue.SetGuyVisibility(_Minigame.GetComponent<Minigame>()._DisplayGuy);
+
         PlayerControls.Instance.SetVisibility(false, 0.36f / 0.6f);
         yield return FadeInOut.Instance.FadeToBlack();
         if (_CurrentDialogue)

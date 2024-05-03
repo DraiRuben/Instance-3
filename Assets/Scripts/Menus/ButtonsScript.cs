@@ -1,3 +1,4 @@
+using System.Collections;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -37,6 +38,11 @@ public class ButtonsScript : Minigame
         _HasSave = false;
         if (!_HasSave && _LoadButton) _LoadButton.interactable = false;
     }
+    private IEnumerator LoadGame()
+    {
+        yield return FadeInOut.Instance.FadeToBlack();
+        SceneManager.LoadSceneAsync(1);
+    }
     public void Quit()
     {
         AudioManager._Instance.PlaySFX("uiClick");
@@ -64,7 +70,10 @@ public class ButtonsScript : Minigame
                 Time.timeScale = 1;
             }
         }
-        Application.Quit();
+        else
+        {
+            Application.Quit();
+        }
     }
 
     public void Load()
@@ -72,10 +81,12 @@ public class ButtonsScript : Minigame
         AudioManager._Instance.PlaySFX("uiClick");
         if (_HasSave)
         {
-            SceneManager.LoadSceneAsync(1);
+            StartCoroutine(LoadGame());
             return;
         }
     }
+
+    
     public void Begin()
     {
         AudioManager._Instance.PlaySFX("uiClick");
@@ -95,7 +106,8 @@ public class ButtonsScript : Minigame
                     }
                 }
                 if (Directory.Exists("Game")) Directory.Delete("Game", true);
-                this.Invoke(() => SceneManager.LoadSceneAsync(1), 0.4f / 0.6f);
+                StartCoroutine(LoadGame());
+                //this.Invoke(() => SceneManager.LoadSceneAsync(1), 0.4f / 0.6f);
                 _NewGamePrompt.ChangePromptState();
             },
             () =>
@@ -106,7 +118,7 @@ public class ButtonsScript : Minigame
         }
         else
         {
-            SceneManager.LoadSceneAsync(1);
+            StartCoroutine(LoadGame());
         }
     }
     public void Settings()

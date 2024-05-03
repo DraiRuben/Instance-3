@@ -90,9 +90,9 @@ public class Cups : Minigame
         MedalType Medal = MedalType.None;
         if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
             Medal = MedalType.Gold;
-        else if(_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
+        else if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
             Medal = MedalType.Silver;
-        else if(_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
+        else if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
             Medal = MedalType.Bronze;
 
         _StandResults = new StandResults(Medal, _WinCount);
@@ -344,7 +344,7 @@ public class Cups : Minigame
         {
             PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
             gameObject.SetActive(true);
-            RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements,_PointsImage);
+            RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements, _PointsImage);
             StartCoroutine(ShuffleCupsRoutine());
         }
     }

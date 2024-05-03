@@ -38,7 +38,7 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
                     () =>
                     {
                         _ConfirmationPrompt.ChangePromptState();
-                        this.Invoke(()=>PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player"),0.4f/0.6f);
+                        this.Invoke(() => PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player"), 0.4f / 0.6f);
 
                     },
                     _PromptDescription);

@@ -3,7 +3,6 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -60,7 +59,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void AssignImage()
     {
-        if(_Image)
+        if (_Image)
         {
             transform.parent.GetChild(0).GetComponent<Image>().color = Color.white;
             transform.parent.GetChild(0).GetComponent<Image>().sprite = _Image;

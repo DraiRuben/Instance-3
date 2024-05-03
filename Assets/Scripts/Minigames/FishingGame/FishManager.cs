@@ -113,9 +113,9 @@ public sealed class FishManager : Minigame
         MedalType Medal = MedalType.None;
         if (_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
             Medal = MedalType.Gold;
-        else if(_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
+        else if (_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
             Medal = MedalType.Silver;
-        else if(_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
+        else if (_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
             Medal = MedalType.Bronze;
 
         _StandResults = new StandResults(Medal, _FishingScore);

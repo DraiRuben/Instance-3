@@ -1,6 +1,5 @@
 using Febucci.UI;
 using Sirenix.OdinInspector;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

@@ -1389,6 +1389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MinigameDuration: 0
   _MedalRequirements: {fileID: 0}
+  _PointsImage: {fileID: 0}
   _NewGamePrompt: {fileID: 5578973196631339407}
   _LoadButton: {fileID: 1785889071}
 --- !u!224 &1264187684 stripped

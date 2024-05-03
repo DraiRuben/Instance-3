@@ -66,12 +66,10 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
         {
             return _Minigame.GetComponent<IInteractable>().CanInteract();
         }
-
     }
-
-
     private IEnumerator StandInteract()
     {
+        PlayerControls.Instance.SetVisibility(false, 0.36f / 0.6f);
         yield return FadeInOut.Instance.FadeToBlack();
         if (_CurrentDialogue)
         {
@@ -81,5 +79,6 @@ public class StandInteractableTrigger : MonoBehaviour, IInteractable
         {
             _Minigame.GetComponent<IInteractable>().Interact();
         }
+        FadeInOut.Instance.StartCoroutine(FadeInOut.Instance.FadeToTransparent());
     }
 }

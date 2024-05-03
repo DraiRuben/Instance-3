@@ -16,7 +16,6 @@ public class StandTransitionOut : MonoBehaviour
 
     public IEnumerator TransitionOut()
     {
-        PlayerControls.Instance._CurrentDialogue = _DialogueWindow;
         _DialogueWindow._DialoguesTexts.Clear();
         if (FishManager.Instance.gameObject.activeSelf)
         {
@@ -84,12 +83,14 @@ public class StandTransitionOut : MonoBehaviour
         }
         yield return FadeInOut.Instance.FadeToBlack();
         _DialogueWindow.TriggerDialogue();
+        yield return FadeInOut.Instance.FadeToTransparent();
+        PlayerControls.Instance._CurrentDialogue = _DialogueWindow;
         yield return WaitUntilEvent(_DialogueWindow._TypeWriter.onTextDisappeared);
         PlayerControls.Instance._CurrentDialogue = null;
-        yield return FadeInOut.Instance.FadeToBlack();
+        PlayerControls.Instance.SetVisibility(true, 0.35f/0.6f);
+        yield return FadeInOut.Instance.FadeToBlackThenTransparent();
         PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        StandInteractableTrigger.Map.SetActive(true);
+
 
     }
 

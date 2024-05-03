@@ -31,7 +31,6 @@ public class Minigame : MonoBehaviour, IInteractable
     public virtual void TriggerMinigameEnd(bool ClosePreEmptively = false)
     {
         StopAllCoroutines();
-        Cursor.visible = true;
         PlayerControls.Instance?.OnSelect.RemoveAllListeners();
         RequiredMedalsDisplay.Instance.StopDisplay();
         if (!ClosePreEmptively)
@@ -42,18 +41,10 @@ public class Minigame : MonoBehaviour, IInteractable
         }
         else
         {
-            FadeInOut.Instance.StartCoroutine(fadeinout());
+            FadeInOut.Instance.StartCoroutine(FadeInOut.Instance.FadeToBlackThenTransparent());
+            PlayerControls.Instance.SetVisibility(true, 0.35f / 0.60f);
             PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
         }
-        gameObject.SetActive(false);
-        //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation
-    }
-
-    private IEnumerator fadeinout()
-    {
-        yield return FadeInOut.Instance.FadeToBlack();
-        StandInteractableTrigger.Map.SetActive(true);
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        yield return FadeInOut.Instance.FadeToBlack();
+        this.Invoke(()=> { gameObject.SetActive(false); Cursor.visible = true; },0.35f /0.6f);
     }
 }

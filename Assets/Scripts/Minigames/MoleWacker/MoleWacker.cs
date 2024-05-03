@@ -136,7 +136,7 @@ public class MoleWacker : Minigame
         if (CanInteract())
         {
             transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
-            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            PlayerControls.Instance.SetVisibility(false,0.0f);
             gameObject.SetActive(true);
             RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements, _PointsImage);
             if (_IsBugResolved)

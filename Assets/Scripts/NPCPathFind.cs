@@ -7,7 +7,6 @@ public class NPCPathFind : MonoBehaviour
     [SerializeField] private GameObject[] _Node;
     private float _MovementSpeed;
     private float _ElapsedTime;
-    private int _RandomNode;
     private float _PathLength;
     private Vector3 _StartNode;
     private Vector3 _EndNode;
@@ -16,10 +15,11 @@ public class NPCPathFind : MonoBehaviour
 
     private void Start()
     {
-        _RandomNode = Random.Range(0, _Node.Length);
-        _StartNode = _Node[_RandomNode].transform.position;
+        _StartNode = _Node[Random.Range(0, _Node.Length)].transform.position;
         transform.position = _StartNode;
-        _EndNode = _StartNode;
+        _EndNode = _Node[Random.Range(0, _Node.Length)].transform.position;
+        _PathLength = Vector3.Distance(transform.position, _EndNode);
+        _MovementSpeed = Random.Range(_Speed.x, _Speed.y);
     }
     private void OnEnable()
     {

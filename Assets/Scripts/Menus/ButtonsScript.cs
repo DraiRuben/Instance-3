@@ -64,7 +64,10 @@ public class ButtonsScript : Minigame
                 Time.timeScale = 1;
             }
         }
-        Application.Quit();
+        else
+        {
+            Application.Quit();
+        }
     }
 
     public void Load()

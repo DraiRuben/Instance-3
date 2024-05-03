@@ -118,6 +118,10 @@ public class DialogueTrigger : MonoBehaviour
     {
         return _Minigame.GetComponent<IInteractable>().CanInteract();
     }
+    public void SetGuyVisibility(bool visible)
+    {
+        transform.parent.GetChild(2).gameObject.SetActive(visible);
+    }
     private IEnumerator WaitUntilEvent(UnityEvent unityEvent)
     {
         bool trigger = false;

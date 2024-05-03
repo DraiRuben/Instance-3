@@ -1346,6 +1346,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: FadeEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 1791451447317010726, guid: 71c9252684d5c3b47b96790e63eb811e, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1791451447317010726, guid: 71c9252684d5c3b47b96790e63eb811e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2287593300069651746, guid: 71c9252684d5c3b47b96790e63eb811e, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1493,7 +1501,6 @@ MonoBehaviour:
   _PointsImage: {fileID: 0}
   _NewGamePrompt: {fileID: 5578973196631339407}
   _LoadButton: {fileID: 1785889071}
-  _DialogueWindow: {fileID: 0}
 --- !u!224 &1264187684 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3187544112832824563, guid: fdfbee6942bcf7f4384e58dd5a9bd2d6, type: 3}

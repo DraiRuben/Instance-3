@@ -12,7 +12,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private DialogueTrigger _DialogueWindow;
     private Rigidbody2D _RBody;
     private Animator _Animator;
-    public SpriteRenderer _SpriteRenderer;
+    private SpriteRenderer _SpriteRenderer;
     private Vector2 _MoveInput;
     [System.NonSerialized] public DialogueTrigger _CurrentDialogue;
     private StandInteractableTrigger _CurrentInteractable;
@@ -35,6 +35,7 @@ public class PlayerControls : MonoBehaviour
             JsonDataService dataService = new JsonDataService();
             Vector3Json position = dataService.LoadData<Vector3Json>("PlayerPosition");
             transform.position = new Vector3(position.x, position.y, position.z);
+            FadeInOut.Instance.StartCoroutine(FadeInOut.Instance.FadeToTransparent());
         }
         else
         {
@@ -44,10 +45,11 @@ public class PlayerControls : MonoBehaviour
 
     private IEnumerator LoreDialogue()
     {
-        FadeInOut.Instance.gameObject.SetActive(true);
+        SetVisibility(false,0.0f);
+        _PlayerInput.SwitchCurrentActionMap("Menus");
+        _CurrentDialogue = _DialogueWindow;
+        yield return null;
         _DialogueWindow.TriggerDialogue();
-        yield return WaitUntilEvent(_DialogueWindow._TypeWriter.onTextDisappeared);
-        yield return FadeInOut.Instance.FadeToBlack();
     }
     private void FixedUpdate()
     {

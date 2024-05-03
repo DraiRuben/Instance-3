@@ -17,6 +17,7 @@ public class FadeInOut : MonoBehaviour
     }
     public IEnumerator FadeToBlack()
     {
+        yield return null;
         _Animator.SetBool("HideScreen", true);
         yield return new WaitForSeconds(0.35f / 0.6f);
     }
@@ -27,6 +28,7 @@ public class FadeInOut : MonoBehaviour
     }
     public IEnumerator FadeToTransparent()
     {
+        yield return null;
         _Animator.SetBool("HideScreen", false);
         yield return new WaitForSeconds(0.35f / 0.6f);
     }

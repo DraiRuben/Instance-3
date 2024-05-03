@@ -30,14 +30,14 @@ public class DialogueTrigger : MonoBehaviour
         _TypeWriter = GetComponent<TypewriterByCharacter>();
         _TMP = GetComponent<TextMeshProUGUI>();
         _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
-        transform.parent.gameObject.SetActive(false);
+        transform.parent.parent.gameObject.SetActive(false);
     }
 
     [Button]
     public void TriggerDialogue()
     {
         AssignImage();
-        transform.parent.gameObject.SetActive(true);
+        transform.parent.parent.gameObject.SetActive(true);
         //need to change input map to prevent player from moving
         if (_DialogueData)
         {
@@ -52,7 +52,7 @@ public class DialogueTrigger : MonoBehaviour
         if (_CurrentTextIndex < _UsedDialogues.Count)
         {
             _IsClosing = false;
-            transform.parent.GetChild(1).GetComponent<Image>().enabled = true;
+            transform.parent.GetComponent<Image>().enabled = true;
             _TypeWriter.ShowText(_UsedDialogues[_CurrentTextIndex++]);
         }
     }
@@ -61,12 +61,12 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (_Image)
         {
-            transform.parent.GetChild(0).GetComponent<Image>().color = Color.white;
-            transform.parent.GetChild(0).GetComponent<Image>().sprite = _Image;
+            transform.parent.parent.GetChild(0).GetComponent<Image>().color = Color.white;
+            transform.parent.parent.GetChild(0).GetComponent<Image>().sprite = _Image;
         }
         else
         {
-            transform.parent.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
+            transform.parent.parent.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
         }
     }
     [Button]
@@ -106,12 +106,13 @@ public class DialogueTrigger : MonoBehaviour
         yield return FadeInOut.Instance.FadeToBlack();
         if (_Minigame) _Minigame.GetComponent<IInteractable>().Interact();
         if (PlayerControls.Instance._CurrentDialogue == this) PlayerControls.Instance._CurrentDialogue = null;
-        transform.parent.gameObject.SetActive(false);
         if (_EnableMapOnClose)
         {
-            StandInteractableTrigger.Map.SetActive(true);
+            PlayerControls.Instance.SetVisibility(true, 0.0f);
             PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
         }
+        FadeInOut.Instance.StartCoroutine(FadeInOut.Instance.FadeToTransparent());
+        transform.parent.parent.gameObject.SetActive(false);
     }
     public bool CanInteract()
     {

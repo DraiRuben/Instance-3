@@ -96,7 +96,7 @@ public class PrizeStall : MonoBehaviour, IInteractable
     [Button]
     public void Interact()
     {
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+        PlayerControls.Instance.SetVisibility(false, 0.0f);
         transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
         gameObject.SetActive(true);
         StandInteractableTrigger.Map.SetActive(false);

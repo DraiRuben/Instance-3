@@ -24,17 +24,13 @@ public class NPCPathFind : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(CheckDistance());
-
     }
-    private void Update()
-    {
-        LerpTo();
-    }
-
     public IEnumerator CheckDistance()
     {
+        yield return null;
         while (true)
         {
+            
             if (Vector3.Distance(transform.position, _EndNode) <= 0.001f)
             {
                 _ElapsedTime = 0.0f;
@@ -47,14 +43,10 @@ public class NPCPathFind : MonoBehaviour
                 _PathLength = Vector3.Distance(transform.position, _EndNode);
                 yield return new WaitForSeconds(Random.Range(_WaitTime.x, _WaitTime.y));
             }
+            _ElapsedTime += Time.deltaTime * _MovementSpeed / _PathLength;
+            transform.position = Vector3.Lerp(_StartNode, _EndNode, Mathf.SmoothStep(0, 1, _ElapsedTime));
             yield return new WaitForFixedUpdate();
         }
 
-    }
-
-    private void LerpTo()
-    {
-        _ElapsedTime += Time.deltaTime * _MovementSpeed / _PathLength;
-        transform.position = Vector3.Lerp(_StartNode, _EndNode, Mathf.SmoothStep(0, 1, _ElapsedTime));
     }
 }

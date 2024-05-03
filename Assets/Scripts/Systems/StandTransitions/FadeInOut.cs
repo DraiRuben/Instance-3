@@ -17,7 +17,17 @@ public class FadeInOut : MonoBehaviour
     }
     public IEnumerator FadeToBlack()
     {
-        _Animator.SetTrigger("FadeOut");
-        yield return new WaitForSeconds(0.35f);
+        _Animator.SetBool("HideScreen", true);
+        yield return new WaitForSeconds(0.35f / 0.6f);
+    }
+    public IEnumerator FadeToBlackThenTransparent()
+    {
+        yield return FadeToBlack();
+        yield return FadeToTransparent();
+    }
+    public IEnumerator FadeToTransparent()
+    {
+        _Animator.SetBool("HideScreen", false);
+        yield return new WaitForSeconds(0.35f / 0.6f);
     }
 }

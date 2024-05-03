@@ -73,7 +73,7 @@ public class PlayerControls : MonoBehaviour
         StandInteractableTrigger interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
         if (_CurrentInteractable == interactable && interactable)
         {
-            _CurrentInteractable?._Highlight.SetActive(false);
+            if(_CurrentInteractable._Highlight !=null) _CurrentInteractable._Highlight.SetActive(false);
 
             _CurrentInteractable = null;
         }
@@ -205,6 +205,11 @@ public class PlayerControls : MonoBehaviour
             this.y = y;
             this.z = z;
         }
+    }
+    public void SetVisibility(bool visible, float delay)
+    {
+        this.Invoke(()=> { GetComponent<SpriteRenderer>().enabled = visible; StandInteractableTrigger.Map.SetActive(visible); },delay);
+        
     }
     public void PlayWalkSound()
     {

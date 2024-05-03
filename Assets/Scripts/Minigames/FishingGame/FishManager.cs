@@ -128,7 +128,7 @@ public sealed class FishManager : Minigame
         {
             IsBugged();
             transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
-            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            PlayerControls.Instance.SetVisibility(false,0.0f);
             gameObject.SetActive(true);
             RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements, _PointsImage);
             StartCoroutine(FishSpawn());

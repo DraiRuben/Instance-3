@@ -12,7 +12,6 @@ public class RifleMinigame : Minigame
     [Header("sound")]
     [SerializeField] private AudioClip _ReloadSound;
     [SerializeField] private AudioClip _ShootSound;
-    [SerializeField] private bool _IsBugged;
     [SerializeField] private TextMeshProUGUI _TimerText;
     [SerializeField] private TextMeshProUGUI _ScoreText;
     [SerializeField] private CameraShakeProfile _ShootShakeProfile;
@@ -20,10 +19,9 @@ public class RifleMinigame : Minigame
     private CinemachineImpulseSource _ShootShakeSource;
     private int _Points;
     private float _ReloadTime;
-
+    private bool _IsBugged;
     private Vector2 _ScreenPos;
     private Vector2 _WorldPos;
-
     private Vector3 _InitialOffset;
 
     private void Awake()
@@ -187,7 +185,7 @@ public class RifleMinigame : Minigame
         {
             _IsBugged = IsBugged();
             transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
-            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            PlayerControls.Instance.SetVisibility(false, 0.0f);
             gameObject.SetActive(true);
             RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements, _PointsImage);
             StartCoroutine(RunMinigame());

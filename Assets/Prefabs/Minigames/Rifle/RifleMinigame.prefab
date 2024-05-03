@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2061c7ae848265b4d943e9fc3cd74b9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -348,7 +348,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.226, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5142435843475914618}
@@ -780,8 +780,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _SpriteOffset: {x: 0, y: -3.5}
-  _MouseYRange: {x: -1.3, y: 1.3}
-  _MouseXRange: {x: -1.6, y: 1.6}
+  _MouseYRange: {x: -1.72, y: 1.62}
+  _MouseXRange: {x: -2, y: 2}
 --- !u!1 &6575110042467889101
 GameObject:
   m_ObjectHideFlags: 0
@@ -922,8 +922,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.33, y: 1.33, z: 1.33}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4169682466137153864}
   - {fileID: 6517162268475846894}
@@ -947,10 +947,8 @@ MonoBehaviour:
   _MinigameDuration: 40
   _MedalRequirements: {fileID: 11400000, guid: 715ac4558ad974f459bf654572df246a, type: 2}
   _PointsImage: {fileID: 21300000, guid: 044081e06ab22cb4b87c5cca5d554b9d, type: 3}
-  _StandSprite: {fileID: 21300000, guid: b38746464270a9b4aa530f49893f11ec, type: 3}
   _ReloadSound: {fileID: 8300000, guid: b214aceb72fd36248be2fda0326eac04, type: 3}
   _ShootSound: {fileID: 8300000, guid: d3629d542462d9b4098b5bc5b70ba639, type: 3}
-  _IsBugged: 0
   _TimerText: {fileID: 6592627035004337489}
   _ScoreText: {fileID: 1202994912672624169}
   _ShootShakeProfile: {fileID: 11400000, guid: 491a19c29f85ead4b9be8acf398c4dbd, type: 2}

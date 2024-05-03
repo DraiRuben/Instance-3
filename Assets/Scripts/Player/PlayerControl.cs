@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +9,7 @@ public class PlayerControls : MonoBehaviour
 {
     public static PlayerControls Instance;
     [SerializeField] private float _Speed;
+    [SerializeField] private DialogueTrigger _DialogueWindow;
     private Rigidbody2D _RBody;
     private Animator _Animator;
     private SpriteRenderer _SpriteRenderer;
@@ -33,6 +36,17 @@ public class PlayerControls : MonoBehaviour
             Vector3Json position = dataService.LoadData<Vector3Json>("PlayerPosition");
             transform.position = new Vector3(position.x, position.y, position.z);
         }
+        else
+        {
+            StartCoroutine(LoreDialogue());
+        }
+    }
+
+    private IEnumerator LoreDialogue()
+    {
+        _DialogueWindow.TriggerDialogue();
+        yield return WaitUntilEvent(_DialogueWindow._TypeWriter.onTextDisappeared);
+        yield return FadeInOut.Instance.FadeToBlack();
     }
     private void FixedUpdate()
     {
@@ -194,5 +208,14 @@ public class PlayerControls : MonoBehaviour
     public void PlayWalkSound()
     {
         AudioManager._Instance.PlaySFX("playerWalk", true);
+    }
+
+    private IEnumerator WaitUntilEvent(UnityEvent unityEvent)
+    {
+        bool trigger = false;
+        Action action = () => trigger = true;
+        unityEvent.AddListener(action.Invoke);
+        yield return new WaitUntil(() => trigger);
+        unityEvent.RemoveListener(action.Invoke);
     }
 }

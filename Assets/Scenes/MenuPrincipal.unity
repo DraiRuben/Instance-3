@@ -1346,6 +1346,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FadeEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 2287593300069651746, guid: 71c9252684d5c3b47b96790e63eb811e, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 276131063}
     - target: {fileID: 2359713366432072362, guid: 71c9252684d5c3b47b96790e63eb811e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1489,6 +1493,7 @@ MonoBehaviour:
   _PointsImage: {fileID: 0}
   _NewGamePrompt: {fileID: 5578973196631339407}
   _LoadButton: {fileID: 1785889071}
+  _DialogueWindow: {fileID: 0}
 --- !u!224 &1264187684 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3187544112832824563, guid: fdfbee6942bcf7f4384e58dd5a9bd2d6, type: 3}
@@ -3016,9 +3021,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 276131064}
   - {fileID: 402059963}
+  - {fileID: 1198796477}
   - {fileID: 1375106088}
   - {fileID: 1675345648}
-  - {fileID: 1198796477}
   - {fileID: 4580630862673040314}
   - {fileID: 2029779496}
   - {fileID: 1585151547}

@@ -24,6 +24,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private bool _EnableMapOnClose;
     private List<string> _UsedDialogues;
     public Sprite _Image;
+    [SerializeField] private bool _ShowGuy = true;
     // Start is called before the first frame update
     void Awake()
     {
@@ -34,6 +35,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Start()
     {
+        SetGuyVisibility(_ShowGuy);
         transform.parent.parent.gameObject.SetActive(false);
     }
     [Button]

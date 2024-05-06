@@ -14,10 +14,6 @@ public class Cups : Minigame
     [System.NonSerialized] public UnityEvent OnLose = new();
     [System.NonSerialized] public UnityEvent OnCupChosen = new();
 
-    [Header("Gameplay Stats")]
-    public int _WinCount = 0;
-    public int _LoseCount = 0;
-
     [Header("Refs")]
     [SerializeField] private GameObject _Ball;
     [SerializeField] private GameObject _BugMessagePrefab;
@@ -88,14 +84,14 @@ public class Cups : Minigame
     {
         JsonDataService dataService = new JsonDataService();
         MedalType Medal = MedalType.None;
-        if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
+        if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
             Medal = MedalType.Gold;
-        else if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
             Medal = MedalType.Silver;
-        else if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
             Medal = MedalType.Bronze;
 
-        _StandResults = new StandResults(Medal, _WinCount);
+        _StandResults = new StandResults(Medal, _Points);
         dataService.SaveData("CupsSaveFile", _StandResults);
     }
     private Vector2 GetBallOffset(int cupIndex)
@@ -285,8 +281,8 @@ public class Cups : Minigame
                     _Cups[selectedIndex].gameObject.transform.GetChild(0).gameObject.SetActive(true);
                     _Cups[selectedIndex].gameObject.transform.GetChild(0).gameObject.GetComponent<Animator>().SetTrigger("Gagné");
 
-                    _WinCount++;
-                    _ScoreText.SetText(_WinCount.ToString());
+                    _Points++;
+                    _ScoreText.SetText(_Points.ToString());
                     OnWin.Invoke();
                     StartCoroutine(ChooseCupAnimation(true, selectedIndex));
                     this.Invoke(() => _HasSelectedCup = true, 3f);
@@ -300,7 +296,6 @@ public class Cups : Minigame
                     _Cups[selectedIndex].gameObject.transform.GetChild(1).gameObject.GetComponent<Animator>().SetTrigger("Perdu");
                     //_CupPerdu.SetActive(true);
                     //_CupPerdu.GetComponent<Animator>().SetTrigger("Perdu");
-                    _LoseCount++;
                     OnLose.Invoke();
                     StartCoroutine(ChooseCupAnimation(false, selectedIndex));
                     this.Invoke(() => _HasSelectedCup = true, 7f);
@@ -335,7 +330,14 @@ public class Cups : Minigame
     public override void TriggerMinigameEnd(bool ClosePreEmptively = false)
     {
         base.TriggerMinigameEnd(ClosePreEmptively);
+        foreach(var cup in _Cups)
+        {
+            cup.GetComponent<Animator>().SetTrigger("Reset");
+            cup.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Reset");
+            cup.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Reset");
+        }
         _CurrentShuffleCount = 0;
+        _ScoreText.SetText(_Points.ToString());
     }
     [Button]
     public override void Interact()

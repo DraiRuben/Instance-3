@@ -9,6 +9,7 @@ public class Minigame : MonoBehaviour, IInteractable
     [SerializeField] protected MedalRequirements _MedalRequirements;
     [SerializeField] protected Sprite _PointsImage;
     public bool _DisplayGuy;
+    [System.NonSerialized] public int _Points;
     protected virtual bool IsBugged()
     {
         return true;
@@ -45,6 +46,7 @@ public class Minigame : MonoBehaviour, IInteractable
             FadeInOut.Instance.StartCoroutine(FadeInOut.Instance.FadeToBlackThenTransparent());
             PlayerControls.Instance.SetVisibility(true, 0.35f / 0.60f);
             PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+            _Points = 0;
         }
         this.Invoke(()=> { gameObject.SetActive(false); Cursor.visible = true; },0.35f /0.6f);
     }

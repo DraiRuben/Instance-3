@@ -56,6 +56,12 @@ public class PoleManager : MonoBehaviour
     {
         _FishingCountText.text = "Tentatives :" + (_FishingMaxCount - _CurrentFishingCount).ToString();
     }
+    private void OnDisable()
+    {
+        _IsFishing = false;
+        _IsInFishAnim = false;
+        _Animator.SetTrigger("Reset");
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
 
@@ -65,7 +71,7 @@ public class PoleManager : MonoBehaviour
             {
                 AudioManager._Instance.PlaySFX("fishCatch", true);
                 FishManager.Instance._FishList.Remove(other.gameObject);
-                FishManager.Instance._FishingScore++;
+                FishManager.Instance._Points++;
                 _IsFishing = false;
                 other.gameObject.GetComponent<Fish>().DoDestructionFeedback();
             }
@@ -79,7 +85,7 @@ public class PoleManager : MonoBehaviour
             if (other.CompareTag("Fish"))
             {
                 FishManager.Instance._FishList.Remove(other.gameObject);
-                FishManager.Instance._FishingScore++;
+                FishManager.Instance._Points++;
                 _IsFishing = false;
                 other.gameObject.GetComponent<Fish>().DoDestructionFeedback();
             }
@@ -136,7 +142,7 @@ public class PoleManager : MonoBehaviour
     }
     public void Fishing(InputAction.CallbackContext context)
     {
-        if (context.started && !_IsFishing && _CurrentFishingCount < _FishingMaxCount)
+        if (context.started && !_IsFishing && _CurrentFishingCount < _FishingMaxCount && Time.timeScale == 1)
         {
             if (Time.time - _LastFishTime > _FishingCooldown)
             {

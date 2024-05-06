@@ -64,6 +64,10 @@ public class ButtonsScript : Minigame
             {
                 _MM.GetComponent<Minigame>().TriggerMinigameEnd(test);
             }
+            else
+            {
+                Application.Quit();
+            }
             if (PauseMenu.instance.gameObject.activeSelf)
             {
                 PauseMenu.instance.gameObject.SetActive(false);

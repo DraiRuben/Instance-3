@@ -24,7 +24,6 @@ public sealed class FishManager : Minigame
     [System.NonSerialized] public float _SpeedMult = 1;
     [System.NonSerialized] public List<GameObject> _FishList = new List<GameObject>();
     [System.NonSerialized] public int _BugValue;
-    [System.NonSerialized] public int _FishingScore;
     [System.NonSerialized] public float _ElapsedTime;
 
     private Vector3 _InitialOffset;
@@ -84,7 +83,7 @@ public sealed class FishManager : Minigame
             }
             _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime / _MinigameDuration);
             spawnTimer += Time.deltaTime;
-            _ScoreText.text = _FishingScore.ToString();
+            _ScoreText.text = _Points.ToString();
             _TimerText.text = "Time : " + Mathf.RoundToInt(_MinigameDuration - _ElapsedTime);
             _ElapsedTime += Time.deltaTime;
             yield return null;
@@ -105,20 +104,21 @@ public sealed class FishManager : Minigame
             Destroy(fish);
         }
         _FishList.Clear();
+        _ScoreText.text = _Points.ToString();
     }
     protected override void SaveStats()
     {
         JsonDataService FishSaveData = new JsonDataService();
 
         MedalType Medal = MedalType.None;
-        if (_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
+        if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
             Medal = MedalType.Gold;
-        else if (_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
             Medal = MedalType.Silver;
-        else if (_FishingScore >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
             Medal = MedalType.Bronze;
 
-        _StandResults = new StandResults(Medal, _FishingScore);
+        _StandResults = new StandResults(Medal, _Points);
         FishSaveData.SaveData("FishSaveFile", _StandResults);
     }
     [Button]
@@ -134,4 +134,5 @@ public sealed class FishManager : Minigame
             StartCoroutine(FishSpawn());
         }
     }
+    
 }

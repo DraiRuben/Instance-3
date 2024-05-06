@@ -12,9 +12,6 @@ public class MoleWacker : Minigame
     public static MoleWacker Instance;
     [System.NonSerialized] public UnityEvent OnMoleWacked = new();
     [System.NonSerialized] public UnityEvent OnMoleLost = new();
-    [Header("Gameplay Stats")]
-    public int _WinCount = 0;
-    public int _LoseCount = 0;
 
     [Header("Refs")]
     [SerializeField] private GameObject _MolePrefab;
@@ -44,15 +41,15 @@ public class MoleWacker : Minigame
     [System.NonSerialized] public List<int> _HolesTenants;
     private List<Vector3> _HolesPositions;
     private bool _IsBugResolved;
-
     private Vector3 _InitialOffset;
-
+    public List<GameObject> _Moles;
     private void Awake()
     {
         if (Instance) Destroy(gameObject);
         else Instance = this;
         _HolesPositions = new();
         _HolesTenants = new List<int>(9);
+        _Moles = new();
         for (int i = 0; i < 9; i++)
         {
             _HolesTenants.Add(i);
@@ -91,14 +88,14 @@ public class MoleWacker : Minigame
     {
         JsonDataService dataService = new JsonDataService();
         MedalType Medal = MedalType.None;
-        if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
+        if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
             Medal = MedalType.Gold;
-        else if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
             Medal = MedalType.Silver;
-        else if (_WinCount >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
             Medal = MedalType.Bronze;
 
-        _StandResults = new StandResults(Medal, _WinCount);
+        _StandResults = new StandResults(Medal, _Points);
         dataService.SaveData("MoleSaveFile", _StandResults);
     }
 
@@ -120,6 +117,7 @@ public class MoleWacker : Minigame
                 mole.GetComponent<Mole>()._PersistenceTime = _MoleStayTimeEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleStayTimeBase;
                 mole.GetComponent<Mole>()._AppearanceDuration = _MoleMovementSpeedEvolution.Evaluate(currentTimer / _MinigameDuration) * _MoleMovementSpeedBase;
                 mole.GetComponent<Mole>().SetLayer(chosenHole / 3);
+                _Moles.Add(mole);
                 currentSpawnTimer = 0;
             }
             _TimerText.SetText($"Time : {Mathf.RoundToInt(_MinigameDuration - currentTimer)}");
@@ -129,6 +127,16 @@ public class MoleWacker : Minigame
             yield return null;
         }
         TriggerMinigameEnd();
+    }
+    public override void TriggerMinigameEnd(bool ClosePreEmptively = false)
+    {
+        base.TriggerMinigameEnd(ClosePreEmptively);
+        foreach(var mole in _Moles)
+        {
+            Destroy(mole,0.1f);
+        }
+        _Moles.Clear();
+        _ScoreText.SetText(_Points.ToString());
     }
     [Button]
     public override void Interact()

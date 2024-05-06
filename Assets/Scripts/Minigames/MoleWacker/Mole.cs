@@ -72,8 +72,8 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         {
             AudioManager._Instance.PlaySFX("moleHit", true);
             _Animator.SetTrigger("Dead");
-            MoleWacker.Instance._WinCount += _ScoreGain;
-            MoleWacker.Instance._ScoreText.SetText(MoleWacker.Instance._WinCount.ToString());
+            MoleWacker.Instance._Points += _ScoreGain;
+            MoleWacker.Instance._ScoreText.SetText(MoleWacker.Instance._Points.ToString());
             MoleWacker.Instance.OnMoleWacked.Invoke();
             _IsDisappearancePaused = true;
             StartCoroutine(StunMole());
@@ -82,7 +82,6 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         else
         {
             _Animator.SetTrigger("Gone");
-            MoleWacker.Instance._LoseCount++;
             MoleWacker.Instance.OnMoleLost.Invoke();
         }
         StartCoroutine(MoleDisappearanceRoutine());
@@ -124,6 +123,7 @@ public class Mole : MonoBehaviour, IPointerClickHandler
         }
         //add hole back to usable holes after the mole finished its disappearance routine
         MoleWacker.Instance._HolesTenants.Add(_OccupiedHole);
+        MoleWacker.Instance._Moles.Remove(gameObject);
         Destroy(gameObject);
     }
     private IEnumerator MoleSpawnMovementRoutine()

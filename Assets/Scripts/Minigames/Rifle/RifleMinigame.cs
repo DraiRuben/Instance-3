@@ -17,7 +17,6 @@ public class RifleMinigame : Minigame
     [SerializeField] private CameraShakeProfile _ShootShakeProfile;
     [SerializeField] private GameObject _ImpactGameObject;
     private CinemachineImpulseSource _ShootShakeSource;
-    private int _Points;
     private float _ReloadTime;
     private bool _IsBugged;
     private Vector2 _ScreenPos;
@@ -130,6 +129,15 @@ public class RifleMinigame : Minigame
             }
         }
     }
+    public override void TriggerMinigameEnd(bool ClosePreEmptively = false)
+    {
+        base.TriggerMinigameEnd(ClosePreEmptively);
+        foreach(Transform target in transform.GetChild(0))
+        {
+            target.GetComponent<Animator>().SetTrigger("Reset");
+        }
+        _ScoreText.SetText(_Points.ToString());
+    }
     private IEnumerator RunMinigame()
     {
         float _elapsedTime = 0f;
@@ -158,7 +166,6 @@ public class RifleMinigame : Minigame
         }
         PlayerControls.Instance?.OnSelect.RemoveAllListeners();
     }
-
     private IEnumerator Shoot()
     {
         AudioManager._Instance.PlaySFX("shoot", true);

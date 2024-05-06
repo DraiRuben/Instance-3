@@ -1,12 +1,14 @@
 ﻿// Shapes © Freya Holmér - https://twitter.com/FreyaHolmer/
 // Website & Documentation - https://acegikmo.com/shapes/
 
-namespace Shapes {
+namespace Shapes
+{
 
-	internal enum RenderPipeline {
-		Legacy,
-		URP,
-		HDRP
-	}
+    internal enum RenderPipeline
+    {
+        Legacy,
+        URP,
+        HDRP
+    }
 
 }

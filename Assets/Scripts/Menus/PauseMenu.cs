@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
@@ -11,6 +10,9 @@ public class PauseMenu : MonoBehaviour
         {
             instance = this;
         }
+    }
+    private void Start()
+    {
         gameObject.SetActive(false);
     }
     private void Update()

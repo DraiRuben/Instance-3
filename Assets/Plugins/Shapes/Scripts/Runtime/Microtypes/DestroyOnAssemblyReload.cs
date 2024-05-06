@@ -2,10 +2,12 @@
 
 // Shapes © Freya Holmér - https://twitter.com/FreyaHolmer/
 // Website & Documentation - https://acegikmo.com/shapes/
-namespace Shapes {
+namespace Shapes
+{
 
-	[AttributeUsage( AttributeTargets.Field )]
-	public class DestroyOnAssemblyReload : Attribute {
-	}
+    [AttributeUsage(AttributeTargets.Field)]
+    public class DestroyOnAssemblyReload : Attribute
+    {
+    }
 
 }

@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-// Shapes © Freya Holmér - https://twitter.com/FreyaHolmer/
+﻿// Shapes © Freya Holmér - https://twitter.com/FreyaHolmer/
 // Website & Documentation - https://acegikmo.com/shapes/
-namespace Shapes {
+namespace Shapes
+{
 
-	internal class MpbCustomMesh : MetaMpb {
+    internal class MpbCustomMesh : MetaMpb
+    {
 
-		protected override void TransferShapeProperties() {
-			// Transfer( ShapesMaterialUtils.propRect, rect );
-			// Transfer( ShapesMaterialUtils.propUvs, uvs );
-			// Transfer( ShapesMaterialUtils.propMainTex, ref texture );
-		}
+        protected override void TransferShapeProperties()
+        {
+            // Transfer( ShapesMaterialUtils.propRect, rect );
+            // Transfer( ShapesMaterialUtils.propUvs, uvs );
+            // Transfer( ShapesMaterialUtils.propMainTex, ref texture );
+        }
 
-	}
+    }
 
 }

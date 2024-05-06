@@ -21,20 +21,28 @@ public class DialogueTrigger : MonoBehaviour
     private bool _TextFullyDisplayed;
     private int _CurrentTextIndex;
     private bool _IsClosing;
+    [SerializeField] private bool _EnableMapOnClose;
     private List<string> _UsedDialogues;
+    public Sprite _Image;
+    [SerializeField] private bool _ShowGuy = true;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _TypeWriter = GetComponent<TypewriterByCharacter>();
         _TMP = GetComponent<TextMeshProUGUI>();
-        _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
-        transform.parent.gameObject.SetActive(false);
+        _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);   
     }
 
+    private void Start()
+    {
+        SetGuyVisibility(_ShowGuy);
+        transform.parent.parent.gameObject.SetActive(false);
+    }
     [Button]
     public void TriggerDialogue()
     {
-        transform.parent.gameObject.SetActive(true);
+        AssignImage();
+        transform.parent.parent.gameObject.SetActive(true);
         //need to change input map to prevent player from moving
         if (_DialogueData)
         {
@@ -51,6 +59,19 @@ public class DialogueTrigger : MonoBehaviour
             _IsClosing = false;
             transform.parent.GetComponent<Image>().enabled = true;
             _TypeWriter.ShowText(_UsedDialogues[_CurrentTextIndex++]);
+        }
+    }
+
+    private void AssignImage()
+    {
+        if (_Image)
+        {
+            transform.parent.parent.GetChild(0).GetComponent<Image>().color = Color.white;
+            transform.parent.parent.GetChild(0).GetComponent<Image>().sprite = _Image;
+        }
+        else
+        {
+            transform.parent.parent.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
         }
     }
     [Button]
@@ -76,7 +97,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 _TypeWriter.SkipTypewriter();
             }
-        } 
+        }
     }
     private IEnumerator CloseRoutine()
     {
@@ -88,18 +109,27 @@ public class DialogueTrigger : MonoBehaviour
         StandInteractableTrigger.Map.SetActive(false);
         yield return WaitUntilEvent(_TypeWriter.onTextDisappeared);
         yield return FadeInOut.Instance.FadeToBlack();
-        if(_Minigame)_Minigame.GetComponent<IInteractable>().Interact();
-        if(PlayerControls.Instance._CurrentDialogue == this) PlayerControls.Instance._CurrentDialogue = null;
-        transform.parent.gameObject.SetActive(false);
-
+        if (_Minigame) _Minigame.GetComponent<IInteractable>().Interact();
+        if (PlayerControls.Instance._CurrentDialogue == this) PlayerControls.Instance._CurrentDialogue = null;
+        if (_EnableMapOnClose)
+        {
+            PlayerControls.Instance.SetVisibility(true, 0.0f);
+            PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+        }
+        FadeInOut.Instance.StartCoroutine(FadeInOut.Instance.FadeToTransparent());
+        transform.parent.parent.gameObject.SetActive(false);
     }
     public bool CanInteract()
     {
         return _Minigame.GetComponent<IInteractable>().CanInteract();
     }
+    public void SetGuyVisibility(bool visible)
+    {
+        transform.parent.GetChild(2).gameObject.SetActive(visible);
+    }
     private IEnumerator WaitUntilEvent(UnityEvent unityEvent)
     {
-        var trigger = false;
+        bool trigger = false;
         Action action = () => trigger = true;
         unityEvent.AddListener(action.Invoke);
         yield return new WaitUntil(() => trigger);

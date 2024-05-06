@@ -3,4 +3,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo( "ShapesEditor" )]
+[assembly: InternalsVisibleTo("ShapesEditor")]

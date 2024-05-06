@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioMenu : MonoBehaviour
@@ -12,6 +10,9 @@ public class AudioMenu : MonoBehaviour
         {
             instance = this;
         }
+    }
+    private void Start()
+    {
         gameObject.SetActive(false);
     }
 }

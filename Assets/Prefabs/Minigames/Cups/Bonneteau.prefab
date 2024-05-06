@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -130, y: 0}
+  m_AnchoredPosition: {x: -166, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3471079089932795826
@@ -109,8 +109,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: -0.7993, y: -0.7993}
+  m_SizeDelta: {x: 62.7445, y: 62.7445}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6349884469232703093
 CanvasRenderer:
@@ -184,8 +184,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 864, y: 864}
+  m_AnchoredPosition: {x: -0.7993, y: -0.7993}
+  m_SizeDelta: {x: 1084.2256, y: 1084.2256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2136459860888005585
 CanvasRenderer:
@@ -260,8 +260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -262, y: -148}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -329.58063, y: -48.88208}
+  m_SizeDelta: {x: 250.9782, y: 62.7445}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7094939246874007199
 CanvasRenderer:
@@ -392,7 +392,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.7993, y: -0.7993}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7244817342274206096
@@ -451,6 +451,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MinigameDuration: 3
+  _MedalRequirements: {fileID: 11400000, guid: c4ae79abecd209e46bc23c5baf28478c, type: 2}
+  _PointsImage: {fileID: 21300000, guid: eb13dfe6ff8a7e145846f52771dcd81c, type: 3}
+  _DisplayGuy: 0
   _WinCount: 0
   _LoseCount: 0
   _Ball: {fileID: 1657140520275053405}

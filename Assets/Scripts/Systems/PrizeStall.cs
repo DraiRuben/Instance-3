@@ -1,26 +1,32 @@
 using Febucci.UI;
 using Sirenix.OdinInspector;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PrizeStall : MonoBehaviour,IInteractable
+public class PrizeStall : MonoBehaviour, IInteractable
 {
     [SerializeField] private DialogueTrigger _DialogueWindow;
+    [SerializeField] private ParticleSystem _ConfettiEffect;
+    [SerializeField] private GameObject _BearPlush;
+    [SerializeField] private GameObject _RabbitPlush;
+    [SerializeField] private GameObject _RatPlush;
     private int _FinalScore;
-    private TypewriterByCharacter _TypeWriter;
-    private bool _TextFullyDisplayed;
+    [SerializeField] private TypewriterByCharacter _TypeWriter;
+    private Vector3 _InitialOffset;
 
-
+    private void Awake()
+    {
+        _InitialOffset = transform.position - Camera.main.transform.position;
+        _InitialOffset.z = 0;
+    }
     private void Start()
     {
-        _TypeWriter = GetComponent<TypewriterByCharacter>();
-        _TypeWriter.onTextShowed.AddListener(() => _TextFullyDisplayed = true);
-
+        _TypeWriter.onTextDisappeared.AddListener(() => this.Invoke(() => SceneManager.LoadSceneAsync(0), 3f));
+        gameObject.SetActive(false);
     }
     private void CalculateScore(MedalType medal)
     {
-        switch(medal)
+        switch (medal)
         {
             case MedalType.Gold:
                 {
@@ -44,19 +50,6 @@ public class PrizeStall : MonoBehaviour,IInteractable
         }
     }
 
-    private void Update()
-    {
-        if (_TextFullyDisplayed)
-        {
-            StartCoroutine(Delay());
-        }
-    }
-
-    private IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(3);
-        SceneManager.LoadSceneAsync(0);
-    }
 
     public void getReward()
     {
@@ -67,23 +60,25 @@ public class PrizeStall : MonoBehaviour,IInteractable
         CalculateScore(FishManager.Instance._StandResults._Medal);
         if (_FinalScore >= 160)
         {
-            _DialogueWindow._DialoguesTexts.Add("Wow avec autant de tickets tu peux avoir cette ours en peluche");
-            Debug.Log("you got the bear");
+            _ConfettiEffect.transform.position = _BearPlush.transform.position;
+            _ConfettiEffect.Play();
+            _DialogueWindow._DialoguesTexts.Add("Wow avec autant de tickets tu peux avoir cet ours en peluche");
         }
-        else if(_FinalScore >= 80)
+        else if (_FinalScore >= 80)
         {
+            _ConfettiEffect.transform.position = _RabbitPlush.transform.position;
+            _ConfettiEffect.Play();
             _DialogueWindow._DialoguesTexts.Add("Avec ton nombre de tickets je peux te proposer ce lapin en peluche");
-            Debug.Log("you got the rabbit");
         }
-        else if(_FinalScore >=35)
+        else if (_FinalScore >= 35)
         {
-            _DialogueWindow._DialoguesTexts.Add("Avec si peu de ticket tu peux avoir cette peluche de rat");
-            Debug.Log("you got the rat");
+            _ConfettiEffect.transform.position = _RatPlush.transform.position;
+            _ConfettiEffect.Play();
+            _DialogueWindow._DialoguesTexts.Add("Avec si peu de tickets tu peux avoir cette peluche de rat");
         }
         else
         {
             _DialogueWindow._DialoguesTexts.Add("Je suis désolé mais tu n'as passez de tickets pour avoir quoi que ce soit");
-            Debug.Log("you can't get anything");
         }
         _DialogueWindow.TriggerDialogue();
         _FinalScore = 0;
@@ -97,9 +92,10 @@ public class PrizeStall : MonoBehaviour,IInteractable
     [Button]
     public void Interact()
     {
-            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
-            gameObject.SetActive(true);
-            StandInteractableTrigger.Map.SetActive(false);
-            getReward();
+        PlayerControls.Instance.SetVisibility(false, 0.0f);
+        transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
+        gameObject.SetActive(true);
+        StandInteractableTrigger.Map.SetActive(false);
+        getReward();
     }
 }

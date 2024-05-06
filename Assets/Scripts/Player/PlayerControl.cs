@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +9,7 @@ public class PlayerControls : MonoBehaviour
 {
     public static PlayerControls Instance;
     [SerializeField] private float _Speed;
+    [SerializeField] private DialogueTrigger _DialogueWindow;
     private Rigidbody2D _RBody;
     private Animator _Animator;
     private SpriteRenderer _SpriteRenderer;
@@ -30,29 +33,50 @@ public class PlayerControls : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + "/PlayerPosition.json"))
         {
             JsonDataService dataService = new JsonDataService();
-            var position = dataService.LoadData<Vector3Json>("PlayerPosition");
+            Vector3Json position = dataService.LoadData<Vector3Json>("PlayerPosition");
             transform.position = new Vector3(position.x, position.y, position.z);
+            FadeInOut.Instance.StartCoroutine(FadeInOut.Instance.FadeToTransparent());
         }
+        else
+        {
+            StartCoroutine(LoreDialogue());
+        }
+    }
+
+    private IEnumerator LoreDialogue()
+    {
+        SetVisibility(false,0.0f);
+        _PlayerInput.SwitchCurrentActionMap("Menus");
+        _CurrentDialogue = _DialogueWindow;
+        yield return null;
+        _DialogueWindow.TriggerDialogue();
     }
     private void FixedUpdate()
     {
-        _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);
+        if (_MoveInput.y == 0.1f || _MoveInput.y == -0.1f)
+            _RBody.AddForce(new Vector2(_MoveInput.x, 0) * _Speed * Time.fixedDeltaTime);
+        else
+            _RBody.AddForce(_MoveInput * _Speed * Time.fixedDeltaTime);
+
         _RBody.velocity = Vector2.ClampMagnitude(_RBody.velocity, 50);
 
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
+        StandInteractableTrigger interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
         if (interactable)
         {
             _CurrentInteractable = interactable;
+            _CurrentInteractable._Highlight.SetActive(true);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        var interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
-        if (_CurrentInteractable == interactable)
+        StandInteractableTrigger interactable = collision.gameObject.GetComponent<StandInteractableTrigger>();
+        if (_CurrentInteractable == interactable && interactable)
         {
+            if(_CurrentInteractable._Highlight !=null) _CurrentInteractable._Highlight.SetActive(false);
+
             _CurrentInteractable = null;
         }
     }
@@ -61,32 +85,43 @@ public class PlayerControls : MonoBehaviour
     {
         if (Time.timeScale == 1)
         {
-            _MoveInput = context.ReadValue<Vector2>();
-            if (_MoveInput.x < -0)
-            {
-                _SpriteRenderer.flipX = true;
-            }
-            else if (_MoveInput.x > 0)
-            {
-                _SpriteRenderer.flipX = false;
-            }
-
-            if (_MoveInput.x != 0.0f || _MoveInput.y != 0.0f)
-            {
-                _Animator.SetBool("isWalking", true);
-            }
-            else
-            {
-                _Animator.SetBool("isWalking", false);
-            }
+            Vector2 tempInput = context.ReadValue<Vector2>();
+            UpdatePlayerAnim(tempInput);
         }
     }
+    private void UpdatePlayerAnim(Vector2 movementInput)
+    {
+        if (movementInput.x < -0)
+        {
+            _SpriteRenderer.flipX = true;
+        }
+        else if (movementInput.x > 0)
+        {
+            _SpriteRenderer.flipX = false;
+        }
 
+
+        if (movementInput.y == 0 && movementInput.x == 0)
+        {
+            if (_MoveInput.y > 0)
+            {
+                movementInput.y = 0.1f;
+            }
+            else if (_MoveInput.y < 0)
+            {
+                movementInput.y = -0.1f;
+            }
+        }
+        _MoveInput = movementInput;
+        _Animator.SetFloat("X", _MoveInput.x);
+        _Animator.SetFloat("Y", _MoveInput.y);
+    }
 
     public void Pause(InputAction.CallbackContext context)
     {
         if (context.started && !PauseMenu.instance._IsPauseBlocked)
         {
+            UpdatePlayerAnim(new(0, 0));
             if (Time.timeScale == 1)
             {
                 Time.timeScale = 0;
@@ -131,12 +166,10 @@ public class PlayerControls : MonoBehaviour
         {
             if (_CurrentInteractable)
             {
-                if (_CurrentInteractable.CanInteract())
-                {
-                    _PlayerInput.SwitchCurrentActionMap("Menus");
-                    if (_CurrentInteractable._Dialogue) _CurrentDialogue = _CurrentInteractable._Dialogue;
-                }
                 _CurrentInteractable.Interact();
+                _PlayerInput.SwitchCurrentActionMap("Menus");
+                if (_CurrentInteractable._CurrentDialogue) _CurrentDialogue = _CurrentInteractable._CurrentDialogue;
+
             }
         }
     }
@@ -175,8 +208,22 @@ public class PlayerControls : MonoBehaviour
             this.z = z;
         }
     }
+    public void SetVisibility(bool visible, float delay)
+    {
+        this.Invoke(()=> { GetComponent<SpriteRenderer>().enabled = visible; StandInteractableTrigger.Map.SetActive(visible); },delay);
+        
+    }
     public void PlayWalkSound()
     {
         AudioManager._Instance.PlaySFX("playerWalk", true);
+    }
+
+    private IEnumerator WaitUntilEvent(UnityEvent unityEvent)
+    {
+        bool trigger = false;
+        Action action = () => trigger = true;
+        unityEvent.AddListener(action.Invoke);
+        yield return new WaitUntil(() => trigger);
+        unityEvent.RemoveListener(action.Invoke);
     }
 }

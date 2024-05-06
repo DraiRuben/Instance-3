@@ -2,21 +2,29 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Splines;
 
 public sealed class FishManager : Minigame
 {
     public static FishManager Instance;
+    [Header("Refs")]
+    [SerializeField] private TextMeshProUGUI _ScoreText;
+    [SerializeField] private TextMeshProUGUI _TimerText;
     [SerializeField] private GameObject _Fish;
     [SerializeField] private PoleManager _PoleManager;
     [SerializeField] private SplineContainer[] _Splines;
+
+    [Header("Params")]
     [SerializeField] private AnimationCurve _SpeedCurve;
     [SerializeField] private float _MaxConcurrentFishCount;
     [SerializeField] private float _FishSpawnFrequency;
+
     [System.NonSerialized] public float _SpeedMult = 1;
-    public List<GameObject> _FishList = new List<GameObject>();
-    public int _BugValue;
+    [System.NonSerialized] public List<GameObject> _FishList = new List<GameObject>();
+    [System.NonSerialized] public int _BugValue;
+    [System.NonSerialized] public float _ElapsedTime;
 
     private Vector3 _InitialOffset;
 
@@ -26,6 +34,11 @@ public sealed class FishManager : Minigame
         else Instance = this;
         _InitialOffset = transform.position - Camera.main.transform.position;
         _InitialOffset.z = 0;
+        if (File.Exists(Application.persistentDataPath + "/FishSaveFile.json"))
+        {
+            JsonDataService FishSaveData = new JsonDataService();
+            _StandResults = FishSaveData.LoadData<StandResults>("FishSaveFile");
+        }
     }
     private void Start()
     {
@@ -42,7 +55,7 @@ public sealed class FishManager : Minigame
     {
         if (!File.Exists("Game/Minigames/FishingGame/FishBehavior.txt"))
         {
-            var file = File.Create("Game/Minigames/FishingGame/FishBehavior.txt");
+            FileStream file = File.Create("Game/Minigames/FishingGame/FishBehavior.txt");
             StreamWriter writer = new StreamWriter(file);
             writer.Write("Enabled = false;");
             writer.Close();
@@ -58,19 +71,21 @@ public sealed class FishManager : Minigame
     }
     private IEnumerator FishSpawn()
     {
-        float elapsedTime = 0f;
+        _ElapsedTime = 0f;
         float spawnTimer = 0f;
-        while (elapsedTime < _MinigameDuration)
+        while (_ElapsedTime < _MinigameDuration)
         {
-            if (_FishList.Count < _MaxConcurrentFishCount && spawnTimer>= _FishSpawnFrequency)
+            if (_FishList.Count < _MaxConcurrentFishCount && spawnTimer >= _FishSpawnFrequency)
             {
-                _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity,transform));
+                _FishList.Add(Instantiate(_Fish, _Splines[_BugValue].EvaluatePosition(0), Quaternion.identity, transform));
                 _FishList[_FishList.Count - 1].transform.GetChild(0).GetComponent<Fish>()._Spline = _Splines;
                 spawnTimer = 0f;
             }
-            _SpeedMult = _SpeedCurve.Evaluate(elapsedTime / _MinigameDuration);
+            _SpeedMult = _SpeedCurve.Evaluate(_ElapsedTime / _MinigameDuration);
             spawnTimer += Time.deltaTime;
-            elapsedTime += Time.deltaTime;
+            _ScoreText.text = _Points.ToString();
+            _TimerText.text = "Time : " + Mathf.RoundToInt(_MinigameDuration - _ElapsedTime);
+            _ElapsedTime += Time.deltaTime;
             yield return null;
         }
         TriggerMinigameEnd();
@@ -80,19 +95,31 @@ public sealed class FishManager : Minigame
     {
         SaveStats();
     }
-    protected override void TriggerMinigameEnd()
+    public override void TriggerMinigameEnd(bool ClosePreEmptively = false)
     {
-        base.TriggerMinigameEnd();
-        _PoleManager._FishingTimer = 0;
-        foreach(var fish in _FishList)
+        base.TriggerMinigameEnd(ClosePreEmptively);
+        _PoleManager._CurrentFishingCount = 0;
+        foreach (GameObject fish in _FishList)
         {
             Destroy(fish);
         }
         _FishList.Clear();
+        _ScoreText.text = _Points.ToString();
     }
     protected override void SaveStats()
     {
-        _PoleManager.SaveStats();
+        JsonDataService FishSaveData = new JsonDataService();
+
+        MedalType Medal = MedalType.None;
+        if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
+            Medal = MedalType.Gold;
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
+            Medal = MedalType.Silver;
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
+            Medal = MedalType.Bronze;
+
+        _StandResults = new StandResults(Medal, _Points);
+        FishSaveData.SaveData("FishSaveFile", _StandResults);
     }
     [Button]
     public override void Interact()
@@ -101,10 +128,11 @@ public sealed class FishManager : Minigame
         {
             IsBugged();
             transform.position = Utility.GetWorldScreenCenterPos() + _InitialOffset;
-
-            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            PlayerControls.Instance.SetVisibility(false,0.0f);
             gameObject.SetActive(true);
+            RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements, _PointsImage);
             StartCoroutine(FishSpawn());
         }
     }
+    
 }

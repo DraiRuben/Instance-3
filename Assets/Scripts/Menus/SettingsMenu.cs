@@ -10,6 +10,10 @@ public class SettingsMenu : MonoBehaviour
         {
             instance = this;
         }
+
+    }
+    private void Start()
+    {
         gameObject.SetActive(false);
     }
 }

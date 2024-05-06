@@ -26,9 +26,9 @@ Transform:
   m_GameObject: {fileID: 3241113582979356091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.8, y: 1.95, z: 0}
-  m_LocalScale: {x: 0.18747456, y: 0.18747456, z: 0.18747456}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 4.26, y: 1.19, z: 0}
+  m_LocalScale: {x: 0.38, y: 0.38, z: 0.38}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5142435843475914618}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2061c7ae848265b4d943e9fc3cd74b9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -118,7 +118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 77, y: 280}
+  m_AnchoredPosition: {x: 157, y: 280}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7564979877445516598
@@ -158,8 +158,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -348,7 +348,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.226, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5142435843475914618}
@@ -440,7 +440,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -210, y: 280}
+  m_AnchoredPosition: {x: -300, y: 280}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2880351710453221314
@@ -480,8 +480,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -567,7 +567,7 @@ Transform:
   m_GameObject: {fileID: 6002799348226526176}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.1, z: 0}
+  m_LocalPosition: {x: 0, y: -4.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -779,9 +779,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _YReach: 1.5
-  _GunYRange: {x: -4.598138, y: -2.01406}
-  _GunXRange: {x: -3.5284061, y: 1.1077356}
+  _SpriteOffset: {x: 0, y: -3.5}
+  _MouseYRange: {x: -2, y: 2}
+  _MouseXRange: {x: -2.5, y: 2.5}
 --- !u!1 &6575110042467889101
 GameObject:
   m_ObjectHideFlags: 0
@@ -922,8 +922,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.33, y: 1.33, z: 1.33}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4169682466137153864}
   - {fileID: 6517162268475846894}
@@ -945,9 +945,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MinigameDuration: 40
+  _MedalRequirements: {fileID: 11400000, guid: 715ac4558ad974f459bf654572df246a, type: 2}
+  _PointsImage: {fileID: 21300000, guid: 044081e06ab22cb4b87c5cca5d554b9d, type: 3}
+  _DisplayGuy: 1
   _ReloadSound: {fileID: 8300000, guid: b214aceb72fd36248be2fda0326eac04, type: 3}
   _ShootSound: {fileID: 8300000, guid: d3629d542462d9b4098b5bc5b70ba639, type: 3}
-  _IsBugged: 0
   _TimerText: {fileID: 6592627035004337489}
   _ScoreText: {fileID: 1202994912672624169}
   _ShootShakeProfile: {fileID: 11400000, guid: 491a19c29f85ead4b9be8acf398c4dbd, type: 2}

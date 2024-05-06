@@ -14,10 +14,6 @@ public class Cups : Minigame
     [System.NonSerialized] public UnityEvent OnLose = new();
     [System.NonSerialized] public UnityEvent OnCupChosen = new();
 
-    [Header("Gameplay Stats")]
-    public int _WinCount = 0;
-    public int _LoseCount = 0;
-
     [Header("Refs")]
     [SerializeField] private GameObject _Ball;
     [SerializeField] private GameObject _BugMessagePrefab;
@@ -87,31 +83,20 @@ public class Cups : Minigame
     protected override void SaveStats()
     {
         JsonDataService dataService = new JsonDataService();
-        MedalType Medal;
-        switch (_WinCount)
-        {
-            case 0:
-                Medal = MedalType.None;
-                break;
-            case 1:
-                Medal = MedalType.Bronze;
-                break;
-            case 2:
-                Medal = MedalType.Silver;
-                break;
-            case 3:
-                Medal = MedalType.Gold;
-                break;
-            default:
-                Medal = MedalType.None;
-                break;
-        }
-        _StandResults = new StandResults(Medal, _WinCount);
+        MedalType Medal = MedalType.None;
+        if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Gold])
+            Medal = MedalType.Gold;
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Silver])
+            Medal = MedalType.Silver;
+        else if (_Points >= _MedalRequirements.MinRequiredForMedal[MedalType.Bronze])
+            Medal = MedalType.Bronze;
+
+        _StandResults = new StandResults(Medal, _Points);
         dataService.SaveData("CupsSaveFile", _StandResults);
     }
     private Vector2 GetBallOffset(int cupIndex)
     {
-        Vector2 returnValue = new Vector2(0,_BallCupOffsetY);
+        Vector2 returnValue = new Vector2(0, _BallCupOffsetY);
         if (cupIndex == 0) returnValue.x = _BallLeftCupOffsetX;
         else if (cupIndex == _Cups.Count - 1) returnValue.x = _BallRightCupOffsetX;
         return returnValue;
@@ -173,10 +158,10 @@ public class Cups : Minigame
             }
             else if (cupCount > _Cups.Count)
             {
-                for(int i = _Cups.Count; i<cupCount; i++)
+                for (int i = _Cups.Count; i < cupCount; i++)
                 {
-                    var cup = Instantiate(_CupPrefab, transform.GetChild(1));
-                    (cup.transform as RectTransform).anchoredPosition = new Vector2(0, -205);
+                    GameObject cup = Instantiate(_CupPrefab, transform.GetChild(1));
+                    (cup.transform as RectTransform).anchoredPosition = new Vector2(0, -265);
                     cup.GetComponent<Button>().onClick.AddListener(() => SelectCup(cup));
                     _Cups.Add(cup);
                 }
@@ -185,7 +170,7 @@ public class Cups : Minigame
             for (int i = 0; i < _Cups.Count; i++)
             {
                 RectTransform cupTransform = _Cups[i].transform as RectTransform;
-                cupTransform.anchoredPosition = new Vector3(_CupSpacingX * (originMult + i)/_Cups.Count, cupTransform.anchoredPosition.y);
+                cupTransform.anchoredPosition = new Vector3(_CupSpacingX * (originMult + i) / _Cups.Count, cupTransform.anchoredPosition.y);
                 _CupPositions.Add(cupTransform.anchoredPosition);
             }
         }
@@ -220,13 +205,13 @@ public class Cups : Minigame
             yield return ShowCupRoutine(chosenCupIndex);
 
             List<int> cups = new List<int>();
-            for(int i = 0; i < _Cups.Count; i++)
+            for (int i = 0; i < _Cups.Count; i++)
             {
                 cups.Add(i);
             }
             cups.Remove(chosenCupIndex);
             cups.Remove(_BallCurrentIndex);
-            foreach(var cup in cups)
+            foreach (int cup in cups)
             {
                 StartCoroutine(ShowCupRoutine(cup));
             }
@@ -235,7 +220,7 @@ public class Cups : Minigame
     }
     private void SetCupsInteractable(bool interactable)
     {
-        foreach(var cup in _Cups)
+        foreach (GameObject cup in _Cups)
         {
             cup.GetComponent<Button>().interactable = interactable;
         }
@@ -289,17 +274,17 @@ public class Cups : Minigame
             if (_IsBugResolved)
             {
                 _CanSelectCup = false;
-                int selectedIndex = _CupPositions.FindIndex(0,x =>(int) x.x == (int)(SelectedCup.transform as RectTransform).anchoredPosition.x);
+                int selectedIndex = _CupPositions.FindIndex(0, x => (int)x.x == (int)(SelectedCup.transform as RectTransform).anchoredPosition.x);
                 if (selectedIndex == _BallCurrentIndex)
                 {
                     //win feedback
                     _Cups[selectedIndex].gameObject.transform.GetChild(0).gameObject.SetActive(true);
                     _Cups[selectedIndex].gameObject.transform.GetChild(0).gameObject.GetComponent<Animator>().SetTrigger("Gagné");
 
-                    _WinCount++;
-                    _ScoreText.SetText(_WinCount.ToString());
+                    _Points++;
+                    _ScoreText.SetText(_Points.ToString());
                     OnWin.Invoke();
-                    StartCoroutine(ChooseCupAnimation(true,selectedIndex));
+                    StartCoroutine(ChooseCupAnimation(true, selectedIndex));
                     this.Invoke(() => _HasSelectedCup = true, 3f);
                     Debug.Log("Win");
                     AudioManager._Instance.PlaySFX("cupWin");
@@ -311,7 +296,6 @@ public class Cups : Minigame
                     _Cups[selectedIndex].gameObject.transform.GetChild(1).gameObject.GetComponent<Animator>().SetTrigger("Perdu");
                     //_CupPerdu.SetActive(true);
                     //_CupPerdu.GetComponent<Animator>().SetTrigger("Perdu");
-                    _LoseCount++;
                     OnLose.Invoke();
                     StartCoroutine(ChooseCupAnimation(false, selectedIndex));
                     this.Invoke(() => _HasSelectedCup = true, 7f);
@@ -336,25 +320,33 @@ public class Cups : Minigame
                 this.Invoke(() =>
                 {
                     GameObject _BugMsg = Instantiate(_BugMessagePrefab);
-                    _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la balle est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu.");
+                    _BugMsg.transform.GetChild(3).GetComponent<TextMeshProUGUI>().SetText("Le sprite de la balle est introuvable, un fichier de rapport d'erreur a été enregistré dans le dossier du jeu. Si le problème persiste, veuillez vous référer à notre serveur discord.");
                 }, 1.0f, true);
-                this.Invoke(() => Application.Quit(),10f, true);
+                this.Invoke(() => Application.Quit(), 10f, true);
             }
 
         }
     }
-    protected override void TriggerMinigameEnd()
+    public override void TriggerMinigameEnd(bool ClosePreEmptively = false)
     {
-        base.TriggerMinigameEnd();
+        base.TriggerMinigameEnd(ClosePreEmptively);
+        foreach(var cup in _Cups)
+        {
+            cup.GetComponent<Animator>().SetTrigger("Reset");
+            cup.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Reset");
+            cup.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Reset");
+        }
         _CurrentShuffleCount = 0;
+        _ScoreText.SetText(_Points.ToString());
     }
     [Button]
     public override void Interact()
     {
         if (CanInteract())
         {
-            PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = false;
+            PlayerControls.Instance.SetVisibility(false,0.0f);
             gameObject.SetActive(true);
+            RequiredMedalsDisplay.Instance.DisplayRequiredMedals(_MedalRequirements, _PointsImage);
             StartCoroutine(ShuffleCupsRoutine());
         }
     }

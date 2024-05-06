@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -7,6 +6,10 @@ public class Minigame : MonoBehaviour, IInteractable
 {
     public StandResults _StandResults;
     public float _MinigameDuration;
+    [SerializeField] protected MedalRequirements _MedalRequirements;
+    [SerializeField] protected Sprite _PointsImage;
+    public bool _DisplayGuy;
+    [System.NonSerialized] public int _Points;
     protected virtual bool IsBugged()
     {
         return true;
@@ -26,17 +29,25 @@ public class Minigame : MonoBehaviour, IInteractable
         throw new System.NotImplementedException();
     }
 
-    protected virtual void TriggerMinigameEnd() 
+    public virtual void TriggerMinigameEnd(bool ClosePreEmptively = false)
     {
         StopAllCoroutines();
-        Cursor.visible = true;
-        PlayerControls.Instance.GetComponent<SpriteRenderer>().enabled = true;
-        StandInteractableTrigger.Map.SetActive(true);
+        PlayerControls.Instance?.OnSelect.RemoveAllListeners();
+        RequiredMedalsDisplay.Instance.StopDisplay();
+        if (!ClosePreEmptively)
+        {
+            SaveStats();
 
-        SaveStats();
-        StandTransitionOut.Instance.StartCoroutine(StandTransitionOut.Instance.TransitionOut());
-
-        gameObject.SetActive(false);
-        //TODO: Maybe change how minigame end is done so that we have a fade in and out of minigame instead of instant deactivation
+            StandTransitionOut.Instance._DialogueWindow.SetGuyVisibility(_DisplayGuy);
+            StandTransitionOut.Instance.StartCoroutine(StandTransitionOut.Instance.TransitionOut());
+        }
+        else
+        {
+            FadeInOut.Instance.StartCoroutine(FadeInOut.Instance.FadeToBlackThenTransparent());
+            PlayerControls.Instance.SetVisibility(true, 0.35f / 0.60f);
+            PlayerControls.Instance._PlayerInput.SwitchCurrentActionMap("Player");
+            _Points = 0;
+        }
+        this.Invoke(()=> { gameObject.SetActive(false); Cursor.visible = true; },0.35f /0.6f);
     }
 }
